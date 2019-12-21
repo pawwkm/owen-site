@@ -34,11 +34,11 @@
             </p>
 
             <h1>1. Files</h1>
-            <pre><code>file ← whitespace 
-       directives 
+            <pre><code>file ← whitespace
+       directives
        (declaration / ctfeExpression / mixinExpression)*
 
-directives ← namespaceDirective 
+directives ← namespaceDirective
              useDirective*
 
 namespaceDirective ← namespace identifier
@@ -235,14 +235,18 @@ field ← type identifier</code></pre>
 enumerationConstant ← identifier (assign integerLiteral)?</code></pre>
 
             <p>
-                The <span class="rule">identifier</span> is the name of the
-                enumeration. The <span class="rule">type</span> must be an <span class="type">IXX</span>.
-                <span class="rule">integerLiteral</span>s must have the same
-                type as the <span class="rule">type</span>. If an
-                <span class="rule">enumerationConstant</span> omits the
+                The <span class="rule">identifier</span> after the <span class="rule">enumeration</span>
+                keyword is the name of the enumeration. The type of the enumeration must be either an 
+                <span class="type">IXX</span> or <span class="type">UXX</span>.
+            </p>
+            
+            <p>
+                If an <span class="rule">enumerationConstant</span> omits the
                 <span class="rule">integerLiteral</span> then it is the value of
                 the last constant + 1. If the first constant omits the
                 <span class="rule">integerLiteral</span> then its value is 0.
+                The type of the <span class="rule">enumerationConstant</span>s 
+                are inferred from the <span class="rule">type</span>.
             </p>
 
             <h2>2.6. Versions</h2>
@@ -280,7 +284,7 @@ assignmentOperator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespac
 
             <p>
                 Each <span class="rule">expression</span> on the left hand side must be addressable
-                and the type of the <span class="rule">expression</span> being assigned must be the 
+                and the type of the <span class="rule">expression</span> being assigned must be the
                 same as the one being assigned to.
             </p>
 
@@ -293,15 +297,15 @@ assignmentOperator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespac
 
             <p>
                 If the right hand <span class="rule">expressionList</span> doesn't contain a <span class="rule">callExpression</span>
-                outputting multiple values then both lists must be equal in length. The left <span class="rule">expressionList</span> 
-                is being assigned from left to right.  
+                outputting multiple values then both lists must be equal in length. The left <span class="rule">expressionList</span>
+                is being assigned from left to right.
                 Number types are inferred from its defined <span class="rule">identifier</span>.
             </p>
 
             <p>
                 If the right hand <span class="rule">expressionList</span> contains a <span class="rule">callExpression</span>
-                outputting multiple values then it must be the only <span class="rule">expression</span> on the right hand side. 
-                The <code>=</code> operator is the only one allowed in this case. The left hand side 
+                outputting multiple values then it must be the only <span class="rule">expression</span> on the right hand side.
+                The <code>=</code> operator is the only one allowed in this case. The left hand side
                 <span class="rule">expressionList</span> must have the same length as the amount of outputted values.
             </p>
 
@@ -325,7 +329,7 @@ assignmentOperator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespac
              (else
                   statements?)?
               end
-              
+
 semicolon ← ';' whitespace</code></pre>
 
             <p>
@@ -423,7 +427,7 @@ semicolon ← ';' whitespace</code></pre>
             </p>
 
             <h2>3.9. Version Statements</h2>
-            <pre><code>versionStatement ← version identifier 
+            <pre><code>versionStatement ← version identifier
                        statement*
                    end</code></pre>
 
@@ -509,7 +513,7 @@ multiplicativeOperator ← ('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;')
             <h2>4.7. Prefix Expressions</h2>
             <pre><code>prefixExpression ← notExpression
                  / negateExpression
-                 / prefixIncrementExpression 
+                 / prefixIncrementExpression
                  / prefixDecrementExpression
                  / sizeOfExpreassion
                  / castExpression
@@ -619,7 +623,7 @@ decrement ← '--' whitespace</code></pre>
 
             <h3>4.8.3. Index Expressions</h3>
             <pre><code>indexExpression ← leftSquareBracket expression rightSquareBracket
-            
+
 leftSquareBracket ← '[' whitespace
 rightSquareBracket ← ']' whitespace</code></pre>
 
@@ -760,7 +764,7 @@ decrement ← '--' whitespace</code></pre>
 
             <h3>4.9.4. String Literals</h3>
             <pre><code>stringLiteral ← '"' (escapeSequence / !'"' .) '"' whitespace
-            
+
 escapeSequence ← '\\' hex hex hex hex
 hex ← [0-9a-f]</code></pre>
 
@@ -831,10 +835,10 @@ fieldInitializer ← identifier equal expression</code></pre>
             <h1>5. Types</h1>
             <pre><code>type ← pointerToOrArray* (functionType / identifier)
 
-functionType ← pointerTo+ function 
+functionType ← pointerTo+ function
                               (input type (comma type)*)?
                               (output type (comma type)*)?
-                              
+
 pointerToOrArray ← pointerTo / (leftSquareBracket rightSquareBracket)
 pointerTo ← '*' whitespace</code></pre>
         </main>
