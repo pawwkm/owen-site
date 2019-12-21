@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.1</title>
+        <title>Owen Specification 0.6.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.1</h1>
+            <h1>Owen Specification 0.6.2</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -823,15 +823,7 @@ fieldInitializer ← identifier equal expression</code></pre>
                 Only pointer typed variables can be <span class="keyword">null</span>.
             </p>
 
-            <h3>4.9.8. Identifier Expressions</h3>
-            <pre><code>identifierExpression ← identifier</code></pre>
-
-            <p>
-                The identifier can either be a variable, field or enumeration
-                constant.
-            </p>
-
-            <h3>4.9.9. Parenthesized Expressions</h3>
+            <h3>4.9.8. Parenthesized Expressions</h3>
             <pre><code>parenthesizedExpression ← leftParenthesis expression rightParenthesis</code></pre>
 
             <h1>5. Types</h1>
