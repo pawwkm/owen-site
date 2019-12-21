@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.0</title>
+        <title>Owen Specification 0.6.1</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.0</h1>
+            <h1>Owen Specification 0.6.1</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -241,6 +241,8 @@ enumerationConstant ← identifier (assign integerLiteral)?</code></pre>
             </p>
             
             <p>
+                Each <span class="rule">enumerationConstant</span> must have an unique 
+                <span class="rule">identifier</span> within the declaration.
                 If an <span class="rule">enumerationConstant</span> omits the
                 <span class="rule">integerLiteral</span> then it is the value of
                 the last constant + 1. If the first constant omits the
