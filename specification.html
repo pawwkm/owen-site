@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.5</title>
+        <title>Owen Specification 0.6.6</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.5</h1>
+            <h1>Owen Specification 0.6.6</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -656,7 +656,7 @@ decrement ← '--' whitespace</code></pre>
                   / booleanLiteral
                   / stringLiteral
                   / arrayLiteral
-                  / structureLiteral
+                  / compoundLiteral
                   / nullLiteral
                   / identifier
                   / leftParenthesis expression rightParenthesis</code></pre>
@@ -791,21 +791,24 @@ element ← elements / expressionList</code></pre>
                 is undefined behaviour.
             </p>
 
-            <h3>4.9.6. Structure Literals</h3>
-            <pre><code>structureLiteral ← identifier (leftAngleBracket identifierList rightAngleBracket)?
-                       fieldInitializer*
-                   end
+            <h3>4.9.6. Compound Literals</h3>
+            <pre><code>compoundLiteral ← identifier (leftAngleBracket identifierList rightAngleBracket)?
+                      fieldInitializer+
+                  end
 
 fieldInitializer ← identifier equal expression</code></pre>
 
             <p>
-                The <span class="rule">structureLiteral</span>'s identifier is
-                the name of the structure to initialize.
-                The <span class="rule">fieldInitializer</span>'s
-                <span class="rule">identifier</span> is the name of the field to
+                The <span class="rule">compoundLiteral</span>'s <span class="rule">identifier</span> 
+                is the name of the compound to initialize. The <span class="rule">fieldInitializer</span>'s
+                <span class="rule">identifier</span> is the name of the <span class="rule">field</span> to
                 initialize. The <span class="rule">expression</span> is the
-                value of the given field. The type of the <span class="rule">expression</span>
-                must match field's type. Fields that are not initialized have
+                value of the given <span class="rule">field</span>. The type of the <span class="rule">expression</span>
+                must match <span class="rule">field</span>'s type. Number types are inferred from the type of the 
+                <span class="rule">field</span>.
+                
+                
+                Fields that are not initialized have
                 undefined values.
             </p>
 
