@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.4</title>
+        <title>Owen Specification 0.6.5</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.4</h1>
+            <h1>Owen Specification 0.6.5</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -47,8 +47,7 @@ useDirective ← use identifier
 declaration ← public? ( functionDeclaration
                       / externalFunctionDeclaration
                       / propositionDeclaration
-                      / structureDeclaration
-                      / unionDeclaration
+                      / compoundDeclaration
                       / enumerationDeclaration
                       / versionDeclaration)
 
@@ -200,8 +199,8 @@ argument ← type identifier</code></pre>
                 using the <b>--propositions</b> command line argument.
             </p>
 
-            <h2>2.3. Structures</h2>
-            <pre><code>structureDeclaration ← structure identifier
+            <h2>2.3. Compounds</h2>
+            <pre><code>compoundDeclaration ← (structure / union) identifier
                            (generalize identifierList)?
                            field*
                        end
@@ -209,25 +208,19 @@ argument ← type identifier</code></pre>
 field ← type identifier</code></pre>
 
             <p>
-                The <span class="rule">field</span>s are laid out in memory as
-                they are lexically declared. Padding may be inserted between
-                fields. The size of the structure is the sum of its
+                <span class="rule">structure</span> <span class="rule">field</span>s
+                are laid out in memory as they are lexically declared. Padding may be 
+                inserted between fields. The size of the structure is the sum of its
                 <span class="rule">field</span>s and padding.
             </p>
 
-            <h2>2.4. Unions</h2>
-            <pre><code>unionDeclaration ← union identifier
-                       (generalize identifierList)?
-                       field*
-                   end</code></pre>
-
             <p>
-                Works exactly like structures except that all <span class="rule">field</span>s
+                <span class="rule">union</span> <span class="rule">field</span>s
                 starts at the same address. The size of the union is the size
                 of the largest <span class="rule">field</span>.
             </p>
 
-            <h2>2.5. Enumerations</h2>
+            <h2>2.4. Enumerations</h2>
             <pre><code>enumerationDeclaration ← enumeration identifier of type
                              enumerationConstant*
                          end
@@ -251,7 +244,7 @@ enumerationConstant ← identifier (assign integerLiteral)?</code></pre>
                 are inferred from the <span class="rule">type</span>.
             </p>
 
-            <h2>2.6. Versions</h2>
+            <h2>2.5. Versions</h2>
             <pre><code>versionDeclaration ← version identifier
                          declaration*
                      end</code></pre>
