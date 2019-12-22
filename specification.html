@@ -219,6 +219,12 @@ field ← type identifier</code></pre>
                 starts at the same address. The size of the union is the size
                 of the largest <span class="rule">field</span>.
             </p>
+            
+            <p>
+                <span class="rule">field</span> names must be unique within the 
+                <span class="rule">compoundDeclaration</span> and cannot have 
+                the same name as <span class="rule">compoundDeclaration</span>.
+            </p>
 
             <h2>2.4. Enumerations</h2>
             <pre><code>enumerationDeclaration ← enumeration identifier of type
