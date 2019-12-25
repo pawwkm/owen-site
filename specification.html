@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.7</title>
+        <title>Owen Specification 0.6.8</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.7</h1>
+            <h1>Owen Specification 0.6.8</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -599,20 +599,20 @@ decrement ← '--' whitespace</code></pre>
             <h2>4.8. Postfix Expressions</h2>
             <pre><code>postfixExpression ← primaryExpression
                   / postfixExpression
-                    ( dotExpression
-                    / callExpression
-                    / indexExpression
-                    / postfixIncrementExpression
-                    / postfixDecrementExpression)</code></pre>
+                  ( 
+                        dotExpression
+                      / callExpression
+                      / indexExpression
+                      / postfixIncrementExpression
+                      / postfixDecrementExpression
+                  )</code></pre>
 
             <h3>4.8.1. Dot Expressions</h3>
-            <pre><code>dotExpression ← dot expression</code></pre>
+            <pre><code>dotExpression ← dot postfixExpression</code></pre>
 
             <p>
-                The left <span class="rule">expression</span>'s type must be a
-                structure, enumeration or union. The right
-                <span class="rule">expression</span> must be a member on that
-                type.
+                The <span class="rule">postfixExpression</span> must be a 
+                member on a structure, enumeration or union. 
             </p>
 
             <h3>4.8.2. Call Expressions</h3>
