@@ -799,7 +799,7 @@ element ← elements / expressionList</code></pre>
 
             <h3>4.9.6. Compound Literals</h3>
             <pre><code>compoundLiteral ← identifier (leftAngleBracket identifierList rightAngleBracket)?
-                      fieldInitializer+
+                      fieldInitializer (comma fieldInitializer)*
                   end
 
 fieldInitializer ← identifier equal expression</code></pre>
