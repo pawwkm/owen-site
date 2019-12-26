@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.11</title>
+        <title>Owen Specification 0.6.12</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.11</h1>
+            <h1>Owen Specification 0.6.12</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -542,7 +542,8 @@ not ← '!' whitespace</code></pre>
 negate ← '-' whitespace</code></pre>
 
             <p>
-                Negates the number.
+                Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
+                The type of the expression is the same as the negated value.
             </p>
 
             <h3>4.7.3. Increment Expressions</h3>
