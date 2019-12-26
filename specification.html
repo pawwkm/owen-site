@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.9</title>
+        <title>Owen Specification 0.6.10</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.9</h1>
+            <h1>Owen Specification 0.6.10</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -562,12 +562,11 @@ decrement ← '--' whitespace</code></pre>
             </p>
 
             <h3>4.7.5. Size of Expressions</h3>
-            <pre><code>sizeOfExpreassion ← size of expression</code></pre>
+            <pre><code>sizeOfExpreassion ← size of type</code></pre>
 
             <p>
-                Results the size of the <span class="rule">expression</span> as
-                a <span class="type">U32</span> in bytes. The
-                <span class="rule">expression</span> must be a type.
+                Results the size of the <span class="rule">type</span> as
+                a <span class="type">U32</span> in bytes.
             </p>
 
             <h3>4.7.6. Cast Expressions</h3>
