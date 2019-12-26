@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.10</title>
+        <title>Owen Specification 0.6.11</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.10</h1>
+            <h1>Owen Specification 0.6.11</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -458,7 +458,7 @@ semicolon ← ';' whitespace</code></pre>
 logicalOrOperator ← '||' whitespace</code></pre>
 
             <p>
-                Both expressions must be type of <span class="type">Bool</span>.
+                Both operands must be the same type of primitive.
                 The type of the expression is <span class="type">Bool</span>.
                 Short circuits if the left hand side is <span class="keyword">true</span>.
             </p>
@@ -468,17 +468,20 @@ logicalOrOperator ← '||' whitespace</code></pre>
 logicalAndOperator ← '&amp;&amp;' whitespace</code></pre>
 
             <p>
-                Both expressions must be type of <span class="type">Bool</span>.
+                Both operands must be the same type of primitive.
                 The type of the expression is <span class="type">Bool</span>.
             </p>
 
             <h2>4.4. Relational Expressions</h2>
             <pre><code>relationalExpression ← additiveExpression (relationalOperator additiveExpression)*
 relationalOperator ← ('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') whitespace</code></pre>
-
+            
             <p>
-                Both expressions must be type of <span class="type">Bool</span>.
-                The type of the expression is <span class="type">Bool</span>.
+                Both operands must be of the same primitive or a pointer type. 
+                The comparison results in a <span class="type">Bool</span>.
+                The operators are <code>==</code> (equal), <code>!=</code> (not equal),
+                <code>&lt;=</code> (less than or equal), <code>&gt;=</code> (greater than or equal),
+                <code>&lt;</code> (less than) and <code>&gt;</code> (greater than).
             </p>
 
             <h2>4.5. Additive Expressions</h2>
@@ -486,13 +489,13 @@ relationalOperator ← ('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') white
 additiveOperator ← ('+' / '-' / '|' / '^') whitespace</code></pre>
 
             <p>
-                Both expressions must be the same number type.
+                Both operands must be the same number type.
                 The type of the expression is the same as the operands.
             </p>
 
             <p>
-                <code>+</code> and <code>-</code> apply to any number type. Bitwise or (<code>|</code>) and
-                bitwise xor (<code>^</code>) only applies to <span class="type">IXX</span>.
+                <code>+</code> and <code>-</code> apply to any number type. <code>|</code> (bitwise or) and
+                <code>^</code> (bitwise xor) only applies to <span class="type">IXX</span>.
             </p>
 
             <h2>4.6. Multiplicative Expressions</h2>
@@ -500,14 +503,13 @@ additiveOperator ← ('+' / '-' / '|' / '^') whitespace</code></pre>
 multiplicativeOperator ← ('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') whitespace</code></pre>
 
             <p>
-                Both expressions must be the same number type.
-                The type of the expression is the same as the operands.
+                Both operands must be the same number type. The type of the expression is the same as the operands.
             </p>
 
             <p>
-                <code>*</code>, <code>/</code> and <code>%</code> apply to any number type. Bitwise and (<code>&amp;</code>),
-                left shift (<code>&lt;&lt;</code>) and left shift (<code>&gt;&gt;</code>) only applies to
-                <span class="type">IXX</span>. <code>/</code> and <code>%</code> rounds down for
+                <code>*</code>, <code>/</code> and <code>%</code> apply to any number type. <code>&amp;</code> (bitwise and),
+                <code>&lt;&lt;</code> (left shift) and <code>&gt;&gt;</code> (right shift) only applies to
+                <span class="type">IXX</span>. <code>/</code> and <code>%</code> (modulus) rounds down for
                 <span class="type">IXX</span>.
             </p>
 
