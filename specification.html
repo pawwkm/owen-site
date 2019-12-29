@@ -121,7 +121,8 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                 <span class="keyword">public</span> <span class="rule">declarations</span>
                 in the given name space available to the
                 <span class="rule">file</span>. The order in which <span class="rule">file</span>s
-                are compiled is undefined.
+                are compiled is undefined. It is allowed to have multiple symbols in scope with the 
+                same name. Ambiguous references is an error.
             </p>
 
             <h2>1.1. Mixins</h2>
