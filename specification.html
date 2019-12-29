@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.6.12</title>
+        <title>Owen Specification 0.6.13</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.6.12</h1>
+            <h1>Owen Specification 0.6.13</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -168,8 +168,9 @@ argument ← type identifier</code></pre>
                 defines a list of arguments that a caller must pass to the
                 function. The <span class="rule">arguments</span> are in the
                 same scope as <span class="rule">statements</span> and must have
-                unique names. Functions can be overloaded with different order
-                of input types. The <span class="keyword">output</span> list is the
+                unique names. Functions can be overloaded with a different order
+                of <span class="keyword">input</span> types. The 
+                <span class="keyword">output</span> list is the
                 types of the values that the function returns <b>in</b> the order
                 they are listed.
             </p>
@@ -621,7 +622,9 @@ decrement ← '--' whitespace</code></pre>
             <pre><code>callExpression ← leftParenthesis expressionList? rightParenthesis</code></pre>
 
             <p>
-                Number types are inferred from the callee's <span class="keyword">input</span>.
+                The <span class="rule">expressionList</span> must match the <span class="keyword">input</span>
+                exactly. If there are multiple functions where numbers can be inferred from the 
+                <span class="keyword">input</span> it is an error.
             </p>
 
             <h3>4.8.3. Index Expressions</h3>
