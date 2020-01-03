@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.7.1</title>
+        <title>Owen Specification 0.7.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.7.1</h1>
+            <h1>Owen Specification 0.7.2</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -621,12 +621,15 @@ decrement ← '--' whitespace</code></pre>
             </p>
 
             <h3>4.8.2. Call Expressions</h3>
-            <pre><code>callExpression ← leftParenthesis expressionList? rightParenthesis</code></pre>
+            <pre><code>callExpression ← (leftAngleBracket types rightAngleBracket)?
+                  leftParenthesis expressionList? rightParenthesis</code></pre>
 
             <p>
                 The <span class="rule">expressionList</span> must match the <span class="keyword">input</span>
                 exactly. If there are multiple functions where numbers can be inferred from the 
-                <span class="keyword">input</span> it is an error.
+                <span class="keyword">input</span> it is an error. If the call is to a generic
+                function and not all types can be inferred from the input then <span class="rule">types</span>
+                must specify the function's <span class="keyword">generalize</span> list.
             </p>
 
             <h3>4.8.3. Index Expressions</h3>
