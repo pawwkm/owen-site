@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.7.4</title>
+        <title>Owen Specification 0.7.5</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.7.4</h1>
+            <h1>Owen Specification 0.7.5</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -461,7 +461,7 @@ semicolon ← ';' whitespace</code></pre>
 logicalOrOperator ← '||' whitespace</code></pre>
 
             <p>
-                Both operands must be the same type of primitive.
+                Both operands must be type of <span class="type">Bool</span>.
                 The type of the expression is <span class="type">Bool</span>.
                 Short circuits if the left hand side is <span class="keyword">true</span>.
             </p>
@@ -471,7 +471,7 @@ logicalOrOperator ← '||' whitespace</code></pre>
 logicalAndOperator ← '&amp;&amp;' whitespace</code></pre>
 
             <p>
-                Both operands must be the same type of primitive.
+                Both operands must be type of <span class="type">Bool</span>.
                 The type of the expression is <span class="type">Bool</span>.
             </p>
 
