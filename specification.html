@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen Specification 0.8.5</title>
+        <title>Owen Specification 0.9.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -25,7 +25,7 @@
             </a>
         </nav>
         <main>
-            <h1>Owen Specification 0.8.5</h1>
+            <h1>Owen Specification 0.9.0</h1>
             <p>
                 The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                 <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -354,19 +354,19 @@ semicolon ← ';' whitespace</code></pre>
             </p>
 
             <h2>3.4. For Statements</h2>
-            <pre><code>forStatement ← for assignmentStatement semicolon expression semicolon expressionList
+            <pre><code>forStatement ← for assignmentStatement semicolon expression semicolon assignmentStatement
                    statement*
                end</code></pre>
 
             <p>
-                The <span class="rule">assignmentStatement</span> is executed before
+                The first <span class="rule">assignmentStatement</span> is executed before
                 the first iteration. The declared variables are scoped inside the loop.
                 The <span class="rule">expression</span> is the condition for
                 executing the <span class="rule">statements</span> which must
-                be <span class="keyword">true</span>. The
-                <span class="rule">expressionList</span> is executed after each
+                be <span class="keyword">true</span>. The second
+                <span class="rule">assignmentStatement</span> is executed after each
                 iteration. The <span class="rule">breakStatement</span> skips
-                execution of the second <span class="rule">expression</span>.
+                execution of the second <span class="rule">assignmentStatement</span>.
             </p>
 
             <h2>3.5. While Statements</h2>
@@ -537,8 +537,6 @@ multiplicativeOperator ← ('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;')
             <h2>4.7. Prefix Expressions</h2>
             <pre><code>prefixExpression ← notExpression
                  / negateExpression
-                 / prefixIncrementExpression
-                 / prefixDecrementExpression
                  / sizeOfExpreassion
                  / castExpression
                  / mixinExpression
@@ -567,33 +565,7 @@ negate ← '-' whitespace</code></pre>
                 The type of the expression is the same as the negated value.
             </p>
 
-            <h3>4.7.3. Increment Expressions</h3>
-            <pre><code>prefixIncrementExpression ← ('++' whitespace)? postfixExpression</code></pre>
-
-            <p>
-                If the expression is a number variable the value of the variable is 
-                returned before the variable is incremented by 1.
-            </p>
-            
-            <p>
-                If the expression is a pointer the pointer is returned before it is incremented by
-                the size of the data structure that is pointed to in bytes.
-            </p>
-
-            <h3>4.7.4. Decrement Expressions</h3>
-            <pre><code>prefixDecrementExpression ← ('--' whitespace)? postfixExpression</code></pre>
-            
-            <p>
-                If the expression is a number variable the value of the variable is 
-                returned before the variable is decremented by 1.
-            </p>
-            
-            <p>
-                If the expression is a pointer the pointer is returned before it is decremented by
-                the size of the data structure that is pointed to in bytes.
-            </p>
-
-            <h3>4.7.5. Size of Expressions</h3>
+            <h3>4.7.3. Size of Expressions</h3>
             <pre><code>sizeOfExpreassion ← size of type</code></pre>
 
             <p>
@@ -601,7 +573,7 @@ negate ← '-' whitespace</code></pre>
                 a <span class="type">U32</span> in bytes.
             </p>
 
-            <h3>4.7.6. Cast Expressions</h3>
+            <h3>4.7.4. Cast Expressions</h3>
             <pre><code>castExpreassion ← leftParenthesis type rightParenthesis expression</code></pre>
 
             <p>
@@ -610,15 +582,15 @@ negate ← '-' whitespace</code></pre>
                 <span class="rule">expression</span> must be a type.
             </p>
 
-            <h3>4.7.7. Address Of Expressions</h3>
-            <pre><code>addressOfExpression ← '&' whitespace postfixExpression</code></pre>
+            <h3>4.7.5. Address Of Expressions</h3>
+            <pre><code>addressOfExpression ← '#' whitespace postfixExpression</code></pre>
 
             <p>
                 Takes the address of the <span class="rule">postfixExpression</span>.
             </p>
 
-            <h3>4.7.8. Dereference Expressions</h3>
-            <pre><code>dereferenceExpression ← '*' whitespace postfixExpression</code></pre>
+            <h3>4.7.6. Dereference Expressions</h3>
+            <pre><code>dereferenceExpression ← '@' whitespace postfixExpression</code></pre>
 
             <p>
                 Deferences the <span class="rule">postfixExpression</span>.
@@ -634,8 +606,6 @@ negate ← '-' whitespace</code></pre>
                         dotExpression
                       / callExpression
                       / indexExpression
-                      / postfixIncrementExpression
-                      / postfixDecrementExpression
                   )</code></pre>
 
             <h3>4.8.1. Dot Expressions</h3>
@@ -672,32 +642,6 @@ rightSquareBracket ← ']' whitespace</code></pre>
                 mode the program is stopped and then a message is displayed to
                 the programmer explaining where the error occurred. Going out of
                 bounds in Release mode results in undefined behaviour.
-            </p>
-
-            <h3>4.8.4. Increment Expressions</h3>
-            <pre><code>prefixIncrementExpression ← postfixExpression ('++' whitespace)?</code></pre>
-
-            <p>
-                If the expression is a number variable it is incremented by 1 and the new 
-                value of variable is returned.
-            </p>
-            
-            <p>
-                If the expression is a pointer it is incremented by the size of the data structure that is pointed 
-                to in bytes then the pointer is returned.
-            </p>
-
-            <h3>4.8.5. Decrement Expressions</h3>
-            <pre><code>prefixDecrementExpression ← postfixExpression ('--' whitespace)?</code></pre>
-
-            <p>
-                If the expression is a number variable it is decremented by 1 and the new 
-                value of variable is returned.
-            </p>
-            
-            <p>
-                If the expression is a pointer it is decremented by the size of the data structure that is pointed 
-                to in bytes then the pointer is returned.
             </p>
 
             <h2>4.9. Primary Expressions</h2>
