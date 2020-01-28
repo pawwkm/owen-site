@@ -635,9 +635,10 @@ leftSquareBracket ← '[' whitespace
 rightSquareBracket ← ']' whitespace</code></pre>
 
             <p>
-                The <span class="rule">expression</span> must be an array type.
-                Each expression in <span class="rule">expressions</span> must be
-                an <span class="type">IXX</span>. Each value must be within 0 and the size of the
+                The indexed expression must be an array type. The type of <span class="rule">indexExpression</span>
+                is a pointer to the element type.
+                The <span class="rule">expression</span> must be
+                an <span class="type">IXX</span>. The value must be within 0 and the size of the
                 dimension it is used to index into. Going out of bounds in Debug
                 mode the program is stopped and then a message is displayed to
                 the programmer explaining where the error occurred. Going out of
