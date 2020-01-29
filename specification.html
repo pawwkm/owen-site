@@ -455,6 +455,10 @@ semicolon ← ';' whitespace</code></pre>
                 Operators are left associative unless noted otherwise.
                 Overflow and underflow is only checked for literals.
             </p>
+            
+            <p>
+                Variables, fields, pointers and <span class="rule">indexExpression</span>s are addressable.
+            </p>
 
             <h2>4.2. Logical Or Expressions</h2>
             <pre><code>logicalOrExpression ← logicalAndExpression (logicalOrOperator logicalAndExpression)*
