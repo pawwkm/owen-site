@@ -80,7 +80,8 @@ keyword ← namespace
         / null
         / generalize
         / version
-
+        / cast
+        
 namespace ← 'namespace' whitespace
 use ← 'use' whitespace
 public ← 'public' whitespace
@@ -109,6 +110,7 @@ assert ← 'assert' whitespace
 null ← 'null' whitespace
 generalize ← 'generalize' whitespace
 version ← 'version' whitespace
+cast ← 'cast' whitespace
 
 dot ← '.' whitespace
 whitespace ← (' ' / '\n' / comment)*
@@ -579,12 +581,11 @@ negate ← '-' whitespace</code></pre>
             </p>
 
             <h3>4.7.4. Cast Expressions</h3>
-            <pre><code>castExpreassion ← leftParenthesis type rightParenthesis expression</code></pre>
+            <pre><code>castExpreassion ← cast leftParenthesis type rightParenthesis expression</code></pre>
 
             <p>
-                Results the size of the <span class="rule">expression</span> as
-                a <span class="type">U32</span> in bytes. The
-                <span class="rule">expression</span> must be a type.
+                Casts the <span class="rule">expression</span> to the <span class="rule">type</span>
+                then returns the value.
             </p>
 
             <h3>4.7.5. Address Of Expressions</h3>
