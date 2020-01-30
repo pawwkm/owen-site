@@ -325,7 +325,8 @@ assignmentOperator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespac
             <pre><code>expressionStatement ← expression</code></pre>
 
             <p>
-                Only calls, <span class="keyword">mixin</span> and <span class="keyword">ctfe</span> expressions are allowed as <span class="rule">expressionStatement</span>s.
+                The <span class="rule">expression</span> must be a <span class="rule">callExpression</span>, 
+                <span class="rule">mixinExpreassion</span> or <span class="rule">ctfeExpreassion</span>.
             </p>
 
             <h2>3.3. If Statements</h2>
