@@ -292,8 +292,10 @@ assignmentOperator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespac
 
             <p>
                 Each <span class="rule">expression</span> on the left hand side must be addressable
-                and the type of the <span class="rule">expression</span> being assigned must be the
-                same as the one being assigned to.
+                and each <span class="rule">expression</span> on the right hand side must be the
+                same type as the one being assigned to unless the left hand side <span class="rule">expression</span>
+				is a pointer which can also be assigned <span class="keyword">null</span> or an address type of <span class="type">U64</span>
+				which can be inferred.	
             </p>
 
             <p>
