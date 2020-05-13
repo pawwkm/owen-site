@@ -3,41 +3,112 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="An imperative, statically but weakly typed systems programming language with manual memory management">
+        <meta name="description" content="An imperative, statically but weakly typed systems programming language with manual memory management.">
         <meta name="keywords" content="Owen, programming language, C language">
-        <title>Owen Programming Language</title>
+        <title>Owen programming language</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
+        <style>
+            svg {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 45px;
+                width: 50%;
+                height: auto;
+            }
+            
+            @media only screen and (max-height: 600px) {
+                svg {
+                    width: 100px;
+                }
+            }
+            
+            header {
+                text-align: center;
+                
+                /* 
+                    While this margin is not the same as the top one for the svg 
+                    it just *looks* right. It measures 45px from the top of the 
+                    lower case letters of the title. 
+                */
+                margin-top: 27px;   
+                margin-bottom: 45px;
+            }
+            
+            section > article:first-of-type h2:first-of-type {
+                margin-top: 15px;
+            }
+        </style>
     </head>
     <body>
         <nav>
-            <a title="Home" href="index.html">
-                <img class="owen" src="images/owen.svg" alt="Home"/>
-            </a>
-            <a title="Blog About Owen" href="blog.html">
-                <img src="images/blog.svg" alt="Blog"/>
-            </a>
-            <a title="Owen Specification" href="specification.html">
-                <img src="images/book.svg" alt="Specification"/>
-            </a>
-            <a title="Owen's GitHub Repository" href="https://github.com/pawwkm/owen">
-                <img src="images/github.svg" alt="GitHub"/>
-            </a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="specification.html">Spec</a></li>
+                <li><a href="https://github.com/pawwkm/owen">Repo</a></li>
+            </ul>
         </nav>
         <main>
-            <h1>Owen Programming Language</h1>
-            <pre><code><span class="comment">// An imperative, statically but weakly typed systems programming
-// language with manual memory management.</span>
+            <section>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 601 601">
+                    <defs>
+                        <linearGradient id="fromKeywordToComment" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" style="stop-color:rgb(22,131,185);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgb(11,177,35);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(300.5, 0) rotate(45)">
+                        <g fill="url(#fromKeywordToComment)">
+                            <rect width="135" height="135" x="0" y="0" />
+                            <rect width="135" height="135" x="145" y="0" />
+                            <rect width="135" height="135" x="290" y="0" />
 
-<span class="keyword">namespace</span> Hello.Owen
+                            <rect width="135" height="135" x="0" y="145" />
+                            <rect width="135" height="135" x="145" y="145" />
+                            <rect width="135" height="135" x="290" y="145" />
 
-<span class="keyword">function</span> main
-    <span class="keyword">output</span> <span class="type">I32</span>
-
-    print(<span class="string">"Hello World\n"</span>)
-
-    <span class="keyword">return</span> 0
-<span class="keyword">end</span></code></pre>
+                            <rect width="135" height="135" x="0" y="290" />
+                            <rect width="135" height="135" x="145" y="290" />
+                            <rect width="135" height="135" x="290" y="290" />
+                        </g>
+                    </g>
+                </svg>
+                <header>
+                    <h1>Owen </h1>
+                    <p>
+                        An imperative, statically but weakly typed systems 
+                        programming language with manual memory management.
+                    </p>
+                </header>
+            </section>
+            
+            <section>
+                <h1>Blog</h1>
+                <article>
+                    <h2>
+                        <a href="blog/a-rewrite.html">A rewrite</a>
+                    </h2>
+                    <time datetime="2019-11-10">November 10, 2019</time>
+                    <p>
+                        Why rewrite the compiler in C#?
+                    </p>
+                </article>
+                
+                <article>
+                    <h2>
+                        <a href="blog/a-new-language.html">A new language</a>
+                    </h2>
+                    <time datetime="2019-01-26">January 30, 2019</time>
+                    <p>
+                        About 8 months ago I was in the middle of writing an Api 
+                        in C#. The Api took a <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
+                        as input then generated each valid string within some
+                        parameters... Which lead me to make a new programming 
+                        langauge.
+                    </p>
+                </article>
+            </section>
         </main>
     </body>
 </html>
