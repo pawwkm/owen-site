@@ -466,8 +466,11 @@ semicolon ← ';' whitespace</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
-                    The type of the expression is <span class="type">Bool</span>.
-                    Short circuits if the left hand side is <span class="keyword">true</span>.
+                    The type of the <span class="rule">logical_or_expression</span> is <span class="type">Bool</span>.
+                    The right hand side is not executed if the left hand 
+                    side is <span class="keyword">true</span>.
+                    The <span class="rule">logical_or_expression</span> is <span class="keyword">true</span>
+                    if either operand is <span class="keyword">true</span>.
                 </p>
 
                 <h2>4.3. Logical and expressions</h2>
@@ -475,7 +478,11 @@ semicolon ← ';' whitespace</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
-                    The type of the expression is <span class="type">Bool</span>.
+                    The type of the <span class="rule">logical_and_expression</span> is <span class="type">Bool</span>.
+                    The right hand side is not executed if the left hand 
+                    side is <span class="keyword">false</span>.
+                    The <span class="rule">logical_and_expression</span> is <span class="keyword">true</span>
+                    if both operands are <span class="keyword">true</span>.
                 </p>
 
                 <h2>4.4. Relational expressions</h2>
