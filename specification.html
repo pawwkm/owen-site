@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.9.0</title>
+        <title>Owen specification 0.10.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.9.0</h1>
+                    <h1>Owen specification 0.10.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -64,8 +64,8 @@
        use_directive*
       (declaration / ctfe_expression / mixin_expression)*
 
-namespace_directive ← namespace identifier
-use_directive ← use identifier
+namespace_directive ← namespace upper_case_identifier
+use_directive ← use upper_case_identifier
 
 declaration ← public? ( function_declaration
                       / external_function_declaration
@@ -74,7 +74,8 @@ declaration ← public? ( function_declaration
                       / enumeration_declaration
                       / version_declaration)
 
-identifier ← !keyword [A-Za-z] [_A-Za-z0-9]* whitespace
+upper_case_identifier ← [A-Z][a-z0-9]* (_[A-Z0-9][a-z0-9]*)* whitespace
+lower_case_identifier ← !keyword [a-z][a-z0-9]* (_[a-z0-9]+)* whitespace
 keyword ← namespace
         / use
         / public
@@ -183,17 +184,17 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                            statement*
                        end
 
-functionSignature ← function identifier
-                        (generalize identifiers)?
+functionSignature ← function lower_case_identifier
+                        (generalize upper_case_identifiers)?
                         (input arguments)?
                         (output types)?
 
-identifiers = identifier (comma identifier)*
-arguments ← type identifier (comma type identifier)*
+upper_case_identifiers = upper_case_identifier (comma upper_case_identifier)*
+arguments ← type lower_case_identifier (comma type lower_case_identifier)*
 types ← type (comma type)*</code></pre>
 
                 <p>
-                    Declares a function named <span class="rule">identifier</span>.
+                    Declares a function named <span class="rule">lower_case_identifier</span>.
                     <span class="keyword">input</span>
                     defines a list of arguments that a caller must pass to the
                     function. The <span class="rule">arguments</span> are in the
@@ -232,12 +233,12 @@ types ← type (comma type)*</code></pre>
                 </p>
 
                 <h2>2.3. Compounds</h2>
-                <pre><code>compound_declaration ← (structure / union) identifier
-                           (generalize identifiers)?
+                <pre><code>compound_declaration ← (structure / union) upper_case_identifier
+                           (generalize upper_case_identifiers)?
                             field*
                         end
  
-field ← type identifier</code></pre>
+field ← type lower_case_identifier</code></pre>
 
                 <p>
                     <span class="rule">structure</span> <span class="rule">field</span>s
@@ -259,21 +260,21 @@ field ← type identifier</code></pre>
                 </p>
 
                 <h2>2.4. Enumerations</h2>
-                <pre><code>enumeration_declaration ← enumeration identifier of type
+                <pre><code>enumeration_declaration ← enumeration upper_case_identifier of type
                               enumeration_constant*
                           end
 
-enumeration_constant ← identifier (assign integer_literal)?</code></pre>
+enumeration_constant ← lower_case_identifier (assign integer_literal)?</code></pre>
 
                 <p>
-                    The <span class="rule">identifier</span> after the <span class="rule">enumeration</span>
+                    The <span class="rule">upper_case_identifier</span> after the <span class="rule">enumeration</span>
                     keyword is the name of the enumeration. The type of the enumeration must be either an 
                     <span class="type">IXX</span> or <span class="type">UXX</span>.
                 </p>
                 
                 <p>
                     Each <span class="rule">enumeration_constant</span> must have an unique 
-                    <span class="rule">identifier</span> within the declaration.
+                    <span class="rule">lower_case_identifier</span> within the declaration.
                     If an <span class="rule">enumeration_constant</span> omits the
                     <span class="rule">integer_literal</span> then it is the value of
                     the last constant + 1. If the first constant omits the
@@ -283,14 +284,14 @@ enumeration_constant ← identifier (assign integer_literal)?</code></pre>
                 </p>
 
                 <h2>2.5. Versions</h2>
-                <pre><code>version_declaration ← version identifier
+                <pre><code>version_declaration ← version upper_case_identifier
                           declaration*
                       end</code></pre>
 
                 <p>
                     Conditionally compiles <span class="rule">declaration</span>s
-                    if the <span class="rule">identifier</span> has been declared in
-                    the command line. The <span class="rule">identifier</span> is
+                    if the <span class="rule">upper_case_identifier</span> has been declared in
+                    the command line. The <span class="rule">upper_case_identifier</span> is
                     not part of the program's scope.
                 </p>
 
@@ -325,7 +326,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
 
                 <p>
                     If the operator is <code>=</code> and an <span class="rule">expression</span> on
-                    the left hand side is an undefined <span class="rule">identifier</span> it is declared as
+                    the left hand side is an undefined identifier it is declared as
                     a variable of the same type as the assigned <span class="rule">expression</span>.
                 </p>
 
@@ -333,7 +334,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                     If the right hand <span class="rule">expressions</span> doesn't contain a <span class="rule">call_expression</span>
                     outputting multiple values then both lists must be equal in length. The left <span class="rule">expressions</span>
                     is being assigned from left to right.
-                    Number types are inferred from its defined <span class="rule">identifier</span>.
+                    Number types are inferred from its defined identifier.
                 </p>
 
                 <p>
@@ -461,7 +462,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.9. Version statements</h2>
-                <pre><code>version_statement ← version identifier
+                <pre><code>version_statement ← version upper_case_identifier
                         statement*
                     end</code></pre>
 
@@ -686,7 +687,7 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / array_literal
                    / compound_literal
                    / null_literal
-                   / identifier
+                   / lower_case_identifier
                    / left_parenthesis expression right_parenthesis</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
@@ -823,21 +824,20 @@ right_curly_bracket ← '}' whitespace</code></pre>
                 </p>
 
                 <h3>4.9.6. Compound literals</h3>
-                <pre><code>compound_literal ← identifier (left_angle_bracket identifiers right_angle_bracket)?
-                       fieldInitializer (comma fieldInitializer)*
+                <pre><code>compound_literal ← upper_case_identifier (left_angle_bracket upper_case_identifier right_angle_bracket)?
+                       field_initializer (comma field_initializer)*
                    end
 
-fieldInitializer ← identifier equal expression</code></pre>
+field_initializer ← lower_case_identifier equal expression</code></pre>
 
                 <p>
-                    The <span class="rule">compound_literal</span>'s <span class="rule">identifier</span> 
+                    The <span class="rule">compound_literal</span>'s <span class="rule">upper_case_identifier</span> 
                     is the name of the compound to initialize. The <span class="rule">fieldInitializer</span>'s
-                    <span class="rule">identifier</span> is the name of the <span class="rule">field</span> to
+                    <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
                     initialize. The <span class="rule">expression</span> is the
                     value of the given <span class="rule">field</span>. The type of the <span class="rule">expression</span>
                     must match <span class="rule">field</span>'s type. Number types are inferred from the type of the 
                     <span class="rule">field</span>.
-                    
                     
                     Fields that are not initialized have
                     undefined values.
@@ -852,14 +852,14 @@ fieldInitializer ← identifier equal expression</code></pre>
                 </p>
 
                 <h1>5. Types</h1>
-                <pre><code>type ← pointerToOrArray* (functionType / identifier)
+                <pre><code>type ← pointer_to_or_array* (function_type / upper_case_identifier)
 
-functionType ← pointerTo+ function
-                              (input types)?
-                              (output types)?
+function_type ← pointer_to+ function
+                               (input types)?
+                               (output types)?
 
-pointerToOrArray ← pointerTo / (left_square_bracket right_square_bracket)
-pointerTo ← '*' whitespace</code></pre>
+pointer_to_or_array ← pointer_to / (left_square_bracket right_square_bracket)
+pointer_to ← '*' whitespace</code></pre>
             </section>
         </main>
     </body>
