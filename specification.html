@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.10.0</title>
+        <title>Owen specification 0.11.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.10.0</h1>
+                    <h1>Owen specification 0.11.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -181,7 +181,7 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                 <h1>2. Declarations</h1>
                 <h2>2.1 Functions</h2>
                 <pre><code>function_declaration ← functionSignature
-                           statement*
+                           statements
                        end
 
 functionSignature ← function lower_case_identifier
@@ -223,7 +223,7 @@ types ← type (comma type)*</code></pre>
 
                 <h2>2.2. Propositions</h2>
                 <pre><code>proposition_declaration ← proposition
-                              statement*
+                              statements
                           end</code></pre>
 
                 <p>
@@ -296,15 +296,15 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                 </p>
 
                 <h1>3. Statements</h1>
-                <pre><code>statement ← assignment_statement
-          / expression_statement
-          / if_statement
-          / for_statement
-          / while_statement
-          / break_statement
-          / return_statement
-          / assert_statement
-          / version_statement</code></pre>
+                <pre><code>statements ← ( assignment_statement
+             / expression_statement
+             / if_statement
+             / for_statement
+             / while_statement
+             / break_statement
+             / assert_statement
+             / version_statement)*
+               return_statement?</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in lexical
@@ -358,11 +358,11 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
 
                 <h2>3.3. If statements</h2>
                 <pre><code>if_statement ← if (assignment_statement semicolon)? expression
-                   statements?
+                   statements
               (else if (assignment_statement semicolon)? expression
-                   statements?)*
+                   statements)*
               (else
-                   statements?)?
+                   statements)?
                end
 
 semicolon ← ';' whitespace</code></pre>
@@ -380,13 +380,13 @@ semicolon ← ';' whitespace</code></pre>
                     each <span class="rule">assignment_statement</span> is executed
                     before the following <span class="rule">expression</span>. The
                     declared variables are in the scope of all the following
-                    <span class="rule">statement</span>s in the
+                    <span class="rule">statements</span> in the
                     <span class="rule">if_statement</span>.
                 </p>
 
                 <h2>3.4. For statements</h2>
                 <pre><code>for_statement ← for assignment_statement semicolon expression semicolon assignment_statement
-                    statement*
+                    statements
                 end</code></pre>
 
                 <p>
@@ -402,7 +402,7 @@ semicolon ← ';' whitespace</code></pre>
 
                 <h2>3.5. While statements</h2>
                 <pre><code>while_statement ← while (assignment_statement semicolon)? expression
-                      statement*
+                      statements
                   end</code></pre>
 
                 <p>
@@ -463,7 +463,7 @@ semicolon ← ';' whitespace</code></pre>
 
                 <h2>3.9. Version statements</h2>
                 <pre><code>version_statement ← version upper_case_identifier
-                        statement*
+                        statements
                     end</code></pre>
 
                 <p>
