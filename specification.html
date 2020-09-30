@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.12.1</title>
+        <title>Owen specification 0.13.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.12.1</h1>
+                    <h1>Owen specification 0.13.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -222,10 +222,10 @@ types ← type (comma type)*</code></pre>
                 </p>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration ← external functionSignature string</code></pre>
+                <pre><code>external_function_declaration ← external functionSignature string_literal</code></pre>
                 <p>
                     Defines a reference to a C function in a library. The
-                    <span class="rule">string</span> is the path to the library. Foreign functions cannot 
+                    <span class="rule">string_literal</span> is the path to the library. Foreign functions cannot 
                     return multiple values.
                 </p>
 
@@ -691,6 +691,7 @@ right_square_bracket ← ']' whitespace</code></pre>
                 <pre><code>primary_expression ← float_literal
                    / integer_literal
                    / boolean_literal
+                   / character_literal
                    / string_literal
                    / array_literal
                    / compound_literal
@@ -793,21 +794,32 @@ right_square_bracket ← ']' whitespace</code></pre>
                     <span class="rule">boolean_literal</span>s are type of
                     <span class="type">Bool</span>.
                 </p>
+                
+                                
+                <h3>4.9.4. Character literals</h3>
+                <pre><code>character_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
+                
+unicode_escape_sequence ← '\\u' hex hex hex hex
+                        / '\\U' hex hex hex hex 
+                                hex hex hex hex
 
-                <h3>4.9.4. String literals</h3>
-                <pre><code>string_literal ← '"' (escapeSequence / !'"' .) '"' whitespace
-
-escapeSequence ← '\\' hex hex hex hex
 hex ← [0-9a-f]</code></pre>
 
                 <p>
-                    Strings are encoded as UTF-8. A string literal is converted into
-                    an <code>[]<span class="type">U8</span></code>. The
-                    <span class="rule">hex</span>s in <span class="rule">escapeSequence</span>
-                    represents a unicode code point.
+                    The <span class="rule">hex</span>s in <span class="rule">unicode_escape_sequence</span>
+                    represents a unicode code point in a <span class="type">U32</span>.
                 </p>
 
-                <h3>4.9.5. Array literals</h3>
+                <h3>4.9.5. String literals</h3>
+                <pre><code>string_literal ← '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
+                
+                <p>
+                    <span class="rule">string_literal</span>s are encoded as UTF-8 which are 
+                    syntax sugar for <code>[]<span class="type">U8</span></code> and modifying them 
+                    is undefined behaviour.
+                </p>
+
+                <h3>4.9.6. Array literals</h3>
                 <pre><code>array_literal ← type (left_square_bracket right_square_bracket)+
               / dimension+ elements
 
@@ -831,7 +843,7 @@ right_curly_bracket ← '}' whitespace</code></pre>
                     is undefined behaviour.
                 </p>
 
-                <h3>4.9.6. Compound literals</h3>
+                <h3>4.9.7. Compound literals</h3>
                 <pre><code>compound_literal ← upper_case_identifier (left_angle_bracket upper_case_identifier right_angle_bracket)?
                        field_initializer (comma field_initializer)*
                    end
@@ -851,7 +863,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     undefined values.
                 </p>
 
-                <h3>4.9.7. Null literals</h3>
+                <h3>4.9.8. Null literals</h3>
                 <pre><code>null_literal ← null</code></pre>
 
                 <p>
