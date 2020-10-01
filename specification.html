@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.13.0</title>
+        <title>Owen specification 0.13.1</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.13.0</h1>
+                    <h1>Owen specification 0.13.1</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -700,7 +700,7 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / left_parenthesis expression right_parenthesis</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code>float_literal ← '-'? [0-9]+ '.' [0-9]+ ('f' ( '32' / '64' ))?</code></pre>
+                <pre><code>float_literal ← [0-9]+ '.' [0-9]+ ('f' ( '32' / '64' ))?</code></pre>
 
                 <p>
                     Floating point values are defined as in IEEE 754. The specific
@@ -728,11 +728,16 @@ right_square_bracket ← ']' whitespace</code></pre>
                 </table>
 
                 <h3>4.9.2. Integer literals</h3>
-                <pre><code>integer_literal ← '-'? [0-9]+ (('i' / 'u') ( '8' / '16' / '32' / '64' ))?</code></pre>
+                <pre><code>integer_literal ← (binary_integer / decimal_integer / hexadecimal_integer) (('i' / 'u') ( '8' / '16' / '32' / '64' ))?
+
+binary_integer ← '0b' [01]+ ('_' [01]+)*
+decimal_integer ← [0-9]+ ('_' [0-9]+)*
+hexadecimal_integer ← '0x' [0-9a-f]+ ('_' [0-9a-f]+)*</code></pre>
 
                 <p>
                     The specific type of a literal is inferred when the type is
-                    known elsewhere in the same context.
+                    known elsewhere in the same context. The underscore doesn't 
+                    change the value of the <span class="rule">integer_literal</span>.
                 </p>
 
                 <table>
@@ -799,11 +804,9 @@ right_square_bracket ← ']' whitespace</code></pre>
                 <h3>4.9.4. Character literals</h3>
                 <pre><code>character_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
                 
-unicode_escape_sequence ← '\\u' hex hex hex hex
-                        / '\\U' hex hex hex hex 
-                                hex hex hex hex
-
-hex ← [0-9a-f]</code></pre>
+unicode_escape_sequence ← '\\u' hex_digit hex_digit hex_digit hex_digit
+                        / '\\U' hex_digit hex_digit hex_digit hex_digit
+                                hex_digit hex_digit hex_digit hex_digit</code></pre>
 
                 <p>
                     The <span class="rule">hex</span>s in <span class="rule">unicode_escape_sequence</span>
