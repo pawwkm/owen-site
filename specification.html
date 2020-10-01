@@ -74,8 +74,8 @@ declaration ← public? ( function_declaration
                       / enumeration_declaration
                       / version_declaration)
 
-upper_case_identifier ← [A-Z][a-z]* (_([A-Z][a-z]*|[0-9]+))* whitespace
-lower_case_identifier ← !keyword [a-z]+ (_([a-z]+|[0-9]+))* whitespace
+upper_case_identifier ← [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* whitespace
+lower_case_identifier ← !keyword [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* whitespace
 keyword ← namespace
         / use
         / public
