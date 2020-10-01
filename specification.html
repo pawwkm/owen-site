@@ -581,7 +581,7 @@ semicolon ← ';' whitespace</code></pre>
                 <h2>4.7. Prefix expressions</h2>
                 <pre><code>prefix_expression ← not_expression
                   / negate_expression
-                  / size_of_expreassion
+                  / size_of_expression
                   / cast_expression
                   / mixin_expression
                   / address_of_expression
@@ -608,7 +608,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h3>4.7.3. Size of expressions</h3>
-                <pre><code>size_of_expreassion ← size of type</code></pre>
+                <pre><code>size_of_expression ← size of type</code></pre>
 
                 <p>
                     Results the size of the <span class="rule">type</span> as
@@ -616,7 +616,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h3>4.7.4. Cast expressions</h3>
-                <pre><code>castExpreassion ← cast left_parenthesis type right_parenthesis expression</code></pre>
+                <pre><code>cast_expression ← cast left_parenthesis type right_parenthesis expression</code></pre>
 
                 <p>
                     Casts the <span class="rule">expression</span> to the <span class="rule">type</span>
