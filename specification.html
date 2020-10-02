@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.13.2</title>
+        <title>Owen specification 0.14.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.13.2</h1>
+                    <h1>Owen specification 0.14.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -104,7 +104,6 @@ keyword ← namespace
         / null
         / generalize
         / version
-        / cast
         
 namespace ← 'namespace' whitespace
 use ← 'use' whitespace
@@ -134,7 +133,6 @@ assert ← 'assert' whitespace
 null ← 'null' whitespace
 generalize ← 'generalize' whitespace
 version ← 'version' whitespace
-cast ← 'cast' whitespace
 
 dot ← '.' whitespace
 whitespace ← (' ' / '\n' / comment)*
@@ -579,81 +577,61 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.7. Prefix expressions</h2>
-                <pre><code>prefix_expression ← not_expression
-                  / negate_expression
-                  / size_of_expression
-                  / cast_expression
-                  / mixin_expression
-                  / address_of_expression
-                  / dereference_expression
+                <pre><code>prefix_expression ← (not_expression / negate_expression / cast_expression / address_of_expression / dereference_expression)+ 
                   / postfix_expression</code></pre>
 
                 <p>
-                    prefix operators are right associative.
+                    Prefix operators are right associative.
                 </p>
 
                 <h3>4.7.1. Not expressions</h3>
-                <pre><code>not_expression ← '!' whitespace postfix_expression</code></pre>
+                <pre><code>not_expression ← '!' whitespace prefix_expression</code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
                 <h3>4.7.2. Negate expressions</h3>
-                <pre><code>negate_expression ← '-' whitespace postfix_expression</code></pre>
+                <pre><code>negate_expression ← '-' whitespace prefix_expression</code></pre>
 
                 <p>
                     Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
                     The type of the expression is the same as the negated value.
                 </p>
 
-                <h3>4.7.3. Size of expressions</h3>
-                <pre><code>size_of_expression ← size of type</code></pre>
+                <h3>4.7.3. Cast expressions</h3>
+                <pre><code>cast_expression ← left_parenthesis type right_parenthesis prefix_expression</code></pre>
 
                 <p>
-                    Results the size of the <span class="rule">type</span> as
-                    a <span class="type">U32</span> in bytes.
-                </p>
-
-                <h3>4.7.4. Cast expressions</h3>
-                <pre><code>cast_expression ← cast left_parenthesis type right_parenthesis expression</code></pre>
-
-                <p>
-                    Casts the <span class="rule">expression</span> to the <span class="rule">type</span>
+                    Casts the <span class="rule">prefix_expression</span> to the <span class="rule">type</span>
                     then returns the value.
                 </p>
 
-                <h3>4.7.5. Address of expressions</h3>
-                <pre><code>address_of_expression ← '#' whitespace postfix_expression</code></pre>
+                <h3>4.7.4. Address of expressions</h3>
+                <pre><code>address_of_expression ← '#' whitespace prefix_expression</code></pre>
 
                 <p>
-                    Takes the address of the <span class="rule">postfix_expression</span>.
+                    Takes the address of the <span class="rule">prefix_expression</span>.
                 </p>
 
-                <h3>4.7.6. Dereference expressions</h3>
-                <pre><code>dereference_expression ← '@' whitespace postfix_expression</code></pre>
+                <h3>4.7.5. Dereference expressions</h3>
+                <pre><code>dereference_expression ← '@' whitespace prefix_expression</code></pre>
 
                 <p>
-                    Deferences the <span class="rule">postfix_expression</span>.
+                    Deferences the <span class="rule">prefix_expression</span>.
                     The type of the <span class="rule">dereference_expression</span>
-                    is the same as what is the <span class="rule">postfix_expression</span>
+                    is the same as what is the <span class="rule">prefix_expression</span>
                     is pointing to.
                 </p>
 
                 <h2>4.8. Postfix expressions</h2>
-                <pre><code>postfix_expression ← primary_expression
-                  / postfix_expression
-                  ( 
-                        dot_expression
-                      / call_expression
-                      / index_expression
-                  )</code></pre>
+                <pre><code>postfix_expression ← primary_expression (dot_expression / call_expression / index_expression)*</code></pre>
 
                 <h3>4.8.1. Dot expressions</h3>
-                <pre><code>dot_expression ← dot postfix_expression</code></pre>
+                <pre><code>dot_expression ← dot lower_case_identifier</code></pre>
 
                 <p>
-                    The <span class="rule">postfix_expression</span> must be a 
+                    The <span class="rule">lower_case_identifier</span> must be a 
                     member on a structure, enumeration or union. 
                 </p>
 
@@ -695,8 +673,10 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / array_literal
                    / compound_literal
                    / null_literal
-                   / lower_case_identifier
-                   / left_parenthesis expression right_parenthesis</code></pre>
+                   / size_of_expression
+                   / mixin_expression
+                   / parenthesized_expression
+                   / reference_expression</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
                 <pre><code>float_literal ← [0-9]+ '.' [0-9]+ ('f' ( '32' / '64' ))?</code></pre>
@@ -872,6 +852,27 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 <p>
                     The value is what C dictates on the given platform.
                     Only pointer typed variables can be <span class="keyword">null</span>.
+                </p>
+                
+                <h3>4.9.9. Size of expressions</h3>
+                <pre><code>size_of_expression ← size of type</code></pre>
+
+                <p>
+                    Results the size of the <span class="rule">type</span> as
+                    a <span class="type">U32</span> in bytes.
+                </p>
+                
+                <h3>4.9.10. Parenthesized expressions</h3>
+                <pre><code>parenthesized_expression ← left_parenthesis expression right_parenthesis</code></pre>
+                
+                <h3>4.9.11. Reference expression</h3>
+                <pre><code>reference_expression ← lower_case_identifier</code></pre>
+                
+                <p>
+                    <span class="rule">reference_expression</span> refers to a
+                    variable, input or function with the same name in the 
+                    innermost scope. It is an error to refer to a name that is 
+                    not in scope.
                 </p>
 
                 <h1>5. Types</h1>
