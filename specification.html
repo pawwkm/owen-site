@@ -306,10 +306,10 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
              / if_statement
              / for_statement
              / while_statement
-             / break_statement
              / assert_statement
              / version_statement)*
-               return_statement?</code></pre>
+             ( return_statement 
+             / break_statement)?</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in lexical
