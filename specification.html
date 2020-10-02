@@ -136,7 +136,6 @@ null ← 'null' whitespace
 generalize ← 'generalize' whitespace
 version ← 'version' whitespace
 
-dot ← '.' whitespace
 whitespace ← (' ' / '\n' / comment)*
 comment ← '//' (!'\n' .)* '\n'?</code></pre>
 
@@ -651,7 +650,7 @@ semicolon ← ';' whitespace</code></pre>
                 <pre><code>postfix_expression ← primary_expression (dot_expression / call_expression / index_expression)*</code></pre>
 
                 <h3>4.8.1. Dot expressions</h3>
-                <pre><code>dot_expression ← dot lower_case_identifier</code></pre>
+                <pre><code>dot_expression ← '.' whitespace lower_case_identifier</code></pre>
 
                 <p>
                     The <span class="rule">lower_case_identifier</span> must be a 
