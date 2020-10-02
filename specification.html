@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.14.1</title>
+        <title>Owen specification 0.14.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.14.1</h1>
+                    <h1>Owen specification 0.14.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -430,7 +430,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.6. Break statements</h2>
-                <pre><code>break_statement ← break</code></pre>
+                <pre><code>break_statement ← break integer_literal?</code></pre>
 
                 <p>
                     The <span class="rule">break_statement</span> stops the execution
@@ -438,12 +438,24 @@ semicolon ← ';' whitespace</code></pre>
                     after the innermost loop.
                 </p>
                 
+                <p>
+                    <span class="rule">integer_literal</span> is implicitly 1. 
+                    if it is 2 it means break out of the second most inner loop 
+                    and so on.
+                </p>
+                
                 <h2>3.7. Continue statements</h2>
-                <pre><code>continue_statement ← continue</code></pre>
+                <pre><code>continue_statement ← continue integer_literal?</code></pre>
 
                 <p>
                     The <span class="rule">continue_statement</span> begins the 
                     next iteration of the innermost loop in which it is declared.
+                </p>
+                
+                <p>
+                    <span class="rule">integer_literal</span> is implicitly 1. 
+                    if it is 2 it means break out of the second most inner loop 
+                    and so on.
                 </p>
 
                 <h2>3.8. Return statements</h2>
