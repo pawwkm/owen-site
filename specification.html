@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.14.0</title>
+        <title>Owen specification 0.14.1</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.14.0</h1>
+                    <h1>Owen specification 0.14.1</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -89,6 +89,7 @@ keyword ← namespace
         / for
         / while
         / break
+        / continue
         / structure
         / proposition
         / enumeration
@@ -118,6 +119,7 @@ else ← 'else' whitespace
 for ← 'for' whitespace
 while ← 'while' whitespace
 break ← 'break' whitespace
+continue ← 'continue' whitespace
 structure ← 'structure' whitespace
 proposition ← 'proposition' whitespace
 enumeration ← 'enumeration' whitespace
@@ -308,8 +310,9 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
              / while_statement
              / assert_statement
              / version_statement)*
-             ( return_statement 
-             / break_statement)?</code></pre>
+             ( break_statement 
+             / continue_statement
+             / return_statement)?</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in lexical
@@ -434,8 +437,16 @@ semicolon ← ';' whitespace</code></pre>
                     of the innermost loop in which it is declared. Execution resumes
                     after the innermost loop.
                 </p>
+                
+                <h2>3.7. Continue statements</h2>
+                <pre><code>continue_statement ← continue</code></pre>
 
-                <h2>3.7. Return statements</h2>
+                <p>
+                    The <span class="rule">continue_statement</span> begins the 
+                    next iteration of the innermost loop in which it is declared.
+                </p>
+
+                <h2>3.8. Return statements</h2>
                 <pre><code>return_statement ← return expressions?</code></pre>
 
                 <p>
@@ -452,7 +463,7 @@ semicolon ← ';' whitespace</code></pre>
                     from the output.
                 </p>
 
-                <h2>3.8. Assert statements</h2>
+                <h2>3.9. Assert statements</h2>
                 <pre><code>assert_statement ← assert expression</code></pre>
 
                 <p>
@@ -466,7 +477,7 @@ semicolon ← ';' whitespace</code></pre>
                     current proposition stops and the next starts executing.
                 </p>
 
-                <h2>3.9. Version statements</h2>
+                <h2>3.10. Version statements</h2>
                 <pre><code>version_statement ← version upper_case_identifier
                         statements
                     end</code></pre>
