@@ -696,6 +696,7 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / array_literal
                    / compound_literal
                    / null_literal
+                   / uninitialized_literal
                    / size_of_expression
                    / mixin_expression
                    / parenthesized_expression
@@ -877,7 +878,16 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     Only pointer typed variables can be <span class="keyword">null</span>.
                 </p>
                 
-                <h3>4.9.9. Size of expressions</h3>
+                <h3>4.9.9. Uninitialized literals</h3>
+                <pre><code>uninitialized_literal ← '---' whitespace type</code></pre>
+
+                <p>
+                    <span class="rule">uninitialized_literal</span> can only be used for declaring a variable 
+                    and it must be the whole <span class="rule">expression</span> assigned to the variable. 
+                    The actual value is undefined.
+                </p>
+                
+                <h3>4.9.10. Size of expressions</h3>
                 <pre><code>size_of_expression ← size of type</code></pre>
 
                 <p>
@@ -885,10 +895,10 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     a <span class="type">U32</span> in bytes.
                 </p>
                 
-                <h3>4.9.10. Parenthesized expressions</h3>
+                <h3>4.9.11. Parenthesized expressions</h3>
                 <pre><code>parenthesized_expression ← left_parenthesis expression right_parenthesis</code></pre>
                 
-                <h3>4.9.11. Reference expression</h3>
+                <h3>4.9.12. Reference expression</h3>
                 <pre><code>reference_expression ← lower_case_identifier</code></pre>
                 
                 <p>
