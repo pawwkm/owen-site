@@ -734,7 +734,8 @@ right_square_bracket ← ']' whitespace</code></pre>
 
 binary_integer ← '0b' [01]+ ('_' [01]+)*
 decimal_integer ← [0-9]+ ('_' [0-9]+)*
-hexadecimal_integer ← '0x' [0-9a-f]+ ('_' [0-9a-f]+)*</code></pre>
+hexadecimal_integer ← '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
+hexadecimal_digit ← [0-9a-f]</code></pre>
 
                 <p>
                     The specific type of a literal is inferred when the type is
@@ -807,9 +808,9 @@ hexadecimal_integer ← '0x' [0-9a-f]+ ('_' [0-9a-f]+)*</code></pre>
                 <h3>4.9.4. Character literals</h3>
                 <pre><code>character_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
                 
-unicode_escape_sequence ← '\\u' hex_digit hex_digit hex_digit hex_digit
-                        / '\\U' hex_digit hex_digit hex_digit hex_digit
-                                hex_digit hex_digit hex_digit hex_digit</code></pre>
+unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
+                        / '\\U' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
+                                hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit</code></pre>
 
                 <p>
                     The <span class="rule">hex</span>s in <span class="rule">unicode_escape_sequence</span>
