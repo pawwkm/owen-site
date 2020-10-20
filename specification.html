@@ -220,10 +220,10 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                 </p>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration ← external functionSignature string_literal</code></pre>
+                <pre><code>external_function_declaration ← external functionSignature utf8_string_literal</code></pre>
                 <p>
                     Defines a reference to a C function in a library. The
-                    <span class="rule">string_literal</span> is the path to the library. Foreign functions cannot 
+                    <span class="rule">utf8_string_literal</span> is the path to the library. Foreign functions cannot 
                     return multiple values.
                 </p>
 
@@ -690,8 +690,8 @@ right_square_bracket ← ']' whitespace</code></pre>
                 <pre><code>primary_expression ← float_literal
                    / integer_literal
                    / boolean_literal
-                   / character_literal
-                   / string_literal
+                   / unicode_code_point_literal
+                   / utf8_string_literal
                    / array_literal
                    / compound_literal
                    / null_literal
@@ -805,8 +805,8 @@ hexadecimal_digit ← [0-9A-F]</code></pre>
                 </p>
                 
                                 
-                <h3>4.9.4. Character literals</h3>
-                <pre><code>character_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
+                <h3>4.9.4. Unicode code point literals</h3>
+                <pre><code>unicode_code_point_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
                 
 unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
                         / '\\U' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
@@ -817,11 +817,11 @@ unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecima
                     represents a unicode code point in a <span class="type">U32</span>.
                 </p>
 
-                <h3>4.9.5. String literals</h3>
-                <pre><code>string_literal ← '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
+                <h3>4.9.5. UTF-8 string literals</h3>
+                <pre><code>utf8_string_literal ← '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
                 
                 <p>
-                    <span class="rule">string_literal</span>s are encoded as UTF-8 which are 
+                    <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are 
                     syntax sugar for <code>[]<span class="type">U8</span></code> and modifying them 
                     is undefined behaviour.
                 </p>
