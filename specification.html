@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.14.2</title>
+        <title>Owen specification 0.15.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.14.2</h1>
+                    <h1>Owen specification 0.15.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -179,14 +179,14 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
 
                 <h1>2. Declarations</h1>
                 <h2>2.1 Functions</h2>
-                <pre><code>function_declaration ← functionSignature
+                <pre><code>function_declaration ← function_signature
                            statements
                        end
 
-functionSignature ← function lower_case_identifier
-                        (generalize upper_case_identifiers)?
-                        (input arguments)?
-                        (output types)?
+function_signature ← function lower_case_identifier
+                         (generalize upper_case_identifiers)?
+                         (input arguments)?
+                         (output types)?
 
 upper_case_identifiers = upper_case_identifier (comma upper_case_identifier)*
 arguments ← type lower_case_identifier (comma type lower_case_identifier)*</code></pre>
@@ -220,11 +220,15 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                 </p>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration ← external functionSignature utf8_string_literal</code></pre>
+                <pre><code>external_function_declaration ← external function_signature 
+                                    utf8_string_literal
+                                    utf8_string_literal</code></pre>
+                
                 <p>
-                    Defines a reference to a C function in a library. The
-                    <span class="rule">utf8_string_literal</span> is the path to the library. Foreign functions cannot 
-                    return multiple values.
+                    Defines a reference to a C function in a library. The first
+                    <span class="rule">utf8_string_literal</span> is the path to the library. 
+                    The second <span class="rule">utf8_string_literal</span> is the function's name
+                    in said library. Foreign functions cannot return multiple values.
                 </p>
 
                 <h2>2.2. Propositions</h2>
