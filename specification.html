@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.15.0</title>
+        <title>Owen specification 0.16.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,49 +20,49 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.15.0</h1>
+                    <h1>Owen specification 0.16.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
                         is used to define the syntax. Files are encoded
                         using UTF-8 and uses the <b>.owen</b> extension.
                     </p>
-                    
-                    <p>
-                        The design guidlines are:
-                    </p>
-                    
-                    <ul>
-                        <li>Control &gt; language safety.</li>
-                        <li>
-                            Compiler/spec simplicity &gt; programmer convenience unless 
-                            really, really convenient.
-                        </li>
-                        <li>Compiler/spec simplicity &gt; backwards compatibility.</li>
-                        <li>
-                            If there is no resonable default from the spec's perspective
-                            it is the programmer's decision.
-                        </li>
-                    </ul>
-                    
-                    <blockquote>
-                        <p>
-                            What remains unsaid is mostly left so intentionally, either 
-                            because it is derivable from stated rules of the language, 
-                            or because it would unnecessarily restrict the freedom of 
-                            implementors.
-                        </p>
-                        <footer>
-                             Niklaus Wirth in <cite><a href="https://people.inf.ethz.ch/wirth/Oberon/Oberon07.Report.pdf">Oberon7 report</a></cite>
-                        </footer>
-                    </blockquote>
                 </header>
+
+                <p>
+                    The design guidlines are:
+                </p>
+                
+                <ul>
+                    <li>Control &gt; language safety.</li>
+                    <li>
+                        Compiler/spec simplicity &gt; programmer convenience unless 
+                        really, really convenient.
+                    </li>
+                    <li>Compiler/spec simplicity &gt; backwards compatibility.</li>
+                    <li>
+                        If there is no resonable default from the spec's perspective
+                        it is the programmer's decision.
+                    </li>
+                </ul>
+                
+                <blockquote>
+                    <p>
+                        What remains unsaid is mostly left so intentionally, either 
+                        because it is derivable from stated rules of the language, 
+                        or because it would unnecessarily restrict the freedom of 
+                        implementors.
+                    </p>
+                    <footer>
+                         Niklaus Wirth in <cite><a href="https://people.inf.ethz.ch/wirth/Oberon/Oberon07.Report.pdf">Oberon7 report</a></cite>
+                    </footer>
+                </blockquote>
 
                 <h1>1. Files</h1>
                 <pre><code>file ← whitespace
        namespace_directive
        use_directive*
-      (declaration / ctfe_expression / mixin_expression)*
+       declaration*
 
 namespace_directive ← namespace upper_case_identifier
 use_directive ← use upper_case_identifier
@@ -97,8 +97,6 @@ keyword ← namespace
         / size
         / union
         / return
-        / mixin
-        / ctfe
         / true
         / false
         / assert
@@ -127,8 +125,6 @@ of ← 'of' whitespace
 size ← 'size' whitespace
 union ← 'union' whitespace
 return ← 'return' whitespace
-mixin ← 'mixin' whitespace
-ctfe ← 'ctfe' whitespace
 true ← 'true' whitespace
 false ← 'false' whitespace
 assert ← 'assert' whitespace
@@ -151,32 +147,7 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                     are compiled is undefined. It is allowed to have multiple symbols in scope with the 
                     same name. Ambiguous references is an error.
                 </p>
-
-                <h2>1.1. Mixins</h2>
-                <pre><code>mixin_expression ← mixin expression</code></pre>
-
-                <p>
-                    All mixins in all files are executed before any <span class="rule">ctfe_expression</span>
-                    but after semantic analysis has completed. The order of 
-                    files is undefined but the order of mixin execution within a
-                    file is in lexical order. The 
-                    <span class="rule">expression</span> must result in a 
-                    <code>[]<span class="type">U8</span></code>. The array is 
-                    injected a source code where mixin where declared. 
-                    <span class="rule">mixin_expression</span>s are semantically
-                    analyzed right before they are executed.
-                </p>
-
-                <h2>1.2. Ctfe</h2>
-                <pre><code>ctfe_expression ← ctfe expression</code></pre>
-
-                <p>
-                    The order of which file executes their <span class="rule">ctfe_expression</span>s
-                    are undefined but the order within a file is in lexical order. <span class="rule">ctfe_expression</span>s
-                    are semantically analyzed right before they are executed. The value of the
-                    <span class="rule">expression</span> is ignored.
-                </p>
-
+                
                 <h1>2. Declarations</h1>
                 <h2>2.1 Functions</h2>
                 <pre><code>function_declaration ← function_signature
@@ -363,8 +334,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                 <pre><code>expression_statement ← expression</code></pre>
 
                 <p>
-                    The <span class="rule">expression</span> must be a <span class="rule">call_expression</span>, 
-                    <span class="rule">mixin_expression</span> or <span class="rule">ctfe_expression</span>.
+                    The <span class="rule">expression</span> must be a <span class="rule">call_expression</span>.
                 </p>
 
                 <h2>3.3. If statements</h2>
@@ -701,7 +671,6 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / null_literal
                    / uninitialized_literal
                    / size_of_expression
-                   / mixin_expression
                    / parenthesized_expression
                    / reference_expression</code></pre>
 
