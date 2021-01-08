@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.16.0</title>
+        <title>Owen specification 0.17.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.16.0</h1>
+                    <h1>Owen specification 0.17.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -249,7 +249,7 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
 
                 <p>
                     The <span class="rule">upper_case_identifier</span> after the <span class="rule">enumeration</span>
-                    keyword is the name of the enumeration. The type of the enumeration must be either an 
+                    keyword is the name of the enumeration. The <span class="rule">type</span> of the enumeration must be either an 
                     <span class="type">IXX</span> or <span class="type">UXX</span>.
                 </p>
                 
@@ -260,8 +260,8 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                     <span class="rule">integer_literal</span> then it is the value of
                     the last constant + 1. If the first constant omits the
                     <span class="rule">integer_literal</span> then its value is 0.
-                    The type of the <span class="rule">enumeration_constant</span>s 
-                    are inferred from the <span class="rule">type</span>.
+                    Every <span class="rule">enumeration_constant</span> must fit within 
+                    the <span class="rule">type</span>.
                 </p>
 
                 <h2>2.5. Versions</h2>
@@ -302,8 +302,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                     Each <span class="rule">expression</span> on the left hand side must be addressable
                     and each <span class="rule">expression</span> on the right hand side must be the
                     same type as the one being assigned to unless the left hand side <span class="rule">expression</span>
-                    is a pointer which can also be assigned <span class="keyword">null</span> or an address type of <span class="type">U64</span>
-                    which can be inferred.	
+                    is a pointer which can also be assigned <span class="keyword">null</span> or an address type of <span class="type">U64</span>.
                 </p>
 
                 <p>
@@ -316,7 +315,6 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                     If the right hand <span class="rule">expressions</span> doesn't contain a <span class="rule">call_expression</span>
                     outputting multiple values then both lists must be equal in length. The left <span class="rule">expressions</span>
                     is being assigned from left to right.
-                    Number types are inferred from its defined identifier.
                 </p>
 
                 <p>
@@ -445,8 +443,7 @@ semicolon ← ';' whitespace</code></pre>
                     last statement. If <span class="keyword">output</span> is
                     defined, then all code paths must have a return statement with
                     expressions of the same type in the same order as declared by
-                    <span class="keyword">output</span>. Number types are inferred
-                    from the output.
+                    <span class="keyword">output</span>.
                 </p>
 
                 <h2>3.9. Assert statements</h2>
@@ -480,8 +477,7 @@ semicolon ← ';' whitespace</code></pre>
                     <span class="rule">logical_or_expression</span> has the lowest precedence
                     and <span class="rule">postfix_expression</span> has the highest precedence.
                     The right hand side of a binary expression must be of the same type as the
-                    left hand side and the left hand side can only be a primitive type. The right
-                    hand side can be inferred from the left hand side.
+                    left hand side and the left hand side can only be a primitive type.
                 </p>
 
                 <p>
@@ -548,8 +544,7 @@ semicolon ← ';' whitespace</code></pre>
                 <p>
                     If the left hand expression is a pointer type, the right hand expression is a 
                     <span class="type">UXX</span> type and the operator is either <code>+</code> or <code>-</code>
-                    then <code>x * size of structure in bytes</code> is either added or subtracted.
-                    The right hand expression is inferred as <span class="type">U64</span>.
+                    then <code>expression  * size of structure in bytes</code> is either added or subtracted.
                     The type of the additive expression is the same as the pointer type.
                 </p>
                 
@@ -637,11 +632,8 @@ semicolon ← ';' whitespace</code></pre>
                    left_parenthesis expressions? right_parenthesis</code></pre>
 
                 <p>
-                    The <span class="rule">expressions</span> must match the <span class="keyword">input</span>
-                    exactly. If there are multiple functions where numbers can be inferred from the 
-                    <span class="keyword">input</span> it is an error. If the call is to a generic
-                    function and not all types can be inferred from the input then <span class="rule">types</span>
-                    must specify the function's <span class="keyword">generalize</span> list.
+                    The <span class="rule">expressions</span>' types must match the <span class="keyword">input</span> types
+                    exactly. Optionally specify all generalized <span class="rule">types</span>. 
                 </p>
 
                 <h3>4.8.3. Index expressions</h3>
@@ -676,12 +668,11 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / reference_expression</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code>float_literal ← [0-9]+ '.' [0-9]+ ('f' ( '32' / '64' ))?</code></pre>
+                <pre><code>float_literal ← [0-9]+ '.' [0-9]+</code></pre>
 
                 <p>
                     Floating point values are defined as in IEEE 754. The specific
-                    type of a literal is inferred when the type is known elsewhere
-                    in the same context.
+                    type of a literal is inferred.
                 </p>
 
                 <table>
@@ -712,8 +703,7 @@ hexadecimal_integer ← '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
 hexadecimal_digit ← [0-9A-F]</code></pre>
 
                 <p>
-                    The specific type of a literal is inferred when the type is
-                    known elsewhere in the same context. The underscore doesn't 
+                    The specific type of a literal is inferred. The underscore doesn't 
                     change the value of the <span class="rule">integer_literal</span>.
                     Signed integers are stored using Two's complement.
                 </p>
@@ -804,7 +794,7 @@ unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecima
                 <pre><code>array_literal ← type (left_square_bracket right_square_bracket)+
               / dimension+ elements
 
-dimension ← left_square_bracket expression? right_square_bracket
+dimension ← left_square_bracket integer_literal? right_square_bracket
 elements ← left_curly_bracket element (comma element)* right_curly_bracket
 element ← elements / expressions
 
@@ -814,12 +804,9 @@ right_curly_bracket ← '}' whitespace</code></pre>
                 <p>
                     Dynamic arrays are defined by <span class="rule">type</span> and
                     dimensions.
-
                     Static arrays are defined by <span class="rule">dimension</span>s
                     and <span class="rule">elements</span>. Each <span class="rule">dimension</span>'s
-                    <span class="rule">expression</span> must be a static
-                    <span class="type">UXX</span> which can be inferred to <span class="type">U32</span>.
-
+                    <span class="rule">expression</span> must fit within <span class="type">U32</span>.
                     Arrays have a length and pointer field. Writing to a static array
                     is undefined behaviour.
                 </p>
@@ -837,8 +824,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
                     initialize. The <span class="rule">expression</span> is the
                     value of the given <span class="rule">field</span>. The type of the <span class="rule">expression</span>
-                    must match <span class="rule">field</span>'s type. Number types are inferred from the type of the 
-                    <span class="rule">field</span>.
+                    must match <span class="rule">field</span>'s type. 
                     
                     Fields that are not initialized have
                     undefined values.
@@ -877,9 +863,10 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 
                 <p>
                     <span class="rule">reference_expression</span> refers to a
-                    variable, input or function with the same name in the 
-                    innermost scope. It is an error to refer to a name that is 
-                    not in scope.
+                    variable, <span class="keyword">input</span> or 
+                    <span class="keyword">function</span> with the same name in scope. 
+                    Each variable and <span class="keyword">input</span> must be used in a 
+                    <span class="rule">reference_expression</span>.
                 </p>
 
                 <h1>5. Types</h1>
