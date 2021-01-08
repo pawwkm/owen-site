@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.17.1</title>
+        <title>Owen specification 0.17.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.17.1</h1>
+                    <h1>Owen specification 0.17.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -486,7 +486,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
                 
                 <p>
-                    Variables, fields, pointers and <span class="rule">index_expression</span>s are addressable.
+                    Variables, fields, pointers and <span class="rule">array_index_expression</span>s are addressable.
                 </p>
 
                 <h2>4.2. Logical or expressions</h2>
@@ -617,14 +617,15 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.8. Postfix expressions</h2>
-                <pre><code>postfix_expression ← primary_expression (dot_expression / call_expression / index_expression)*</code></pre>
+                <pre><code>postfix_expression ← primary_expression (field_access_expression / call_expression / array_index_expression)*</code></pre>
 
-                <h3>4.8.1. Dot expressions</h3>
-                <pre><code>dot_expression ← '.' whitespace lower_case_identifier</code></pre>
+                <h3>4.8.1. Field access expressions</h3>
+                <pre><code>field_access_expression ← dot lower_case_identifier
+dot ← '.' whitespace</code></pre>
 
                 <p>
-                    The <span class="rule">lower_case_identifier</span> must be a 
-                    member on a structure, enumeration or union. 
+                    The <span class="rule">lower_case_identifier</span> must be the name of a <span class="rule">field</span>.
+                    The type of the expression is the same the <span class="rule">field</span>'s type.
                 </p>
 
                 <h3>4.8.2. Call expressions</h3>
@@ -636,14 +637,14 @@ semicolon ← ';' whitespace</code></pre>
                     exactly. Optionally specify all generalized <span class="rule">types</span>. 
                 </p>
 
-                <h3>4.8.3. Index expressions</h3>
-                <pre><code>index_expression ← left_square_bracket expression right_square_bracket
+                <h3>4.8.3. Array access expressions</h3>
+                <pre><code>array_index_expression ← left_square_bracket expression right_square_bracket
 
 left_square_bracket ← '[' whitespace
 right_square_bracket ← ']' whitespace</code></pre>
 
                 <p>
-                    The indexed expression must be an array type. The type of <span class="rule">index_expression</span>
+                    The indexed expression must be an array type. The type of <span class="rule">array_index_expression</span>
                     is a pointer to the element type.
                     The <span class="rule">expression</span> must be
                     an <span class="type">IXX</span>. The value must be within 0 and the size of the
@@ -665,7 +666,8 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / uninitialized_literal
                    / size_of_expression
                    / parenthesized_expression
-                   / reference_expression</code></pre>
+                   / reference_expression
+                   / enumeration_constant_access</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
                 <pre><code>float_literal ← [0-9]+ '.' [0-9]+</code></pre>
@@ -868,6 +870,15 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     <span class="keyword">function</span> with the same name in scope. 
                     Each variable and <span class="keyword">input</span> must be used in a 
                     <span class="rule">reference_expression</span>.
+                </p>
+                
+                <h3>4.9.13. Enumeration constant access expression</h3>
+                <pre><code>enumeration_constant_access ← upper_case_identifier dot lower_case_identifier</code></pre>
+                <p>
+                    <span class="rule">upper_case_identifier</span> is the <span class="keyword">enumeration</span> type and 
+                    <span class="rule">lower_case_identifier</span> is the <span class="rule">enumeration_constant</span> on 
+                    said <span class="keyword">enumeration</span>. The type of the expression is the same the <span class="keyword">enumeration</span>
+                    and the value of the expression is the same as the <span class="rule">enumeration_constant</span>.
                 </p>
 
                 <h1>5. Types</h1>
