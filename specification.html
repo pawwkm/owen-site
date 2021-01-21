@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.1</title>
+        <title>Owen specification 0.18.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.1</h1>
+                    <h1>Owen specification 0.18.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -139,16 +139,30 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                     The <span class="rule">namespace_directive</span> specifies that
                     all <span class="rule">declaration</span>s in the
                     <span class="rule">file</span> are in the given name
-                    space. The <span class="rule">use_directive</span> and
-                    <span class="rule">namespace_directive</span> makes all the
+                    space. The <span class="rule">namespace_directive</span> and
+                    <span class="rule">use_directive</span> puts all the
                     <span class="keyword">public</span> <span class="rule">declaration</span>s
-                    in the given name space available to the
-                    <span class="rule">file</span>. The order in which <span class="rule">file</span>s
-                    are compiled is undefined. It is allowed to have multiple symbols in scope with the 
-                    same name. Ambiguous references is an error.
+                    in the given name space in scope of the
+                    <span class="rule">file</span>.
                 </p>
                 
                 <h1>2. Declarations</h1>
+                <p>
+                    If there are multiple <span class="rule">declaration</span>s 
+                    in scope that matches, it is an error. 
+                </p>
+                
+                <p>
+                    Types with the same name and amount of generalized
+                    types matches.
+                </p>
+                
+                <p>
+                    Functions with the same name and <span class="keyword">input</span> 
+                    types (generalized types differs from non-generalized types) in
+                    the same order matches.
+                </p>
+                
                 <h2>2.1 Functions</h2>
                 <pre><code>function_declaration ← function_signature
                            statements
