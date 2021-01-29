@@ -291,16 +291,19 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                 </p>
 
                 <h1>3. Statements</h1>
-                <pre><code>statements ← ( assignment_statement
-             / expression_statement
-             / if_statement
-             / for_statement
-             / while_statement
-             / assert_statement
-             / version_statement)*
-             ( break_statement 
-             / continue_statement
-             / return_statement)?</code></pre>
+                <pre><code>statements ← statement* block_ending_statement?
+                
+statement ← assignment_statement
+          / expression_statement
+          / if_statement
+          / for_statement
+          / while_statement
+          / assert_statement
+          / version_statement
+             
+block_ending_statement ← break_statement 
+                       / continue_statement
+                       / return_statement</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in lexical
