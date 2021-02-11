@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.2</title>
+        <title>Owen specification 0.18.3</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.2</h1>
+                    <h1>Owen specification 0.18.3</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -838,10 +838,12 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                     <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
                     initialize. The <span class="rule">expression</span> is the
                     value of the given <span class="rule">field</span>. The type of the <span class="rule">expression</span>
-                    must match <span class="rule">field</span>'s type. 
-                    
-                    Fields that are not initialized have
-                    undefined values.
+                    must match <span class="rule">field</span>'s type.
+                </p>
+                
+                <p>
+                    0 or 1 <span class="rule">field_initializer</span> per field
+                    and uninitialized fields have undefined values.
                 </p>
 
                 <h3>4.9.8. Null literals</h3>
