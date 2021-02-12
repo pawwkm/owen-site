@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.4</title>
+        <title>Owen specification 0.18.5</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.4</h1>
+                    <h1>Owen specification 0.18.5</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -827,24 +827,24 @@ right_curly_bracket ← '}' whitespace</code></pre>
                 </p>
 
                 <h3>4.9.7. Compound literals</h3>
-                <pre><code>compound_literal ← upper_case_identifier (left_angle_bracket upper_case_identifier right_angle_bracket)?
+                <pre><code>compound_literal ← type
                        field_initializer (comma field_initializer)*
                    end
 
 field_initializer ← lower_case_identifier equal expression</code></pre>
 
                 <p>
-                    The <span class="rule">compound_literal</span>'s <span class="rule">upper_case_identifier</span> 
-                    is the name of the compound to initialize. The <span class="rule">field_initializer</span>'s
+                    Initializes the specified fields of a compound <span class="rule">type</span>.
+                    The <span class="rule">field_initializer</span>'s
                     <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
                     initialize. The <span class="rule">expression</span> is the
-                    value of the given <span class="rule">field</span>. The type of the <span class="rule">expression</span>
-                    must match <span class="rule">field</span>'s type.
+                    value of the given <span class="rule">field</span>. The <span class="rule">type</span> of the <span class="rule">expression</span>
+                    must match <span class="rule">field</span>'s <span class="rule">type</span>.
                 </p>
                 
                 <p>
-                    0 or 1 <span class="rule">field_initializer</span> per field
-                    and uninitialized fields have undefined values.
+                    0 or 1 <span class="rule">field_initializer</span> per <span class="rule">field</span>
+                    and uninitialized <span class="rule">field</span>s have undefined values.
                 </p>
 
                 <h3>4.9.8. Null literals</h3>
@@ -906,7 +906,13 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
 
                 <h1>5. Types</h1>
                 <pre><code>types ← type (comma type)*
-type ← (left_square_bracket right_square_bracket / '#' whitespace)* (upper_case_identifier / function_type)
+type ← (array_type_of / pointer_type_of)* (upper_case_identifier generalized_types? / function_type)
+
+array_type_of ← left_square_bracket right_square_bracket
+
+pointer_type_of ← '#' whitespace
+
+generalized_types ← left_angle_bracket types right_angle_bracket
 
 function_type ← function
                     (input types)?
