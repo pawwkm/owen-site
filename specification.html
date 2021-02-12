@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.3</title>
+        <title>Owen specification 0.18.4</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.3</h1>
+                    <h1>Owen specification 0.18.4</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -255,15 +255,16 @@ field ← type lower_case_identifier</code></pre>
                 </p>
 
                 <h2>2.4. Enumerations</h2>
-                <pre><code>enumeration_declaration ← enumeration upper_case_identifier of type
+                <pre><code>enumeration_declaration ← enumeration upper_case_identifier of upper_case_identifier
                               enumeration_constant*
                           end
 
 enumeration_constant ← lower_case_identifier (assign integer_literal)?</code></pre>
 
                 <p>
-                    The <span class="rule">upper_case_identifier</span> after the <span class="rule">enumeration</span>
-                    keyword is the name of the enumeration. The <span class="rule">type</span> of the enumeration must be either an 
+                    The first <span class="rule">upper_case_identifier</span> is the name of the 
+                    <span class="keyword">enumeration</span>. The last <span class="rule">upper_case_identifier</span> 
+                    is the underlying type of the <span class="keyword">enumeration</span> which must be an 
                     <span class="type">IXX</span> or <span class="type">UXX</span>.
                 </p>
                 
@@ -275,7 +276,7 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                     the last constant + 1. If the first constant omits the
                     <span class="rule">integer_literal</span> then its value is 0.
                     Every <span class="rule">enumeration_constant</span> must fit within 
-                    the <span class="rule">type</span>.
+                    the underlying <span class="rule">type</span>.
                 </p>
 
                 <h2>2.5. Versions</h2>
