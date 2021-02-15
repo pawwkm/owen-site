@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.5</title>
+        <title>Owen specification 0.18.6</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.5</h1>
+                    <h1>Owen specification 0.18.6</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -660,10 +660,7 @@ right_square_bracket ← ']' whitespace</code></pre>
                     is a pointer to the element type.
                     The <span class="rule">expression</span> must be
                     an <span class="type">IXX</span>. The value must be within 0 and the size of the
-                    dimension it is used to index into. Going out of bounds in Debug
-                    mode the program is stopped and then a message is displayed to
-                    the programmer explaining where the error occurred. Going out of
-                    bounds in Release mode results in undefined behaviour.
+                    dimension it is used to index into.
                 </p>
 
                 <h2>4.9. Primary expressions</h2>
