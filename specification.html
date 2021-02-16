@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.6</title>
+        <title>Owen specification 0.18.7</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.6</h1>
+                    <h1>Owen specification 0.18.7</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -798,8 +798,7 @@ unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecima
                 
                 <p>
                     <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are 
-                    syntax sugar for <code>[]<span class="type">U8</span></code> and modifying them 
-                    is undefined behaviour.
+                    syntax sugar for <code>[]<span class="type">U8</span></code>.
                 </p>
 
                 <h3>4.9.6. Array literals</h3>
@@ -819,8 +818,7 @@ right_curly_bracket ← '}' whitespace</code></pre>
                     Static arrays are defined by <span class="rule">dimension</span>s
                     and <span class="rule">elements</span>. Each <span class="rule">dimension</span>'s
                     <span class="rule">expression</span> must fit within <span class="type">U32</span>.
-                    Arrays have a length and pointer field. Writing to a static array
-                    is undefined behaviour.
+                    Arrays have a length and pointer field.
                 </p>
 
                 <h3>4.9.7. Compound literals</h3>
