@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.7</title>
+        <title>Owen specification 0.18.8</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.7</h1>
+                    <h1>Owen specification 0.18.8</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -85,6 +85,7 @@ keyword ← namespace
         / output
         / end
         / if
+        / elif
         / else
         / for
         / while
@@ -113,6 +114,7 @@ input ← 'input' whitespace
 output ← 'output' whitespace
 end ← 'end' whitespace
 if ← 'if' whitespace
+elif ← 'elif' whitespace
 else ← 'else' whitespace
 for ← 'for' whitespace
 while ← 'while' whitespace
@@ -356,7 +358,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                 <h2>3.3. If statements</h2>
                 <pre><code>if_statement ← if (assignment_statement semicolon)? expression
                    statements
-              (else if (assignment_statement semicolon)? expression
+              (elif (assignment_statement semicolon)? expression
                    statements)*
               (else
                    statements)?
