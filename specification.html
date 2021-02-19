@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.9</title>
+        <title>Owen specification 0.18.10</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.9</h1>
+                    <h1>Owen specification 0.18.10</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -232,7 +232,7 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                 <h2>2.3. Compounds</h2>
                 <pre><code>compound_declaration ← (structure / union) upper_case_identifier
                            (generalize upper_case_identifiers)?
-                            field*
+                            field+
                         end
  
 field ← type lower_case_identifier</code></pre>
