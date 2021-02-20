@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.10</title>
+        <title>Owen specification 0.18.11</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.10</h1>
+                    <h1>Owen specification 0.18.11</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -309,43 +309,69 @@ block_ending_statement ← break_statement
                        / return_statement</code></pre>
 
                 <p>
-                    Each <span class="rule">statement</span> are executed in lexical
-                    order.
+                    Each <span class="rule">statement</span> are executed in 
+                    lexical order.
                 </p>
 
                 <h2>3.1. Assignment statements</h2>
                 <pre><code>assignment_statement ← expressions assignment_operator expressions
 expressions ← expression (comma expression)*
 assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespace</code></pre>
-
+    
                 <p>
-                    Each <span class="rule">expression</span> on the left hand side must be addressable
-                    and each <span class="rule">expression</span> on the right hand side must be the
-                    same type as the one being assigned to unless the left hand side <span class="rule">expression</span>
-                    is a pointer which can also be assigned <span class="keyword">null</span> or an address type of <span class="type">U64</span>.
+                    Each <span class="rule">expression</span> on the left hand 
+                    side must be addressable. <span class="rule">reference_expression</span> 
+                    to anything but functions, <span class="rule">field_access_expression</span>, 
+                    <span class="rule">array_access_expression</span> and 
+                    <span class="rule">dereference_expression</span> are 
+                    addressable. 
                 </p>
 
                 <p>
-                    If the operator is <code>=</code> and an <span class="rule">expression</span> on
-                    the left hand side is an undefined identifier it is declared as
-                    a variable of the same type as the assigned <span class="rule">expression</span>.
+                    A Ballanced assignment consist of the same amount of
+                    <span class="rule">expressions</span> on each side of the 
+                    <span class="rule">assignment_operator</span> and any 
+                    <span class="rule">call_expression</span> on the right hand
+                    side returns 1 value. The <i>n</i>th <span class="rule">expression</span>
+                    on the right hand side is assigned to the <i>n</i>th 
+                    <span class="rule">expression</span> on the left hand side.
                 </p>
-
+                
                 <p>
-                    If the right hand <span class="rule">expressions</span> doesn't contain a <span class="rule">call_expression</span>
-                    outputting multiple values then both lists must be equal in length. The left <span class="rule">expressions</span>
-                    is being assigned from left to right.
+                    Tuple assignment consist of a <span class="rule">call_expression</span> 
+                    on the right hand side that returns multiply values and the 
+                    <i>n</i>th <span class="rule">expression</span> on the left
+                    hand side is assigned the <i>n</i>th returned value.
                 </p>
-
+                
                 <p>
-                    If the right hand <span class="rule">expressions</span> contains a <span class="rule">call_expression</span>
-                    outputting multiple values then it must be the only <span class="rule">expression</span> on the right hand side.
-                    The <code>=</code> operator is the only one allowed in this case. The left hand side
-                    <span class="rule">expressions</span> must have the same length as the amount of outputted values.
+                    If a <span class="rule">reference_expression</span> on the 
+                    left hand side is not in scope a variable with the name of 
+                    the <span class="rule">reference_expression</span> is 
+                    created in the current scope and it has the type and value 
+                    of the <span class="rule">expression</span> on the right 
+                    hand side.
                 </p>
-
+                
                 <p>
-                    <code>x op= expression</code> is the same as <code>x = x op expression</code>.
+                    <code>op=</code> cannot create variables. <code>x op= expression</code> is 
+                    equivalent to <code>x = x op expression</code> where 
+                    <code>x</code> evaluates once.
+                </p>
+                
+                <p>
+                    Left hand side <span class="rule">expressions</span> are 
+                    evaluated before then right hand side. 
+                    <span class="rule">expressions</span> are evaluated from 
+                    left to right.
+                </p>
+                
+                <p>
+                    Both operand's types must match or the left hand side must 
+                    be a pointer type and the right must be 
+                    <span class="keyword">null</span> or <span class="type">U64</span>.
+                    Assigning a <span class="type">U64</span> value to a pointer 
+                    makes the pointer point to that address.
                 </p>
 
                 <h2>3.2. Expression statements</h2>
@@ -456,16 +482,16 @@ semicolon ← ';' whitespace</code></pre>
                 <p>
                     Returns the control the function that called the one that
                     contains the return statement. If the function containing the
-                    return statement doesn't specify any output, then the statement
-                    cannot specify any <span class="rule">expressions</span> to
-                    return and the function may omit the statement entirely. Since
-                    in that case the control is returned to the caller after the
-                    last statement. If <span class="keyword">output</span> is
-                    defined, then all code paths must have a return statement with
-                    expressions of the same type in the same order as declared by
-                    <span class="keyword">output</span>.
+                    return statement doesn't specify any <span class="keyword">output</span>, 
+                    then the statement cannot specify any <span class="rule">expressions</span> 
+                    to return and the function may omit the statement entirely.
+                    Since in that case the control is returned to the caller 
+                    after the last statement. If <span class="keyword">output</span> 
+                    is defined, then all code paths must have a return statement
+                    with expressions of the same <span class="rule">type</span> 
+                    in the same order as declared by <span class="keyword">output</span>.
                 </p>
-
+            
                 <h2>3.9. Assert statements</h2>
                 <pre><code>assert_statement ← assert expression</code></pre>
 
@@ -503,10 +529,6 @@ semicolon ← ';' whitespace</code></pre>
                 <p>
                     Operators are left associative unless noted otherwise.
                     Overflow and underflow is only checked for literals.
-                </p>
-                
-                <p>
-                    Variables, fields, pointers and <span class="rule">array_index_expression</span>s are addressable.
                 </p>
 
                 <h2>4.2. Logical or expressions</h2>
@@ -631,7 +653,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.8. Postfix expressions</h2>
-                <pre><code>postfix_expression ← primary_expression (field_access_expression / call_expression / array_index_expression)*</code></pre>
+                <pre><code>postfix_expression ← primary_expression (field_access_expression / call_expression / array_access_expression)*</code></pre>
 
                 <h3>4.8.1. Field access expressions</h3>
                 <pre><code>field_access_expression ← dot lower_case_identifier
@@ -652,13 +674,13 @@ dot ← '.' whitespace</code></pre>
                 </p>
 
                 <h3>4.8.3. Array access expressions</h3>
-                <pre><code>array_index_expression ← left_square_bracket expression right_square_bracket
+                <pre><code>array_access_expression ← left_square_bracket expression right_square_bracket
 
 left_square_bracket ← '[' whitespace
 right_square_bracket ← ']' whitespace</code></pre>
 
                 <p>
-                    The indexed expression must be an array type. The type of <span class="rule">array_index_expression</span>
+                    The indexed expression must be an array type. The type of <span class="rule">array_access_expression</span>
                     is a pointer to the element type.
                     The <span class="rule">expression</span> must be
                     an <span class="type">IXX</span>. The value must be within 0 and the size of the
