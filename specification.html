@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.13</title>
+        <title>Owen specification 0.18.14</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.13</h1>
+                    <h1>Owen specification 0.18.14</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -369,9 +369,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                 <p>
                     Both operand's types must match or the left hand side must 
                     be a pointer type and the right must be 
-                    <span class="keyword">null</span> or <span class="type">U64</span>.
-                    Assigning a <span class="type">U64</span> value to a pointer 
-                    makes the pointer point to that address.
+                    <span class="keyword">null</span>.
                 </p>
 
                 <h2>3.2. Expression statements</h2>
