@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.18.14</title>
+        <title>Owen specification 0.18.15</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.18.14</h1>
+                    <h1>Owen specification 0.18.15</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -518,15 +518,11 @@ semicolon ← ';' whitespace</code></pre>
                 <pre><code>expression ← logical_or_expression</code></pre>
 
                 <p>
-                    <span class="rule">logical_or_expression</span> has the lowest precedence
-                    and <span class="rule">postfix_expression</span> has the highest precedence.
-                    The right hand side of a binary expression must be of the same type as the
-                    left hand side and the left hand side can only be a primitive type.
-                </p>
-
-                <p>
-                    Operators are left associative unless noted otherwise.
-                    Overflow and underflow is only checked for literals.
+                    <span class="rule">logical_or_expression</span> has the 
+                    lowest precedence and <span class="rule">postfix_expression</span> 
+                    has the highest precedence. Operators are left associative 
+                    unless noted otherwise. Overflow and underflow is only 
+                    checked for literals.
                 </p>
 
                 <h2>4.2. Logical or expressions</h2>
