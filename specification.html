@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.20.0</title>
+        <title>Owen specification 0.21.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.20.0</h1>
+                    <h1>Owen specification 0.21.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -29,9 +29,7 @@
                     </p>
                 </header>
 
-                <p>
-                    The design guidelines are:
-                </p>
+                <p>The design guidelines are:</p>
                 
                 <ul>
                     <li>Control &gt; language safety.</li>
@@ -67,12 +65,12 @@
 namespace_directive ← namespace upper_case_identifier
 use_directive ← use upper_case_identifier
 
-declaration ← public? ( function_declaration
-                      / external_function_declaration
-                      / proposition_declaration
-                      / compound_declaration
-                      / enumeration_declaration
-                      / version_declaration)
+declaration ← function_declaration
+            / external_function_declaration
+            / proposition_declaration
+            / compound_declaration
+            / enumeration_declaration
+            / version_declaration
 
 upper_case_identifier ← [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* whitespace
 lower_case_identifier ← !keyword [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* whitespace
@@ -166,7 +164,7 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                 </p>
                 
                 <h2>2.1 Functions</h2>
-                <pre><code>function_declaration ← function_signature
+                <pre><code>function_declaration ← public? function_signature
                            statements
                        end
 
@@ -184,7 +182,8 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                     defines a list of arguments that a caller must pass to the
                     function. The <span class="rule">arguments</span> are in the
                     same scope as <span class="rule">statements</span> and must have
-                    unique names. Functions can be overloaded with a different order
+                    unique names. Each <span class="keyword">input</span> must be used in a 
+                    <span class="rule">reference_expression</span>. Functions can be overloaded with a different order
                     of <span class="keyword">input</span> types. The 
                     <span class="keyword">output</span> list is the
                     types of the values that the function returns <b>in</b> the order
@@ -201,13 +200,19 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
 
                 <h3>2.1.1. The main function</h3>
                 <p>
-                    The <i>main</i> function is the entry point of the program. It
-                    is the entry point of the program. The return type of main must
-                    be <span class="type">I32</span>.
+                    The main function is the entry point of the program
+                    and it has one of the function signatures:
                 </p>
+                
+                <pre><code><span class="keyword">function</span> main
+    <span class="keyword">output</span> <span class="type">I32</span>
+    
+<span class="keyword">function</span> main
+    <span class="keyword">input</span> #[][]<span class="type">U8</span>
+    <span class="keyword">output</span> <span class="type">I32</span></code></pre>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration ← external function_signature 
+                <pre><code>external_function_declaration ← public? external function_signature 
                                     utf8_string_literal
                                     utf8_string_literal</code></pre>
                 
@@ -224,17 +229,16 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                           end</code></pre>
 
                 <p>
-                    Propositions are nameless functions that returns no values. They
-                    are run before the <i>main</i> function if they are included
-                    using the <b>-propositions</b> command line argument.
+                    Propositions are nameless functions that returns no values. 
+                    They are run before the main function if they are included.
                 </p>
 
                 <h2>2.3. Compounds</h2>
-                <pre><code>compound_declaration ← (structure / union) upper_case_identifier
+                <pre><code>compound_declaration ← public? (structure / union) upper_case_identifier
                            (generalize upper_case_identifiers)?
                             field+
                         end
- 
+
 field ← type lower_case_identifier</code></pre>
 
                 <p>
@@ -264,7 +268,7 @@ field ← type lower_case_identifier</code></pre>
                 </p>
 
                 <h2>2.4. Enumerations</h2>
-                <pre><code>enumeration_declaration ← enumeration upper_case_identifier of upper_case_identifier
+                <pre><code>enumeration_declaration ← public? enumeration upper_case_identifier of upper_case_identifier
                               enumeration_constant*
                           end
 
@@ -303,7 +307,8 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                 <h1>3. Statements</h1>
                 <pre><code>statements ← statement* block_ending_statement?
                 
-statement ← assignment_statement
+statement ← declaration_statement
+          / assignment_statement
           / expression_statement
           / if_statement
           / for_statement
@@ -320,76 +325,81 @@ block_ending_statement ← break_statement
                     lexical order.
                 </p>
 
-                <h2>3.1. Assignment statements</h2>
+                <h2>3.1. Declaration statements</h2>
+                <pre><code>declaration_statement ← variable (comma variable)* '=' expressions 
+variable ← type lower_case_identifier</code></pre>
+ 
+                <p>
+                    Declares <span class="rule">variable</span>s in the current 
+                    scope with the given <span class="rule">lower_case_identifier</span> 
+                    as the name and <span class="rule">type</span>. A 
+                    <span class="rule">variable</span> cannot have the same name
+                    as anything else in scope. <span class="rule">variable</span>s 
+                    are evaluated from left to right. Each variable must be used in a 
+                    <span class="rule">reference_expression</span>.
+                </p>
+
+                <p>
+                    A Ballanced assignment consist of the same amount of
+                    <span class="rule">expressions</span> on each side of the 
+                    <span class="rule">assignment_operator</span>.
+                    The <i>n</i>th <span class="rule">expression</span>
+                    on the right hand side is assigned to the <i>n</i>th 
+                    <span class="rule">variable</span> on the left hand side.
+                </p>
+                
+                <p>
+                    Tuple assignment consist of a <span class="rule">call_expression</span> 
+                    on the right hand side that returns multiply values and the 
+                    <i>n</i>th <span class="rule">variable</span> on the left
+                    hand side is assigned the <i>n</i>th returned value.
+                </p>
+
+                <p>
+                    Both operand's types must match or the left hand side must 
+                    be a pointer type and the right must be
+                    <span class="keyword">null</span>.
+                </p>
+
+                <h2>3.2. Assignment statements</h2>
                 <pre><code>assignment_statement ← expressions assignment_operator expressions
 expressions ← expression (comma expression)*
 assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespace</code></pre>
     
                 <p>
+                    <span class="rule">assignment_statement</span> works the same 
+                    as <span class="rule">declaration_statement</span> except 
+                    that:
+                </p>
+                
+                <p id="addressable_expressions">
                     Each <span class="rule">expression</span> on the left hand 
                     side must be addressable. <span class="rule">reference_expression</span> 
-                    to anything but functions, <span class="rule">field_access_expression</span>, 
+                    to anything but functions, <span class="rule">field_access_expression</span>,
                     <span class="rule">array_access_expression</span> and 
                     <span class="rule">dereference_expression</span> are 
                     addressable. 
                 </p>
 
                 <p>
-                    A Ballanced assignment consist of the same amount of
-                    <span class="rule">expressions</span> on each side of the 
-                    <span class="rule">assignment_operator</span> and any 
-                    <span class="rule">call_expression</span> on the right hand
-                    side returns 1 value. The <i>n</i>th <span class="rule">expression</span>
-                    on the right hand side is assigned to the <i>n</i>th 
-                    <span class="rule">expression</span> on the left hand side.
-                </p>
-                
-                <p>
-                    Tuple assignment consist of a <span class="rule">call_expression</span> 
-                    on the right hand side that returns multiply values and the 
-                    <i>n</i>th <span class="rule">expression</span> on the left
-                    hand side is assigned the <i>n</i>th returned value.
-                </p>
-                
-                <p>
-                    If a <span class="rule">reference_expression</span> on the 
-                    left hand side is not in scope a variable with the name of 
-                    the <span class="rule">reference_expression</span> is 
-                    created in the current scope and it has the type and value 
-                    of the <span class="rule">expression</span> on the right 
-                    hand side.
-                </p>
-                
-                <p>
-                    <code>op=</code> cannot create variables. <code>x op= expression</code> is 
-                    equivalent to <code>x = x op expression</code> where 
-                    <code>x</code> evaluates once.
-                </p>
-                
-                <p>
-                    Left hand side <span class="rule">expressions</span> are 
-                    evaluated before then right hand side. 
-                    <span class="rule">expressions</span> are evaluated from 
-                    left to right.
-                </p>
-                
-                <p>
-                    Both operand's types must match or the left hand side must 
-                    be a pointer type and the right must be 
-                    <span class="keyword">null</span>.
+                    <code>x op= expression</code> is equivalent to 
+                    <code>x = x op expression</code> where <code>x</code> 
+                    evaluates once.
                 </p>
 
-                <h2>3.2. Expression statements</h2>
+                <h2>3.3. Expression statements</h2>
                 <pre><code>expression_statement ← expression</code></pre>
 
                 <p>
-                    The <span class="rule">expression</span> must be a <span class="rule">call_expression</span>.
+                    The <span class="rule">expression</span> must be a 
+                    <span class="rule">call_expression</span> that returns no 
+                    values.
                 </p>
 
-                <h2>3.3. If statements</h2>
-                <pre><code>if_statement ← if (assignment_statement semicolon)? expression
+                <h2>3.4. If statements</h2>
+                <pre><code>if_statement ← if (declaration_statement semicolon)? expression
                    statements
-              (elif (assignment_statement semicolon)? expression
+              (elif (declaration_statement semicolon)? expression
                    statements)*
               (else
                    statements)?
@@ -407,31 +417,32 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <p>
-                    each <span class="rule">assignment_statement</span> is executed
+                    each <span class="rule">declaration_statement</span> is executed
                     before the following <span class="rule">expression</span>. The
                     declared variables are in the scope of all the following
                     <span class="rule">statements</span> in the
                     <span class="rule">if_statement</span>.
                 </p>
 
-                <h2>3.4. For statements</h2>
-                <pre><code>for_statement ← for assignment_statement semicolon expression semicolon assignment_statement
+                <h2>3.5. For statements</h2>
+                <pre><code>for_statement ← for declaration_statement semicolon expression semicolon assignment_statement
                     statements
                 end</code></pre>
 
                 <p>
-                    The first <span class="rule">assignment_statement</span> is executed before
-                    the first iteration. The declared variables are scoped inside the loop.
+                    The <span class="rule">declaration_statement</span> is executed before
+                    the first iteration. The declared variables are in the scope of all the following
+                    <span class="rule">statements</span>.
                     The <span class="rule">expression</span> is the condition for
                     executing the <span class="rule">statements</span> which must
-                    be <span class="keyword">true</span>. The second
+                    be <span class="keyword">true</span>. The
                     <span class="rule">assignment_statement</span> is executed after each
                     iteration. The <span class="rule">break_statement</span> skips
-                    execution of the second <span class="rule">assignment_statement</span>.
+                    execution of the <span class="rule">assignment_statement</span>.
                 </p>
 
-                <h2>3.5. While statements</h2>
-                <pre><code>while_statement ← while (assignment_statement semicolon)? expression
+                <h2>3.6. While statements</h2>
+                <pre><code>while_statement ← while (declaration_statement semicolon)? expression
                       statements
                   end</code></pre>
 
@@ -447,13 +458,13 @@ semicolon ← ';' whitespace</code></pre>
                     <span class="rule">statements</span> are executed again. This
                     continues until the expression is
                     <span class="keyword">false</span>. The
-                    <span class="rule">assignment_statement</span> is executed before
+                    <span class="rule">declaration_statement</span> is executed before
                     the first iteration and declared the variables is in the same 
                     scope as <span class="rule">statements</span>.
                 </p>
 
-                <h2>3.6. Break statements</h2>
-                <pre><code>break_statement ← break integer_literal?</code></pre>
+                <h2>3.7. Break statements</h2>
+                <pre><code>break_statement ← break</code></pre>
 
                 <p>
                     The <span class="rule">break_statement</span> stops the execution
@@ -461,27 +472,15 @@ semicolon ← ';' whitespace</code></pre>
                     after the innermost loop.
                 </p>
                 
-                <p>
-                    <span class="rule">integer_literal</span> is implicitly 1. 
-                    if it is 2 it means break out of the second most inner loop 
-                    and so on.
-                </p>
-                
-                <h2>3.7. Continue statements</h2>
-                <pre><code>continue_statement ← continue integer_literal?</code></pre>
+                <h2>3.8. Continue statements</h2>
+                <pre><code>continue_statement ← continue</code></pre>
 
                 <p>
                     The <span class="rule">continue_statement</span> begins the 
                     next iteration of the innermost loop in which it is declared.
                 </p>
-                
-                <p>
-                    <span class="rule">integer_literal</span> is implicitly 1. 
-                    if it is 2 it means break out of the second most inner loop 
-                    and so on.
-                </p>
 
-                <h2>3.8. Return statements</h2>
+                <h2>3.9. Return statements</h2>
                 <pre><code>return_statement ← return expressions?</code></pre>
 
                 <p>
@@ -493,11 +492,11 @@ semicolon ← ';' whitespace</code></pre>
                     Since in that case the control is returned to the caller 
                     after the last statement. If <span class="keyword">output</span> 
                     is defined, then all code paths must have a return statement
-                    with expressions of the same <span class="rule">type</span> 
-                    in the same order as declared by <span class="keyword">output</span>.
+                    where the <i>n</i>th expression's <span class="rule">type</span> 
+                    matches the <i>n</i>th <span class="keyword">output</span> <span class="rule">type</span>.
                 </p>
             
-                <h2>3.9. Assert statements</h2>
+                <h2>3.10. Assert statements</h2>
                 <pre><code>assert_statement ← assert expression</code></pre>
 
                 <p>
@@ -511,11 +510,11 @@ semicolon ← ';' whitespace</code></pre>
                     current proposition stops and the next starts executing.
                 </p>
 
-                <h2>3.10. Version statements</h2>
+                <h2>3.11. Version statements</h2>
                 <pre><code>version_statement ← version upper_case_identifier
                         statements
                     end</code></pre>
-
+                    
                 <p>
                     Works the same way as Version Declarations but for
                     <span class="rule">statements</span>s instead.
@@ -528,8 +527,7 @@ semicolon ← ';' whitespace</code></pre>
                     <span class="rule">logical_or_expression</span> has the 
                     lowest precedence and <span class="rule">postfix_expression</span> 
                     has the highest precedence. Operators are left associative 
-                    unless noted otherwise. Overflow and underflow is only 
-                    checked for literals.
+                    unless noted otherwise.
                 </p>
 
                 <h2>4.2. Logical or expressions</h2>
@@ -574,8 +572,6 @@ semicolon ← ';' whitespace</code></pre>
                     For <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;</code> and <code>&gt;</code>
                     both operands must be of the same number, pointer or enumeration type. 
                 </p>
-                
-                <p>Any <span class="rule">integer_literal</span> or <span class="rule">float_literal</span> operands with no inferrable type they default to <span class="type">I64</span> and <span class="type">F64</span> respectively.</p>
 
                 <h2>4.5. Additive expressions</h2>
                 <pre><code>additive_expression ← multiplicative_expression (('+' / '-' / '|' / '^') whitespace multiplicative_expression)*</code></pre>
@@ -614,7 +610,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.7. Prefix expressions</h2>
-                <pre><code>prefix_expression ← (not_expression / negate_expression / address_of_expression / dereference_expression)+ 
+                <pre><code>prefix_expression ← (not_expression / negate_expression / address_of_expression / dereference_expression)*
                   / postfix_expression</code></pre>
 
                 <p>
@@ -640,9 +636,11 @@ semicolon ← ';' whitespace</code></pre>
                 <pre><code>address_of_expression ← '#' whitespace prefix_expression</code></pre>
 
                 <p>
-                    Takes the address of the <span class="rule">prefix_expression</span>.
+                    Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">prefix_expression</span>.
+                    The type of the <span class="rule">address_of_expression</span> is a pointer 
+                    type that points to 
                 </p>
-
+                
                 <h3>4.7.4. Dereference expressions</h3>
                 <pre><code>dereference_expression ← '@' whitespace prefix_expression</code></pre>
 
@@ -661,19 +659,33 @@ semicolon ← ';' whitespace</code></pre>
 dot ← '.' whitespace</code></pre>
 
                 <p>
-                    The <span class="rule">lower_case_identifier</span> must be the name of a <span class="rule">field</span>.
-                    The type of the expression is the same the <span class="rule">field</span>'s type.
+                    The <span class="rule">lower_case_identifier</span> must be
+                    the name of a <span class="rule">field</span>. The type of 
+                    the expression is the same the <span class="rule">field</span>'s type.
                 </p>
 
                 <h3>4.8.2. Call expressions</h3>
-                <pre><code>call_expression ← (left_angle_bracket types right_angle_bracket)?
-                   left_parenthesis expressions? right_parenthesis</code></pre>
+                <pre><code>call_expression ← left_parenthesis expressions? right_parenthesis</code></pre>
 
                 <p>
-                    The <span class="rule">expressions</span>' types must match the <span class="keyword">input</span> types
-                    exactly. Optionally specify all generalized <span class="rule">types</span>. 
+                    The <span class="rule">primary_expression</span> being
+                    called must have a <span class="keyword">function</span> type.
+                    The <i>n</i>th expression's type must match the <i>n</i>th 
+                    <span class="keyword">input</span> type.
                 </p>
-
+                
+                <p>
+                    If the <span class="rule">primary_expression</span> is an 
+                    <span class="rule">reference_expression</span> to a 
+                    <span class="keyword">function</span> with generalized types 
+                    that are not used by an <span class="rule">argument</span>
+                    then all generalized types must be specified by the  
+                    <span class="rule">reference_expression</span>'s 
+                    <span class="rule">generalized_types</span>. 
+                    The <span class="rule">reference_expression</span> may 
+                    specify <span class="rule">generalized_types</span> anyway.
+                </p>
+                
                 <h3>4.8.3. Array access expressions</h3>
                 <pre><code>array_access_expression ← left_square_bracket expression right_square_bracket
 
@@ -705,36 +717,17 @@ right_square_bracket ← ']' whitespace</code></pre>
                    / cast_expression</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code>float_literal ← [0-9]+ '.' [0-9]+</code></pre>
-
+                <pre><code>float_literal ← '-'? [0-9]+ '.' [0-9]+</code></pre>
+                
                 <p>
-                    Floating point values are defined as in IEEE 754. The specific
-                    type of a literal is inferred.
+                    The <span class="type">F32</span> and <span class="type">F64</span>
+                    types behaves as binary32 and binary64 respectivly as 
+                    specified in IEEE 754. The type of a <span class="rule">float_literal</span>
+                    is <a href="#type_inference">inferred</a>.
                 </p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Range</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="type">F32</span></td>
-                            <td>±1.18×10−38 to ±3.4×1038</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">F64</span></td>
-                            <td>±2.23×10−308 to ±1.80×10308</td>
-                        </tr>
-                    </tbody>
-                </table>
-
                 <h3>4.9.2. Integer literals</h3>
-                <pre><code>integer_literal ← binary_integer 
-                / decimal_integer 
-                / hexadecimal_integer
+                <pre><code>integer_literal ← '-'? (binary_integer / decimal_integer / hexadecimal_integer)
 
 binary_integer ← '0b' [01]+ ('_' [01]+)*
 decimal_integer ← [0-9]+ ('_' [0-9]+)*
@@ -742,8 +735,9 @@ hexadecimal_integer ← '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
 hexadecimal_digit ← [0-9A-F]</code></pre>
 
                 <p>
-                    The specific type of a literal is inferred. The underscore doesn't 
-                    change the value of the <span class="rule">integer_literal</span>.
+                    The type of a <span class="rule">integer_literal</span> is 
+                    <a href="#type_inference">inferred</a>.
+                    The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
                     <span class="type">IXX</span> is stored using Two's complement.
                     <span class="type">IXX</span> and <span class="type">UXX</span>
                     wrap around.
@@ -842,12 +836,14 @@ left_curly_bracket ← '{' whitespace
 right_curly_bracket ← '}' whitespace</code></pre>
 
                 <p>
-                    Dynamic arrays are defined by <span class="rule">type</span> and
-                    dimensions.
-                    Static arrays are defined by <span class="rule">dimension</span>s
-                    and <span class="rule">elements</span>. Each <span class="rule">dimension</span>'s
-                    <span class="rule">expression</span> must fit within <span class="type">U32</span>.
-                    Arrays have a length and pointer field.
+                    Dynamic arrays are defined by <span class="rule">type</span>
+                    and dimensions. Static arrays are defined by 
+                    <span class="rule">dimension</span>s and 
+                    <span class="rule">elements</span>. Each 
+                    <span class="rule">dimension</span>'s 
+                    <span class="rule">expression</span> must fit within 
+                    <span class="type">U32</span>. Arrays have a length 
+                    and pointer field.
                 </p>
 
                 <h3>4.9.7. Compound literals</h3>
@@ -893,7 +889,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
 
                 <p>
                     <span class="rule">size_of_expression</span> is substituted for an
-                    <span class="rule">integer_literal</span> of the size of a <span class="rule">type</span>
+                    <span class="type">U32</span> of the size of a <span class="rule">type</span>
                     or an <span class="rule">expression</span>'s type in bytes.
                 </p>
                 
@@ -905,14 +901,15 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.12. Reference expressions</h3>
-                <pre><code>reference_expression ← lower_case_identifier</code></pre>
+                <pre><code>reference_expression ← lower_case_identifier generalized_types?</code></pre>
                 
                 <p>
                     <span class="rule">reference_expression</span> refers to a
                     variable, <span class="keyword">input</span> or 
-                    <span class="keyword">function</span> with the same name in scope. 
-                    Each variable and <span class="keyword">input</span> must be used in a 
-                    <span class="rule">reference_expression</span>.
+                    <span class="keyword">function</span> with the same name in scope.
+                    If the <span class="rule">reference_expression</span> refers to 
+                    a <span class="keyword">function</span> the <span class="rule">type</span> 
+                    is <a href="#type_inference">inferred</a>.
                 </p>
                 
                 <h3>4.9.13. Enumeration constant access expression</h3>
@@ -928,10 +925,89 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 <pre><code>cast_expression ← type left_parenthesis expression right_parenthesis</code></pre>
 
                 <p>
-                    Casts the <span class="rule">expression</span> to the <span class="rule">type</span>
-                    then returns the value.
+                    Converts the value of <span class="rule">expression</span> 
+                    to <span class="rule">type</span>.
                 </p>
-
+                
+                <p>
+                    When casting an integer (<span class="keyword">enumeration</span> 
+                    types act as their underlying type) type to another integer type:
+                </p>
+                
+                <ul>
+                    <li>
+                        If <span class="rule">type</span> is smaller than 
+                        <span class="rule">expression</span>'s type then the 
+                        most significant bits of the <span class="rule">expression</span>
+                        are truncated and the remaning bits are reinterpreted as
+                        the <span class="rule">type</span>.
+                    </li>
+                    <li>
+                        If <span class="rule">type</span> is larger than 
+                        <span class="rule">expression</span>'s type then 
+                        the value is either Sign extended or Zero extended
+                        to the same size as <span class="rule">type</span> then 
+                        the bits are reinterpreted as the <span class="rule">type</span>.
+                    </li>
+                    <li>
+                        If <span class="rule">type</span> is the same size as
+                        <span class="rule">expression</span>'s type then the 
+                        bits are reinterpreted as the <span class="rule">type</span>.
+                    </li>
+                </ul>
+                
+                <p>When casting a <span class="type">FXX</span> to <span class="type">FXX</span>:</p>
+                <ul>
+                    <li>
+                        If <span class="rule">type</span> is <span class="type">F64</span>
+                        and <span class="rule">expression</span>'s type is <span class="type">F32</span>
+                        the <span class="rule">expression</span> is rounded to 
+                        the nearest <span class="type">F32</span> value. If the
+                        <span class="rule">expression</span> is too low to 
+                        represent as <span class="type">F32</span> then the 
+                        result is ±0. If the <span class="rule">expression</span> 
+                        is too large to represent as <span class="type">F32</span>
+                        the result is ±infinity. If the <span class="rule">expression</span>
+                        is NaN then the result is NaN.
+                    </li>
+                    <li>
+                        If <span class="rule">type</span> is <span class="type">F32</span>
+                        and <span class="rule">expression</span>'s type is 
+                        <span class="type">F64</span> the result is a
+                        <span class="type">F64</span> representing the same 
+                        value as the <span class="rule">expression</span>.
+                    </li>
+                    <li>
+                        If <span class="rule">type</span> is the same as
+                        <span class="rule">expression</span>'s type then the
+                        result is <span class="rule">expression</span>.
+                    </li>
+                </ul>
+                
+                <p>
+                    When casting from a <span class="type">FXX</span> to an integer type 
+                    the fraction is discarded (truncation towards zero). If
+                    the value of the <span class="rule">expression</span> is 
+                    NaN, infinite or value doesn't fit in <span class="rule">type</span>
+                    the result is undefined.
+                </p>                
+                
+                <p>
+                    When casting from an integer type to a <span class="type">FXX</span> 
+                    the result is a <span class="type">FXX</span> representing 
+                    the same value as the <span class="rule">expression</span>.
+                </p>
+                
+                <p>
+                    When the <span class="rule">expression</span> is a 
+                    <span class="rule">reference_expression</span> to a
+                    <span class="keyword">function</span> then 
+                    <span class="rule">type</span> must a <span class="keyword">function</span> type
+                    which matches an overload in scope. The <span class="rule">reference_expression</span>
+                    is not allowed to specify <span class="rule">generalized_types</span>.
+                    The result is a reference to that specific overload. 
+                </p>
+                
                 <h1>5. Types</h1>
                 <pre><code>types ← type (comma type)*
 type ← (array_type_of / pointer_type_of)* (upper_case_identifier generalized_types? / function_type)
@@ -945,6 +1021,14 @@ generalized_types ← left_angle_bracket types right_angle_bracket
 function_type ← function
                     (input types)?
                     (output types)?</code></pre>
+                    
+                <p id="type_inference">
+                    A <span class="rule">type</span> can be inferred from a 
+                    <span class="rule">cast_expression</span>, <span class="rule">call_expression</span>, the <i>n</i>th <span class="keyword">output</span> <span class="rule">type</span>,
+                    the type of the <i>n</i>th <span class="rule">variable</span> in a <span class="rule">declaration_statement</span>,
+                    the type of the <i>n</i>th <span class="rule">expression</span> in an <span class="rule">assignment_statement</span> or
+                    the other operand of a binary expression. 
+                </p>
             </section>
         </main>
     </body>
