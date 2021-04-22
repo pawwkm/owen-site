@@ -57,83 +57,83 @@
                 </blockquote>
 
                 <h1>1. Files</h1>
-                <pre><code>file ← whitespace
-       namespace_directive
-       use_directive*
-       declaration*
+                <pre><code>file &lt;- whitespace
+        namespace_directive
+        use_directive*
+        declaration*
 
-namespace_directive ← namespace upper_case_identifier
-use_directive ← use upper_case_identifier
+namespace_directive &lt;- namespace upper_case_identifier
+use_directive &lt;- use upper_case_identifier
 
-declaration ← function_declaration
-            / external_function_declaration
-            / proposition_declaration
-            / compound_declaration
-            / enumeration_declaration
-            / version_declaration
+declaration &lt;- function_declaration
+             / external_function_declaration
+             / proposition_declaration
+             / compound_declaration
+             / enumeration_declaration
+             / version_declaration
 
-upper_case_identifier ← [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* whitespace
-lower_case_identifier ← !keyword [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* whitespace
-keyword ← namespace
-        / use
-        / public
-        / external
-        / function
-        / input
-        / output
-        / end
-        / if
-        / elif
-        / else
-        / for
-        / while
-        / break
-        / continue
-        / structure
-        / proposition
-        / enumeration
-        / of
-        / sizeof
-        / union
-        / return
-        / true
-        / false
-        / assert
-        / null
-        / generalize
-        / version
+upper_case_identifier &lt;- [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* whitespace
+lower_case_identifier &lt;- !keyword [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* whitespace
+keyword &lt;- namespace
+         / use
+         / public
+         / external
+         / function
+         / input
+         / output
+         / end
+         / if
+         / elif
+         / else
+         / for
+         / while
+         / break
+         / continue
+         / structure
+         / proposition
+         / enumeration
+         / of
+         / sizeof
+         / union
+         / return
+         / true
+         / false
+         / assert
+         / null
+         / generalize
+         / version
         
-namespace ← 'namespace' whitespace
-use ← 'use' whitespace
-public ← 'public' whitespace
-external ← 'external' whitespace
-function ← 'function' whitespace
-input ← 'input' whitespace
-output ← 'output' whitespace
-end ← 'end' whitespace
-if ← 'if' whitespace
-elif ← 'elif' whitespace
-else ← 'else' whitespace
-for ← 'for' whitespace
-while ← 'while' whitespace
-break ← 'break' whitespace
-continue ← 'continue' whitespace
-structure ← 'structure' whitespace
-proposition ← 'proposition' whitespace
-enumeration ← 'enumeration' whitespace
-of ← 'of' whitespace
-sizeof ← 'sizeof' whitespace
-union ← 'union' whitespace
-return ← 'return' whitespace
-true ← 'true' whitespace
-false ← 'false' whitespace
-assert ← 'assert' whitespace
-null ← 'null' whitespace
-generalize ← 'generalize' whitespace
-version ← 'version' whitespace
+namespace &lt;- 'namespace' whitespace
+use &lt;- 'use' whitespace
+public &lt;- 'public' whitespace
+external &lt;- 'external' whitespace
+function &lt;- 'function' whitespace
+input &lt;- 'input' whitespace
+output &lt;- 'output' whitespace
+end &lt;- 'end' whitespace
+if &lt;- 'if' whitespace
+elif &lt;- 'elif' whitespace
+else &lt;- 'else' whitespace
+for &lt;- 'for' whitespace
+while &lt;- 'while' whitespace
+break &lt;- 'break' whitespace
+continue &lt;- 'continue' whitespace
+structure &lt;- 'structure' whitespace
+proposition &lt;- 'proposition' whitespace
+enumeration &lt;- 'enumeration' whitespace
+of &lt;- 'of' whitespace
+sizeof &lt;- 'sizeof' whitespace
+union &lt;- 'union' whitespace
+return &lt;- 'return' whitespace
+true &lt;- 'true' whitespace
+false &lt;- 'false' whitespace
+assert &lt;- 'assert' whitespace
+null &lt;- 'null' whitespace
+generalize &lt;- 'generalize' whitespace
+version &lt;- 'version' whitespace
 
-whitespace ← (' ' / '\n' / comment)*
-comment ← '//' (!'\n' .)* '\n'?</code></pre>
+whitespace &lt;- (' ' / '\n' / comment)*
+comment &lt;- '//' (!'\n' .)* '\n'?</code></pre>
 
                 <p>
                     The <span class="rule">namespace_directive</span> specifies that
@@ -164,17 +164,17 @@ comment ← '//' (!'\n' .)* '\n'?</code></pre>
                 </p>
                 
                 <h2>2.1 Functions</h2>
-                <pre><code>function_declaration ← public? function_signature
-                           statements
-                       end
+                <pre><code>function_declaration &lt;- public? function_signature
+                            statements
+                        end
 
-function_signature ← function lower_case_identifier
-                         (generalize upper_case_identifiers)?
-                         (input arguments)?
-                         (output types)?
+function_signature &lt;- function lower_case_identifier
+                          (generalize upper_case_identifiers)?
+                          (input arguments)?
+                          (output types)?
 
-upper_case_identifiers = upper_case_identifier (comma upper_case_identifier)*
-arguments ← type lower_case_identifier (comma type lower_case_identifier)*</code></pre>
+upper_case_identifiers &lt;- upper_case_identifier (comma upper_case_identifier)*
+arguments &lt;- type lower_case_identifier (comma type lower_case_identifier)*</code></pre>
 
                 <p>
                     Declares a function named <span class="rule">lower_case_identifier</span>.
@@ -212,9 +212,9 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
     <span class="keyword">output</span> <span class="type">I32</span></code></pre>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration ← public? external function_signature 
-                                    utf8_string_literal
-                                    utf8_string_literal</code></pre>
+                <pre><code>external_function_declaration &lt;- public? external function_signature 
+                                     utf8_string_literal
+                                     utf8_string_literal</code></pre>
                 
                 <p>
                     Defines a reference to a C function in a library. The first
@@ -224,9 +224,9 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                 </p>
 
                 <h2>2.2. Propositions</h2>
-                <pre><code>proposition_declaration ← proposition
-                              statements
-                          end</code></pre>
+                <pre><code>proposition_declaration &lt;- proposition
+                               statements
+                           end</code></pre>
 
                 <p>
                     Propositions are nameless functions that returns no values. 
@@ -234,12 +234,12 @@ arguments ← type lower_case_identifier (comma type lower_case_identifier)*</co
                 </p>
 
                 <h2>2.3. Compounds</h2>
-                <pre><code>compound_declaration ← public? (structure / union) upper_case_identifier
-                           (generalize upper_case_identifiers)?
-                            field+
-                        end
+                <pre><code>compound_declaration &lt;- public? (structure / union) upper_case_identifier
+                            (generalize upper_case_identifiers)?
+                             field+
+                         end
 
-field ← type lower_case_identifier</code></pre>
+field &lt;- type lower_case_identifier</code></pre>
 
                 <p>
                     <span class="rule">structure</span> <span class="rule">field</span>s
@@ -268,11 +268,11 @@ field ← type lower_case_identifier</code></pre>
                 </p>
 
                 <h2>2.4. Enumerations</h2>
-                <pre><code>enumeration_declaration ← public? enumeration upper_case_identifier of upper_case_identifier
-                              enumeration_constant*
-                          end
+                <pre><code>enumeration_declaration &lt;- public? enumeration upper_case_identifier of upper_case_identifier
+                               enumeration_constant*
+                           end
 
-enumeration_constant ← lower_case_identifier (assign integer_literal)?</code></pre>
+enumeration_constant &lt;- lower_case_identifier (assign integer_literal)?</code></pre>
 
                 <p>
                     The first <span class="rule">upper_case_identifier</span> is the name of the 
@@ -293,9 +293,9 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                 </p>
 
                 <h2>2.5. Versions</h2>
-                <pre><code>version_declaration ← version upper_case_identifier
-                          declaration*
-                      end</code></pre>
+                <pre><code>version_declaration &lt;- version upper_case_identifier
+                           declaration*
+                       end</code></pre>
 
                 <p>
                     Conditionally compiles <span class="rule">declaration</span>s
@@ -305,20 +305,20 @@ enumeration_constant ← lower_case_identifier (assign integer_literal)?</code><
                 </p>
 
                 <h1>3. Statements</h1>
-                <pre><code>statements ← statement* block_ending_statement?
+                <pre><code>statements &lt;- statement* block_ending_statement?
                 
-statement ← declaration_statement
-          / assignment_statement
-          / expression_statement
-          / if_statement
-          / for_statement
-          / while_statement
-          / assert_statement
-          / version_statement
+statement &lt;- declaration_statement
+           / assignment_statement
+           / expression_statement
+           / if_statement
+           / for_statement
+           / while_statement
+           / assert_statement
+           / version_statement
              
-block_ending_statement ← break_statement 
-                       / continue_statement
-                       / return_statement</code></pre>
+block_ending_statement &lt;- break_statement 
+                        / continue_statement
+                        / return_statement</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in 
@@ -326,8 +326,8 @@ block_ending_statement ← break_statement
                 </p>
 
                 <h2>3.1. Declaration statements</h2>
-                <pre><code>declaration_statement ← variable (comma variable)* '=' expressions 
-variable ← type lower_case_identifier</code></pre>
+                <pre><code>declaration_statement &lt;- variable (comma variable)* '=' expressions 
+variable &lt;- type lower_case_identifier</code></pre>
  
                 <p>
                     Declares <span class="rule">variable</span>s in the current 
@@ -363,9 +363,9 @@ variable ← type lower_case_identifier</code></pre>
                 </p>
 
                 <h2>3.2. Assignment statements</h2>
-                <pre><code>assignment_statement ← expressions assignment_operator expressions
-expressions ← expression (comma expression)*
-assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespace</code></pre>
+                <pre><code>assignment_statement &lt;- expressions assignment_operator expressions
+expressions &lt;- expression (comma expression)*
+assignment_operator &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespace</code></pre>
     
                 <p>
                     <span class="rule">assignment_statement</span> works the same 
@@ -389,7 +389,7 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                 </p>
 
                 <h2>3.3. Expression statements</h2>
-                <pre><code>expression_statement ← expression</code></pre>
+                <pre><code>expression_statement &lt;- expression</code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be a 
@@ -398,15 +398,15 @@ assignment_operator ← ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespa
                 </p>
 
                 <h2>3.4. If statements</h2>
-                <pre><code>if_statement ← if (declaration_statement semicolon)? expression
-                   statements
-              (elif (declaration_statement semicolon)? expression
-                   statements)*
-              (else
-                   statements)?
-               end
+                <pre><code>if_statement &lt;- if (declaration_statement semicolon)? expression
+                    statements
+               (elif (declaration_statement semicolon)? expression
+                    statements)*
+               (else
+                    statements)?
+                end
 
-semicolon ← ';' whitespace</code></pre>
+semicolon &lt;- ';' whitespace</code></pre>
 
                 <p>
                     Each <span class="rule">expression</span> is evaluated in
@@ -426,9 +426,9 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.5. For statements</h2>
-                <pre><code>for_statement ← for declaration_statement semicolon expression semicolon assignment_statement
-                    statements
-                end</code></pre>
+                <pre><code>for_statement &lt;- for declaration_statement semicolon expression semicolon assignment_statement
+                     statements
+                 end</code></pre>
 
                 <p>
                     The <span class="rule">declaration_statement</span> is executed before
@@ -443,9 +443,9 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.6. While statements</h2>
-                <pre><code>while_statement ← while (declaration_statement semicolon)? expression
-                      statements
-                  end</code></pre>
+                <pre><code>while_statement &lt;- while (declaration_statement semicolon)? expression
+                       statements
+                   end</code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be of type of
@@ -465,7 +465,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.7. Break statements</h2>
-                <pre><code>break_statement ← break</code></pre>
+                <pre><code>break_statement &lt;- break</code></pre>
 
                 <p>
                     The <span class="rule">break_statement</span> stops the execution
@@ -474,7 +474,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
                 
                 <h2>3.8. Continue statements</h2>
-                <pre><code>continue_statement ← continue</code></pre>
+                <pre><code>continue_statement &lt;- continue</code></pre>
 
                 <p>
                     The <span class="rule">continue_statement</span> begins the 
@@ -482,7 +482,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.9. Return statements</h2>
-                <pre><code>return_statement ← return expressions?</code></pre>
+                <pre><code>return_statement &lt;- return expressions?</code></pre>
 
                 <p>
                     Returns the control the function that called the one that
@@ -498,7 +498,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
             
                 <h2>3.10. Assert statements</h2>
-                <pre><code>assert_statement ← assert expression</code></pre>
+                <pre><code>assert_statement &lt;- assert expression</code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be type of
@@ -512,9 +512,9 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.11. Version statements</h2>
-                <pre><code>version_statement ← version upper_case_identifier
-                        statements
-                    end</code></pre>
+                <pre><code>version_statement &lt;- version upper_case_identifier
+                         statements
+                     end</code></pre>
                     
                 <p>
                     Works the same way as Version Declarations but for
@@ -522,7 +522,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h1>4. Expressions</h1>
-                <pre><code>expression ← logical_or_expression</code></pre>
+                <pre><code>expression &lt;- logical_or_expression</code></pre>
 
                 <p>
                     <span class="rule">logical_or_expression</span> has the 
@@ -532,7 +532,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.2. Logical or expressions</h2>
-                <pre><code>logical_or_expression ← logical_and_expression ('||' whitespace logical_and_expression)*</code></pre>
+                <pre><code>logical_or_expression &lt;- logical_and_expression ('||' whitespace logical_and_expression)*</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
@@ -544,7 +544,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.3. Logical and expressions</h2>
-                <pre><code>logical_and_expression ← relational_expression ('&amp;&amp;' whitespace relational_expression)*</code></pre>
+                <pre><code>logical_and_expression &lt;- relational_expression ('&amp;&amp;' whitespace relational_expression)*</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
@@ -556,7 +556,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.4. Relational expressions</h2>
-                <pre><code>relational_expression ← additive_expression (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') whitespace additive_expression)*</code></pre>
+                <pre><code>relational_expression &lt;- additive_expression (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') whitespace additive_expression)*</code></pre>
                 
                 <p>
                     The comparison results in a <span class="type">Bool</span>.
@@ -575,7 +575,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.5. Additive expressions</h2>
-                <pre><code>additive_expression ← multiplicative_expression (('+' / '-' / '|' / '^') whitespace multiplicative_expression)*</code></pre>
+                <pre><code>additive_expression &lt;- multiplicative_expression (('+' / '-' / '|' / '^') whitespace multiplicative_expression)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -596,7 +596,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
                 
                 <h2>4.6. Multiplicative expressions</h2>
-                <pre><code>multiplicative_expression ← prefix_expression (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') whitespace prefix_expression)*</code></pre>
+                <pre><code>multiplicative_expression &lt;- prefix_expression (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') whitespace prefix_expression)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -611,22 +611,25 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.7. Prefix expressions</h2>
-                <pre><code>prefix_expression ← (not_expression / negate_expression / address_of_expression / dereference_expression)*
-                  / postfix_expression</code></pre>
+                <pre><code>prefix_expression &lt;- not_expression 
+                   / negate_expression 
+                   / address_of_expression 
+                   / dereference_expression
+                   / postfix_expression</code></pre>
 
                 <p>
                     Prefix operators are right associative.
                 </p>
 
                 <h3>4.7.1. Not expressions</h3>
-                <pre><code>not_expression ← '!' whitespace prefix_expression</code></pre>
+                <pre><code>not_expression &lt;- '!' whitespace prefix_expression</code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
                 <h3>4.7.2. Negate expressions</h3>
-                <pre><code>negate_expression ← '-' whitespace prefix_expression</code></pre>
+                <pre><code>negate_expression &lt;- '-' whitespace prefix_expression</code></pre>
 
                 <p>
                     Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
@@ -634,7 +637,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h3>4.7.3. Address of expressions</h3>
-                <pre><code>address_of_expression ← '#' whitespace prefix_expression</code></pre>
+                <pre><code>address_of_expression &lt;- '#' whitespace prefix_expression</code></pre>
 
                 <p>
                     Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">prefix_expression</span>.
@@ -643,7 +646,7 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
                 
                 <h3>4.7.4. Dereference expressions</h3>
-                <pre><code>dereference_expression ← '@' whitespace prefix_expression</code></pre>
+                <pre><code>dereference_expression &lt;- '@' whitespace prefix_expression</code></pre>
 
                 <p>
                     Deferences the <span class="rule">prefix_expression</span>.
@@ -653,11 +656,11 @@ semicolon ← ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.8. Postfix expressions</h2>
-                <pre><code>postfix_expression ← primary_expression (field_access_expression / call_expression / array_access_expression)*</code></pre>
+                <pre><code>postfix_expression &lt;- primary_expression (field_access_expression / call_expression / array_access_expression)*</code></pre>
 
                 <h3>4.8.1. Field access expressions</h3>
-                <pre><code>field_access_expression ← dot lower_case_identifier
-dot ← '.' whitespace</code></pre>
+                <pre><code>field_access_expression &lt;- dot lower_case_identifier
+dot &lt;- '.' whitespace</code></pre>
 
                 <p>
                     The <span class="rule">lower_case_identifier</span> must be
@@ -666,7 +669,7 @@ dot ← '.' whitespace</code></pre>
                 </p>
 
                 <h3>4.8.2. Call expressions</h3>
-                <pre><code>call_expression ← left_parenthesis expressions? right_parenthesis</code></pre>
+                <pre><code>call_expression &lt;- left_parenthesis expressions? right_parenthesis</code></pre>
 
                 <p>
                     The <span class="rule">primary_expression</span> being
@@ -688,10 +691,10 @@ dot ← '.' whitespace</code></pre>
                 </p>
                 
                 <h3>4.8.3. Array access expressions</h3>
-                <pre><code>array_access_expression ← left_square_bracket expression right_square_bracket
+                <pre><code>array_access_expression &lt;- left_square_bracket expression right_square_bracket
 
-left_square_bracket ← '[' whitespace
-right_square_bracket ← ']' whitespace</code></pre>
+left_square_bracket &lt;- '[' whitespace
+right_square_bracket &lt;- ']' whitespace</code></pre>
 
                 <p>
                     The indexed expression must be an array type. The type of <span class="rule">array_access_expression</span>
@@ -702,23 +705,23 @@ right_square_bracket ← ']' whitespace</code></pre>
                 </p>
 
                 <h2>4.9. Primary expressions</h2>
-                <pre><code>primary_expression ← float_literal
-                   / integer_literal
-                   / boolean_literal
-                   / unicode_code_point_literal
-                   / utf8_string_literal
-                   / array_literal
-                   / compound_literal
-                   / null_literal
-                   / uninitialized_literal
-                   / size_of_expression
-                   / parenthesized_expression
-                   / reference_expression
-                   / enumeration_constant_access
-                   / cast_expression</code></pre>
+                <pre><code>primary_expression &lt;- float_literal
+                    / integer_literal
+                    / boolean_literal
+                    / unicode_code_point_literal
+                    / utf8_string_literal
+                    / array_literal
+                    / compound_literal
+                    / null_literal
+                    / uninitialized_literal
+                    / size_of_expression
+                    / parenthesized_expression
+                    / reference_expression
+                    / enumeration_constant_access
+                    / cast_expression</code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code>float_literal ← '-'? [0-9]+ '.' [0-9]+</code></pre>
+                <pre><code>float_literal &lt;- '-'? [0-9]+ '.' [0-9]+</code></pre>
                 
                 <p>
                     The <span class="type">F32</span> and <span class="type">F64</span>
@@ -728,12 +731,12 @@ right_square_bracket ← ']' whitespace</code></pre>
                 </p>
 
                 <h3>4.9.2. Integer literals</h3>
-                <pre><code>integer_literal ← '-'? (binary_integer / decimal_integer / hexadecimal_integer)
+                <pre><code>integer_literal &lt;- '-'? (binary_integer / decimal_integer / hexadecimal_integer)
 
-binary_integer ← '0b' [01]+ ('_' [01]+)*
-decimal_integer ← [0-9]+ ('_' [0-9]+)*
-hexadecimal_integer ← '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
-hexadecimal_digit ← [0-9A-F]</code></pre>
+binary_integer &lt;- '0b' [01]+ ('_' [01]+)*
+decimal_integer &lt;- [0-9]+ ('_' [0-9]+)*
+hexadecimal_integer &lt;- '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
+hexadecimal_digit &lt;- [0-9A-F]</code></pre>
 
                 <p>
                     The type of a <span class="rule">integer_literal</span> is 
@@ -797,7 +800,7 @@ hexadecimal_digit ← [0-9A-F]</code></pre>
                 </table>
 
                 <h3>4.9.3. Boolean literals</h3>
-                <pre><code>boolean_literal ← true / false</code></pre>
+                <pre><code>boolean_literal &lt;- true / false</code></pre>
 
                 <p>
                     <span class="rule">boolean_literal</span>s are type of
@@ -806,11 +809,11 @@ hexadecimal_digit ← [0-9A-F]</code></pre>
                 
                                 
                 <h3>4.9.4. Unicode code point literals</h3>
-                <pre><code>unicode_code_point_literal ← "'" (unicode_escape_sequence / !"'" .) "'"
+                <pre><code>unicode_code_point_literal &lt;- "'" (unicode_escape_sequence / !"'" .) "'"
                 
-unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
-                        / '\\U' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
-                                hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit</code></pre>
+unicode_escape_sequence &lt;- '\\u' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
+                         / '\\U' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
+                                 hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit</code></pre>
 
                 <p>
                     The <span class="rule">hexadecimal_digit</span>s in <span class="rule">unicode_escape_sequence</span>
@@ -818,7 +821,7 @@ unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecima
                 </p>
 
                 <h3>4.9.5. UTF-8 string literals</h3>
-                <pre><code>utf8_string_literal ← '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
+                <pre><code>utf8_string_literal &lt;- '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
                 
                 <p>
                     <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are 
@@ -826,15 +829,15 @@ unicode_escape_sequence ← '\\u' hexadecimal_digit hexadecimal_digit hexadecima
                 </p>
 
                 <h3>4.9.6. Array literals</h3>
-                <pre><code>array_literal ← type (left_square_bracket right_square_bracket)+
-              / dimension+ elements
+                <pre><code>array_literal &lt;- type (left_square_bracket right_square_bracket)+
+               / dimension+ elements
 
-dimension ← left_square_bracket integer_literal? right_square_bracket
-elements ← left_curly_bracket element (comma element)* right_curly_bracket
-element ← elements / expressions
+dimension &lt;- left_square_bracket integer_literal? right_square_bracket
+elements &lt;- left_curly_bracket element (comma element)* right_curly_bracket
+element &lt;- elements / expressions
 
-left_curly_bracket ← '{' whitespace
-right_curly_bracket ← '}' whitespace</code></pre>
+left_curly_bracket &lt;- '{' whitespace
+right_curly_bracket &lt;- '}' whitespace</code></pre>
 
                 <p>
                     Dynamic arrays are defined by <span class="rule">type</span>
@@ -848,11 +851,11 @@ right_curly_bracket ← '}' whitespace</code></pre>
                 </p>
 
                 <h3>4.9.7. Compound literals</h3>
-                <pre><code>compound_literal ← left_curly_bracket
-                       field_initializer (comma field_initializer)*
-                   right_curly_bracket
+                <pre><code>compound_literal &lt;- left_curly_bracket
+                        field_initializer (comma field_initializer)*
+                    right_curly_bracket
 
-field_initializer ← lower_case_identifier equal expression</code></pre>
+field_initializer &lt;- lower_case_identifier equal expression</code></pre>
 
                 <p>
                     Initializes the specified fields of a compound type which is <a href="#type_inference">inferred</a>.
@@ -869,7 +872,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
 
                 <h3>4.9.8. Null literals</h3>
-                <pre><code>null_literal ← null</code></pre>
+                <pre><code>null_literal &lt;- null</code></pre>
 
                 <p>
                     The value is what C dictates on the given platform.
@@ -877,7 +880,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.9. Uninitialized literals</h3>
-                <pre><code>uninitialized_literal ← '---' whitespace type</code></pre>
+                <pre><code>uninitialized_literal &lt;- '---' whitespace type</code></pre>
 
                 <p>
                     <span class="rule">uninitialized_literal</span> can only be used for declaring a variable 
@@ -886,7 +889,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.10. Size of expressions</h3>
-                <pre><code>size_of_expression ← sizeof left_parenthesis (type / expression) right_parenthesis</code></pre>
+                <pre><code>size_of_expression &lt;- sizeof left_parenthesis (type / expression) right_parenthesis</code></pre>
 
                 <p>
                     <span class="rule">size_of_expression</span> is substituted for an
@@ -895,14 +898,14 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.11. Parenthesized expressions</h3>
-                <pre><code>parenthesized_expression ← left_parenthesis expression right_parenthesis</code></pre>
+                <pre><code>parenthesized_expression &lt;- left_parenthesis expression right_parenthesis</code></pre>
                 <p>
                     The type and value of <span class="rule">parenthesized_expression</span>
                     is the same as the <span class="rule">expression</span>.
                 </p>
                 
                 <h3>4.9.12. Reference expressions</h3>
-                <pre><code>reference_expression ← lower_case_identifier generalized_types?</code></pre>
+                <pre><code>reference_expression &lt;- lower_case_identifier generalized_types?</code></pre>
                 
                 <p>
                     <span class="rule">reference_expression</span> refers to a
@@ -914,7 +917,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.13. Enumeration constant access expression</h3>
-                <pre><code>enumeration_constant_access ← upper_case_identifier dot lower_case_identifier</code></pre>
+                <pre><code>enumeration_constant_access &lt;- upper_case_identifier dot lower_case_identifier</code></pre>
                 <p>
                     <span class="rule">upper_case_identifier</span> is the <span class="keyword">enumeration</span> type and 
                     <span class="rule">lower_case_identifier</span> is the <span class="rule">enumeration_constant</span> on 
@@ -923,7 +926,7 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
 
                 <h3>4.9.14. Cast expressions</h3>
-                <pre><code>cast_expression ← type left_parenthesis expression right_parenthesis</code></pre>
+                <pre><code>cast_expression &lt;- type left_parenthesis expression right_parenthesis</code></pre>
 
                 <p>
                     Converts the value of <span class="rule">expression</span> 
@@ -1010,18 +1013,18 @@ field_initializer ← lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h1>5. Types</h1>
-                <pre><code>types ← type (comma type)*
-type ← (array_type_of / pointer_type_of)* (upper_case_identifier generalized_types? / function_type)
+                <pre><code>types &lt;- type (comma type)*
+type &lt;- (array_type_of / pointer_type_of)* (upper_case_identifier generalized_types? / function_type)
 
-array_type_of ← left_square_bracket right_square_bracket
+array_type_of &lt;- left_square_bracket right_square_bracket
 
-pointer_type_of ← '#' whitespace
+pointer_type_of &lt;- '#' whitespace
 
-generalized_types ← left_angle_bracket types right_angle_bracket
+generalized_types &lt;- left_angle_bracket types right_angle_bracket
 
-function_type ← function
-                    (input types)?
-                    (output types)?</code></pre>
+function_type &lt;- function
+                     (input types)?
+                     (output types)?</code></pre>
                     
                 <p id="type_inference">
                     A <span class="rule">type</span> can be inferred from a 
