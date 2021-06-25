@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.22.0</title>
+        <title>Owen specification 0.23.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.22.0</h1>
+                    <h1>Owen specification 0.23.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -39,7 +39,7 @@
                     </li>
                     <li>Compiler/spec simplicity &gt; backwards compatibility.</li>
                     <li>
-                        If there is no resonable default from the spec's perspective
+                        If there is no reasonable default from the spec's perspective
                         it is the programmer's decision.
                     </li>
                 </ul>
@@ -57,83 +57,77 @@
                 </blockquote>
 
                 <h1>1. Files</h1>
-                <pre><code>file &lt;- whitespace
-        namespace_directive
-        use_directive*
-        declaration*
+                <pre><code><span class="rule">file</span> &lt;- <span class="rule">whitespace</span>
+        <span class="rule">namespace_directive</span>
+        <span class="rule">use_directive</span>*
+        <span class="rule">declaration</span>*
+        !.
 
-namespace_directive &lt;- namespace upper_case_identifier
-use_directive &lt;- use upper_case_identifier
+<span class="rule">namespace_directive</span> &lt;- <span class="rule">namespace</span> <span class="rule">upper_case_identifier</span>
+<span class="rule">use_directive</span> &lt;- <span class="rule">use</span> <span class="rule">upper_case_identifier</span>
 
-declaration &lt;- function_declaration
-             / external_function_declaration
-             / proposition_declaration
-             / compound_declaration
-             / enumeration_declaration
-             / version_declaration
+<span class="rule">declaration</span> &lt;- <span class="rule">function_declaration</span>
+             / <span class="rule">external_function_declaration</span>
+             / <span class="rule">proposition_declaration</span>
+             / <span class="rule">compound_declaration</span>
+             / <span class="rule">enumeration_declaration</span>
+             / <span class="rule">version_declaration</span>
 
-upper_case_identifier &lt;- [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* whitespace
-lower_case_identifier &lt;- !keyword [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* whitespace
-keyword &lt;- namespace
-         / use
-         / public
-         / external
-         / function
-         / input
-         / output
-         / end
-         / if
-         / elif
-         / else
-         / for
-         / while
-         / break
-         / continue
-         / structure
-         / proposition
-         / enumeration
-         / of
-         / sizeof
-         / union
-         / return
-         / true
-         / false
-         / assert
-         / null
-         / generalize
-         / version
+<span class="rule">upper_case_identifier</span> &lt;- [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* <span class="rule">whitespace</span>
+<span class="rule">lower_case_identifier</span> &lt;- !<span class="rule">keyword</span> [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* <span class="rule">whitespace</span>
+<span class="rule">keyword</span> &lt;- <span class="rule">namespace</span>
+         / <span class="rule">use</span>
+         / <span class="rule">public</span>
+         / <span class="rule">external</span>
+         / <span class="rule">function</span>
+         / <span class="rule">end</span>
+         / <span class="rule">if</span>
+         / <span class="rule">elif</span>
+         / <span class="rule">else</span>
+         / <span class="rule">for</span>
+         / <span class="rule">while</span>
+         / <span class="rule">break</span>
+         / <span class="rule">continue</span>
+         / <span class="rule">structure</span>
+         / <span class="rule">proposition</span>
+         / <span class="rule">enumeration</span>
+         / <span class="rule">sizeof</span>
+         / <span class="rule">union</span>
+         / <span class="rule">return</span>
+         / <span class="rule">true</span>
+         / <span class="rule">false</span>
+         / <span class="rule">assert</span>
+         / <span class="rule">null</span>
+         / <span class="rule">version</span>
         
-namespace &lt;- 'namespace' whitespace
-use &lt;- 'use' whitespace
-public &lt;- 'public' whitespace
-external &lt;- 'external' whitespace
-function &lt;- 'function' whitespace
-input &lt;- 'input' whitespace
-output &lt;- 'output' whitespace
-end &lt;- 'end' whitespace
-if &lt;- 'if' whitespace
-elif &lt;- 'elif' whitespace
-else &lt;- 'else' whitespace
-for &lt;- 'for' whitespace
-while &lt;- 'while' whitespace
-break &lt;- 'break' whitespace
-continue &lt;- 'continue' whitespace
-structure &lt;- 'structure' whitespace
-proposition &lt;- 'proposition' whitespace
-enumeration &lt;- 'enumeration' whitespace
-of &lt;- 'of' whitespace
-sizeof &lt;- 'sizeof' whitespace
-union &lt;- 'union' whitespace
-return &lt;- 'return' whitespace
-true &lt;- 'true' whitespace
-false &lt;- 'false' whitespace
-assert &lt;- 'assert' whitespace
-null &lt;- 'null' whitespace
-generalize &lt;- 'generalize' whitespace
-version &lt;- 'version' whitespace
+<span class="rule">namespace</span>   &lt;- 'namespace'   <span class="rule">whitespace</span>
+<span class="rule">use</span>         &lt;- 'use'         <span class="rule">whitespace</span>
+<span class="rule">public</span>      &lt;- 'public'      <span class="rule">whitespace</span>
+<span class="rule">external</span>    &lt;- 'external'    <span class="rule">whitespace</span>
+<span class="rule">function</span>    &lt;- 'function'    <span class="rule">whitespace</span>
+<span class="rule">end</span>         &lt;- 'end'         <span class="rule">whitespace</span>
+<span class="rule">if</span>          &lt;- 'if'          <span class="rule">whitespace</span>
+<span class="rule">elif</span>        &lt;- 'elif'        <span class="rule">whitespace</span>
+<span class="rule">else</span>        &lt;- 'else'        <span class="rule">whitespace</span>
+<span class="rule">for</span>         &lt;- 'for'         <span class="rule">whitespace</span>
+<span class="rule">while</span>       &lt;- 'while'       <span class="rule">whitespace</span>
+<span class="rule">break</span>       &lt;- 'break'       <span class="rule">whitespace</span>
+<span class="rule">continue</span>    &lt;- 'continue'    <span class="rule">whitespace</span>
+<span class="rule">structure</span>   &lt;- 'structure'   <span class="rule">whitespace</span>
+<span class="rule">proposition</span> &lt;- 'proposition' <span class="rule">whitespace</span>
+<span class="rule">enumeration</span> &lt;- 'enumeration' <span class="rule">whitespace</span>
+<span class="rule">of</span>          &lt;- 'of'          <span class="rule">whitespace</span>
+<span class="rule">sizeof</span>      &lt;- 'sizeof'      <span class="rule">whitespace</span>
+<span class="rule">union</span>       &lt;- 'union'       <span class="rule">whitespace</span>
+<span class="rule">return</span>      &lt;- 'return'      <span class="rule">whitespace</span>
+<span class="rule">true</span>        &lt;- 'true'        <span class="rule">whitespace</span>
+<span class="rule">false</span>       &lt;- 'false'       <span class="rule">whitespace</span>
+<span class="rule">assert</span>      &lt;- 'assert'      <span class="rule">whitespace</span>
+<span class="rule">null</span>        &lt;- 'null'        <span class="rule">whitespace</span>
+<span class="rule">version</span>     &lt;- 'version'     <span class="rule">whitespace</span>
 
-whitespace &lt;- (' ' / '\n' / comment)*
-comment &lt;- '//' (!'\n' .)* '\n'?</code></pre>
+<span class="rule">whitespace</span>  &lt;- (' ' / '\n' / <span class="rule">comment</span>)*
+<span class="rule">comment</span>     &lt;- '//' (!'\n' .)* '\n'?</code></pre>
 
                 <p>
                     The <span class="rule">namespace_directive</span> specifies that
@@ -149,54 +143,89 @@ comment &lt;- '//' (!'\n' .)* '\n'?</code></pre>
                 <h1>2. Declarations</h1>
                 <p>
                     If there are multiple <span class="rule">declaration</span>s 
-                    in scope that matches, it is an error. 
+                    in scope that matches, it is an error.
                 </p>
                 
                 <p>
-                    Types with the same name and amount of generalized
-                    types matches.
+                    A type <span class="rule">declaration</span> with 
+                    the same name as a primitive or as another type 
+                    <span class="rule">declaration</span> with the same amount
+                    of <span class="rule">formal_type_parameters</span> match.
                 </p>
                 
                 <p>
-                    Functions with the same name and <span class="keyword">input</span> 
-                    types (generalized types differs from non-generalized types) in
-                    the same order matches.
+                    <span class="rule">function_declaration</span>s with the
+                    same name and <i>n</i>th formal parameter's type.
+                    Formal type parameters differ from formal parameter types but 
+                    for the purpose of overloading any <span class="rule">formal_type_parameter</span>
+                    matches any other <span class="rule">formal_type_parameter</span>.
                 </p>
-                
-                <h2>2.1 Functions</h2>
-                <pre><code>function_declaration &lt;- public? function_signature
-                            statements
-                        end
 
-function_signature &lt;- function lower_case_identifier
-                          (generalize upper_case_identifiers)?
-                          (input arguments)?
-                          (output types)?
+                <h2>2.1. Functions</h2>
+                <pre><code><span class="rule">function_declaration</span> &lt;- <span class="rule">public</span>? <span class="rule">function_signature</span>
+                            <span class="rule">statements</span>
+                        <span class="rule">end</span>
 
-upper_case_identifiers &lt;- upper_case_identifier (comma upper_case_identifier)*
-arguments &lt;- type lower_case_identifier (comma type lower_case_identifier)*</code></pre>
+<span class="rule">function_signature</span> &lt;- <span class="rule">function</span>
+                      <span class="rule">lower_case_identifier</span>
+                      <span class="rule">formal_type_parameters</span>?
+                      <span class="rule">formal_parameters</span>
+                      <span class="rule">return_types</span>?
+
+<span class="rule">formal_type_parameters</span> &lt;- <span class="rule">left_angle_bracket</span>
+                          <span class="rule">formal_type_parameter</span>
+                          (<span class="rule">comma</span> <span class="rule">formal_type_parameter</span>)*
+                          <span class="rule">right_angle_bracket</span>
+
+<span class="rule">formal_type_parameter</span> &lt;- <span class="rule">upper_case_identifier</span>
+                          
+<span class="rule">formal_parameters</span> &lt;- <span class="rule">left_parenthesis</span>
+                     <span class="rule">formal_parameter</span>
+                    (<span class="rule">comma</span> <span class="rule">formal_parameter</span>)* 
+                     <span class="rule">right_parenthesis</span>
+
+<span class="rule">formal_parameter</span> &lt;- <span class="rule">type</span> <span class="rule">lower_case_identifier</span>
+                     
+<span class="rule">return_types</span> &lt;- <span class="rule">colon</span> <span class="rule">types</span>
+
+<span class="rule">colon</span> &lt;- ':' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    Declares a function named <span class="rule">lower_case_identifier</span>.
-                    <span class="keyword">input</span>
-                    defines a list of arguments that a caller must pass to the
-                    function. The <span class="rule">arguments</span> are in the
-                    same scope as <span class="rule">statements</span> and must have
-                    unique names. Each <span class="keyword">input</span> must be used in a 
-                    <span class="rule">reference_expression</span>. Functions can be overloaded with a different order
-                    of <span class="keyword">input</span> types. The 
-                    <span class="keyword">output</span> list is the
-                    types of the values that the function returns <b>in</b> the order
-                    they are listed.
+                    Declares a function with the <span class="rule">function_signature</span>'s 
+                    <span class="rule">lower_case_identifier</span> as the name. <span class="rule">formal_parameters</span> 
+                    defines a list of values that callers must pass to the 
+                    function. <span class="rule">formal_parameters</span> are in
+                    the same scope as the <span class="rule">statements</span>, they must have unique names
+                    and they must be used in a <span class="rule">reference_expression</span>.
+                </p> 
+                
+                <p>
+                    A function with <span class="rule">formal_type_parameters</span> is called 
+                    a Polymorphic Function otherwise it is a Monomorphic Function. Any reference to the
+                    <span class="rule">formal_type_parameters</span>
+                    are substituted with <span class="rule">actual_type_parameters</span> when 
+                    the function is referenced or called. <span class="rule">formal_type_parameters</span>
+                    cannot have the same name as any primitive, enumeration or monomorphic compound in scope
+                    and they must be unique.
                 </p>
                 
                 <p>
-                    Functions defining <span class="keyword">output</span> must
-                    end with a terminating statement. A terminating statements 
-                    is either a <span class="rule">return_statement</span> or 
-                    <span class="rule">if_statement</span> where the <span class="keyword">else</span> 
-                    branch is present and all branches ends with terminating statements.
+                    The <span class="rule">function_type</span> of a 
+                    <span class="rule">function_declaration</span> is as 
+                    follows, the <i>n</i>th <span class="rule">formal_parameter</span>'s 
+                    <span class="rule">type</span> is the <i>n</i>th 
+                    <span class="rule">type</span> in the <span class="rule">function_type</span>'s
+                    <span class="rule">types</span> and the <span class="rule">function_declaration</span>'s 
+                    <span class="rule">return_types</span>
+                    are equal to the <span class="rule">function_type</span>'s
+                    <span class="rule">return_types</span>.
                 </p>
+                
+                <p>
+                    <span class="rule">statements</span> must have a
+                    <span class="rule">terminating_statement</span> if the function
+                    have <span class="rule">return_types</span>.
+                </p>    
 
                 <h3>2.1.1. The main function</h3>
                 <p>
@@ -204,17 +233,13 @@ arguments &lt;- type lower_case_identifier (comma type lower_case_identifier)*</
                     and it has one of the function signatures:
                 </p>
                 
-                <pre><code><span class="keyword">function</span> main
-    <span class="keyword">output</span> <span class="type">I32</span>
-    
-<span class="keyword">function</span> main
-    <span class="keyword">input</span> #[][]<span class="type">U8</span>
-    <span class="keyword">output</span> <span class="type">I32</span></code></pre>
+                <pre><code><span class="keyword">function</span> main() : <span class="type">I32</span>
+<span class="keyword">function</span> main(#[][]<span class="type">U8</span>) : <span class="type">I32</span></code></pre>
 
                 <h3>2.1.2. Foreign function interface</h3>
-                <pre><code>external_function_declaration &lt;- public? external function_signature 
-                                     utf8_string_literal
-                                     utf8_string_literal</code></pre>
+                <pre><code><span class="rule">external_function_declaration</span> &lt;- <span class="rule">public</span>? <span class="rule">external</span> <span class="rule">function_signature</span>
+                                     <span class="rule">utf8_string_literal</span>
+                                     <span class="rule">utf8_string_literal</span></code></pre>
                 
                 <p>
                     Defines a reference to a C function in a library. The first
@@ -224,9 +249,9 @@ arguments &lt;- type lower_case_identifier (comma type lower_case_identifier)*</
                 </p>
 
                 <h2>2.2. Propositions</h2>
-                <pre><code>proposition_declaration &lt;- proposition
-                               statements
-                           end</code></pre>
+                <pre><code><span class="rule">proposition_declaration</span> &lt;- <span class="rule">proposition</span>
+                               <span class="rule">statements</span>
+                           <span class="rule">end</span></code></pre>
 
                 <p>
                     Propositions are nameless functions that returns no values. 
@@ -234,13 +259,25 @@ arguments &lt;- type lower_case_identifier (comma type lower_case_identifier)*</
                 </p>
 
                 <h2>2.3. Compounds</h2>
-                <pre><code>compound_declaration &lt;- public? (structure / union) upper_case_identifier
-                            (generalize upper_case_identifiers)?
-                             field+
-                        end
+                <pre><code><span class="rule">compound_declaration</span> &lt;- <span class="rule">public</span>? (<span class="rule">structure</span> / <span class="rule">union</span>) <span class="rule">upper_case_identifier</span> <span class="rule">formal_type_parameters</span>?
+                            <span class="rule">field</span>+
+                        <span class="rule">end</span>
 
-field &lt;- type lower_case_identifier</code></pre>
+<span class="rule">field</span> &lt;- <span class="rule">type</span> <span class="rule">lower_case_identifier</span></code></pre>
 
+                <p>
+                    The <span class="rule">upper_case_identifier</span> is the name of the compound.
+                    A compound with <span class="rule">formal_type_parameters</span> is called a Polymorphic Compound
+                    otherwise it is a Monomorphic Compound.
+                    The <i>n</i>th <span class="rule">formal_type_parameter</span>
+                    in is replaced by the <i>n</i>th <span class="rule">type</span> in 
+                    <span class="rule">actual_type_parameters</span> when the polymorphic compound is referenced.
+                </p>
+                <p>
+                    <span class="rule">field</span> names must be unique within the 
+                    <span class="rule">compound_declaration</span> and cannot have 
+                    the same name as <span class="rule">compound_declaration</span>.
+                </p>
                 <p>
                     <span class="rule">structure</span> <span class="rule">field</span>s
                     are laid out in memory as they are lexically declared. Padding may be 
@@ -254,25 +291,12 @@ field &lt;- type lower_case_identifier</code></pre>
                     of the largest <span class="rule">field</span>.
                 </p>
                 
-                <p>
-                    <span class="rule">field</span> names must be unique within the 
-                    <span class="rule">compound_declaration</span> and cannot have 
-                    the same name as <span class="rule">compound_declaration</span>.
-                </p>
-
-                <p>
-                    The <i>n</i>th <span class="rule">upper_case_identifier</span> 
-                    in <span class="rule">upper_case_identifiers</span> is replaced
-                    by the <i>n</i>th <span class="rule">type</span> in 
-                    <span class="rule">generalized_types</span>.
-                </p>
-
                 <h2>2.4. Enumerations</h2>
-                <pre><code>enumeration_declaration &lt;- public? enumeration upper_case_identifier of upper_case_identifier
-                               enumeration_constant*
-                           end
+                <pre><code><span class="rule">enumeration_declaration</span> &lt;- <span class="rule">public</span>? <span class="rule">enumeration</span> <span class="rule">upper_case_identifier</span> <span class="rule">colon</span> <span class="rule">upper_case_identifier</span>
+                               <span class="rule">enumeration_constant</span>*
+                           <span class="rule">end</span>
 
-enumeration_constant &lt;- lower_case_identifier (assign integer_literal)?</code></pre>
+<span class="rule">enumeration_constant</span> &lt;- <span class="rule">lower_case_identifier</span> (<span class="rule">assign</span> <span class="rule">integer_literal</span>)?</code></pre>
 
                 <p>
                     The first <span class="rule">upper_case_identifier</span> is the name of the 
@@ -293,9 +317,9 @@ enumeration_constant &lt;- lower_case_identifier (assign integer_literal)?</code
                 </p>
 
                 <h2>2.5. Versions</h2>
-                <pre><code>version_declaration &lt;- version upper_case_identifier
-                           declaration*
-                       end</code></pre>
+                <pre><code><span class="rule">version_declaration &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
+                           <span class="rule">declaration</span>*
+                       <span class="rule">end</span></code></pre>
 
                 <p>
                     Conditionally compiles <span class="rule">declaration</span>s
@@ -305,36 +329,42 @@ enumeration_constant &lt;- lower_case_identifier (assign integer_literal)?</code
                 </p>
 
                 <h1>3. Statements</h1>
-                <pre><code>statements &lt;- statement* block_ending_statement?
+                <pre><code><span class="rule">statements</span> &lt;- <span class="rule">statement</span>* <span class="rule">terminating_statement</span>?
                 
-statement &lt;- declaration_statement
-           / assignment_statement
-           / expression_statement
-           / if_statement
-           / for_statement
-           / while_statement
-           / assert_statement
-           / version_statement
+<span class="rule">statement</span> &lt;- <span class="rule">declaration_statement</span>
+           / <span class="rule">assignment_statement</span>
+           / <span class="rule">expression_statement</span>
+           / <span class="rule">if_statement</span>
+           / <span class="rule">for_statement</span>
+           / <span class="rule">while_statement</span>
+           / <span class="rule">assert_statement</span>
+           / <span class="rule">version_statement</span>
              
-block_ending_statement &lt;- break_statement 
-                        / continue_statement
-                        / return_statement</code></pre>
+<span class="rule">terminating_statement</span> &lt;- <span class="rule">break_statement</span>
+                       / <span class="rule">continue_statement</span>
+                       / <span class="rule">return_statement</span></code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in 
-                    lexical order.
+                    lexical order. A terminating statement is either a 
+                    <span class="rule">return_statement</span>
+                    or <span class="rule">if_statement</span> where the 
+                    <span class="keyword">else</span> branch is present and all
+                    branches ends with terminating statements.
                 </p>
 
                 <h2>3.1. Declaration statements</h2>
-                <pre><code>declaration_statement &lt;- variable (comma variable)* '=' expressions 
-variable &lt;- type lower_case_identifier</code></pre>
+                <pre><code><span class="rule">declaration_statement</span> &lt;- <span class="rule">variables</span> '=' <span class="rule">expressions</span>
+
+<span class="rule">variables</span>             &lt;- <span class="rule">variable</span> (<span class="rule">comma</span> <span class="rule">variable</span>)*
+<span class="rule">variable</span>              &lt;- <span class="rule">type</span> <span class="rule">lower_case_identifier</span></code></pre>
  
                 <p>
-                    Declares <span class="rule">variable</span>s in the current 
+                    Declares <span class="rule">variables</span> in the current 
                     scope with the given <span class="rule">lower_case_identifier</span> 
                     as the name and <span class="rule">type</span>. A 
                     <span class="rule">variable</span> cannot have the same name
-                    as anything else in scope. <span class="rule">variable</span>s 
+                    as anything else in scope. <span class="rule">variables</span> 
                     are evaluated from left to right and exists in scope only after it 
                     has been assigned an <span class="rule">expression</span>. 
                     Each variable must be used in a <span class="rule">reference_expression</span>.
@@ -342,16 +372,16 @@ variable &lt;- type lower_case_identifier</code></pre>
 
                 <p>
                     A Ballanced assignment consist of the same amount of
-                    <span class="rule">expressions</span> on each side of the 
+                    <span class="rule">expressions</span> on each side of the
                     <span class="rule">assignment_operator</span>.
                     The <i>n</i>th <span class="rule">expression</span>
-                    on the right hand side is assigned to the <i>n</i>th 
+                    on the right hand side is assigned to the <i>n</i>th
                     <span class="rule">variable</span> on the left hand side.
                 </p>
                 
                 <p>
-                    Tuple assignment consist of a <span class="rule">call_expression</span> 
-                    on the right hand side that returns multiply values and the 
+                    Tuple assignment consist of a <span class="rule">call_expression</span>
+                    on the right hand side that returns multiple values and the
                     <i>n</i>th <span class="rule">variable</span> on the left
                     hand side is assigned the <i>n</i>th returned value.
                 </p>
@@ -363,9 +393,9 @@ variable &lt;- type lower_case_identifier</code></pre>
                 </p>
 
                 <h2>3.2. Assignment statements</h2>
-                <pre><code>assignment_statement &lt;- expressions assignment_operator expressions
-expressions &lt;- expression (comma expression)*
-assignment_operator &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whitespace</code></pre>
+                <pre><code><span class="rule">assignment_statement</span> &lt;- <span class="rule">expressions</span> <span class="rule">assignment_operator</span> <span class="rule">expressions</span>
+<span class="rule">expressions</span> &lt;- <span class="rule">expression</span> (<span class="rule">comma</span> <span class="rule">expression</span>)*
+<span class="rule">assignment_operator</span> &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' <span class="rule">whitespace</span></code></pre>
     
                 <p>
                     <span class="rule">assignment_statement</span> works the same 
@@ -373,23 +403,20 @@ assignment_operator &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whites
                     that:
                 </p>
                 
-                <p id="addressable_expressions">
-                    Each <span class="rule">expression</span> on the left hand 
-                    side must be addressable. <span class="rule">reference_expression</span>, 
-                    <span class="rule">field_access_expression</span>,
-                    <span class="rule">array_access_expression</span> and 
-                    <span class="rule">dereference_expression</span> are 
-                    addressable. 
-                </p>
-
-                <p>
-                    <code>x op= expression</code> is equivalent to 
-                    <code>x = x op expression</code> where <code>x</code> 
-                    evaluates once.
-                </p>
+                <ul>
+                    <li>
+                        Each <span class="rule">expression</span> on the left hand 
+                        side must be <a href="#addressable_expressions">addressable</a>.
+                    </li>
+                    <li>
+                        <code>x op= expression</code> is equivalent to 
+                        <code>x = x op expression</code> where <code>x</code> 
+                        evaluates once.
+                    </li>
+                </ul>
 
                 <h2>3.3. Expression statements</h2>
-                <pre><code>expression_statement &lt;- expression</code></pre>
+                <pre><code><span class="rule">expression_statement</span> &lt;- <span class="rule">expression</span></code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be a 
@@ -398,15 +425,15 @@ assignment_operator &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' whites
                 </p>
 
                 <h2>3.4. If statements</h2>
-                <pre><code>if_statement &lt;- if (declaration_statement semicolon)? expression
-                    statements
-               (elif (declaration_statement semicolon)? expression
-                    statements)*
-               (else
-                    statements)?
-                end
+                <pre><code><span class="rule">if_statement</span> &lt;- <span class="rule">if</span> (<span class="rule">declaration_statement</span> <span class="rule">semicolon</span>)? <span class="rule">expression</span>
+                    <span class="rule">statements</span>
+               (<span class="rule">elif</span> (<span class="rule">declaration_statement</span> <span class="rule">semicolon</span>)? <span class="rule">expression</span>
+                    <span class="rule">statements</span>)*
+               (<span class="rule">else</span>
+                    <span class="rule">statements</span>)?
+                <span class="rule">end</span>
 
-semicolon &lt;- ';' whitespace</code></pre>
+<span class="rule">semicolon</span> &lt;- ';' <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     Each <span class="rule">expression</span> is evaluated in
@@ -426,9 +453,9 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.5. For statements</h2>
-                <pre><code>for_statement &lt;- for declaration_statement semicolon expression semicolon assignment_statement
-                     statements
-                 end</code></pre>
+                <pre><code><span class="rule">for_statement</span> &lt;- <span class="rule">for</span> <span class="rule">declaration_statement</span> <span class="rule">semicolon</span> <span class="rule">expression</span> <span class="rule">semicolon</span> <span class="rule">assignment_statement</span>
+                     <span class="rule">statements</span>
+                 <span class="rule">end</span></code></pre>
 
                 <p>
                     The <span class="rule">declaration_statement</span> is executed before
@@ -443,9 +470,9 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.6. While statements</h2>
-                <pre><code>while_statement &lt;- while (declaration_statement semicolon)? expression
-                       statements
-                   end</code></pre>
+                <pre><code><span class="rule">while_statement</span> &lt;- <span class="rule">while</span> (<span class="rule">declaration_statement</span> <span class="rule">semicolon</span>)? <span class="rule">expression</span>
+                       <span class="rule">statements</span>
+                   <span class="rule">end</span></code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be of type of
@@ -465,7 +492,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.7. Break statements</h2>
-                <pre><code>break_statement &lt;- break</code></pre>
+                <pre><code><span class="rule">break_statement</span> &lt;- <span class="rule">break</span></code></pre>
 
                 <p>
                     The <span class="rule">break_statement</span> stops the execution
@@ -474,7 +501,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
                 
                 <h2>3.8. Continue statements</h2>
-                <pre><code>continue_statement &lt;- continue</code></pre>
+                <pre><code><span class="rule">continue_statement</span> &lt;- <span class="rule">continue</span></code></pre>
 
                 <p>
                     The <span class="rule">continue_statement</span> begins the 
@@ -482,23 +509,15 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.9. Return statements</h2>
-                <pre><code>return_statement &lt;- return expressions?</code></pre>
+                <pre><code><span class="rule">return_statement</span> &lt;- <span class="rule">return expressions</span>?</code></pre>
 
                 <p>
-                    Returns the control the function that called the one that
-                    contains the return statement. If the function containing the
-                    return statement doesn't specify any <span class="keyword">output</span>, 
-                    then the statement cannot specify any <span class="rule">expressions</span> 
-                    to return and the function may omit the statement entirely.
-                    Since in that case the control is returned to the caller 
-                    after the last statement. If <span class="keyword">output</span> 
-                    is defined, then all code paths must have a return statement
-                    where the <i>n</i>th expression's <span class="rule">type</span> 
-                    matches the <i>n</i>th <span class="keyword">output</span> <span class="rule">type</span>.
+                    Exits the current function and returns the <span class="rule">expressions</span> to the caller.
+                    The <i>n</i>th expression's type must match the <i>n</i>th return type of the current function.
                 </p>
             
                 <h2>3.10. Assert statements</h2>
-                <pre><code>assert_statement &lt;- assert expression</code></pre>
+                <pre><code><span class="rule">assert_statement</span> &lt;- <span class="rule">assert expression</span></code></pre>
 
                 <p>
                     The <span class="rule">expression</span> must be type of
@@ -512,9 +531,9 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>3.11. Version statements</h2>
-                <pre><code>version_statement &lt;- version upper_case_identifier
-                         statements
-                     end</code></pre>
+                <pre><code><span class="rule">version_statement</span> &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
+                         <span class="rule">statements</span>
+                     <span class="rule">end<span></code></pre>
                     
                 <p>
                     Works the same way as Version Declarations but for
@@ -522,7 +541,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h1>4. Expressions</h1>
-                <pre><code>expression &lt;- logical_or_expression</code></pre>
+                <pre><code><span class="rule">expression</span> &lt;- <span class="rule">logical_or_expression</span></code></pre>
 
                 <p>
                     <span class="rule">logical_or_expression</span> has the 
@@ -531,8 +550,16 @@ semicolon &lt;- ';' whitespace</code></pre>
                     unless noted otherwise.
                 </p>
 
+                <p id="addressable_expressions">These expressions are adressable:</p>
+                <ul>
+                    <li><span class="rule">reference_expression</span></li> 
+                    <li><span class="rule">field_access_expression</span></li>
+                    <li><span class="rule">array_access_expression</span></li>
+                    <li><span class="rule">dereference_expression</span></li>
+                </ul>
+                
                 <h2>4.2. Logical or expressions</h2>
-                <pre><code>logical_or_expression &lt;- logical_and_expression ('||' whitespace logical_and_expression)*</code></pre>
+                <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> ('||' <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
@@ -544,7 +571,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.3. Logical and expressions</h2>
-                <pre><code>logical_and_expression &lt;- relational_expression ('&amp;&amp;' whitespace relational_expression)*</code></pre>
+                <pre><code><span class="rule">logical_and_expression</span> &lt;- <span class="rule">relational_expression</span> ('&amp;&amp;' <span class="rule">whitespace</span> <span class="rule">relational_expression</span>)*</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
@@ -556,7 +583,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.4. Relational expressions</h2>
-                <pre><code>relational_expression &lt;- additive_expression (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') whitespace additive_expression)*</code></pre>
+                <pre><code><span class="rule">relational_expression</span> &lt;- <span class="rule">additive_expression</span> (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') <span class="rule">whitespace</span> <span class="rule">additive_expression</span>)*</code></pre>
                 
                 <p>
                     The comparison results in a <span class="type">Bool</span>.
@@ -575,7 +602,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.5. Additive expressions</h2>
-                <pre><code>additive_expression &lt;- multiplicative_expression (('+' / '-' / '|' / '^') whitespace multiplicative_expression)*</code></pre>
+                <pre><code><span class="rule">additive_expression</span> &lt;- <span class="rule">multiplicative_expression</span> (('+' / '-' / '|' / '^') <span class="rule">whitespace</span> <span class="rule">multiplicative_expression</span>)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -596,7 +623,7 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
                 
                 <h2>4.6. Multiplicative expressions</h2>
-                <pre><code>multiplicative_expression &lt;- prefix_expression (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') whitespace prefix_expression)*</code></pre>
+                <pre><code><span class="rule">multiplicative_expression</span> &lt;- <span class="rule">prefix_expression</span> (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') <span class="rule">whitespace</span> <span class="rule">prefix_expression</span>)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -611,25 +638,25 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.7. Prefix expressions</h2>
-                <pre><code>prefix_expression &lt;- not_expression 
-                   / negate_expression 
-                   / address_of_expression 
-                   / dereference_expression
-                   / postfix_expression</code></pre>
+                <pre><code><span class="rule">prefix_expression</span> &lt;- <span class="rule">not_expression</span>
+                   / <span class="rule">negate_expression</span>
+                   / <span class="rule">address_of_expression</span>
+                   / <span class="rule">dereference_expression</span>
+                   / <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Prefix operators are right associative.
                 </p>
 
                 <h3>4.7.1. Not expressions</h3>
-                <pre><code>not_expression &lt;- '!' whitespace prefix_expression</code></pre>
+                <pre><code><span class="rule">not_expression</span> &lt;- '!' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
                 <h3>4.7.2. Negate expressions</h3>
-                <pre><code>negate_expression &lt;- '-' whitespace prefix_expression</code></pre>
+                <pre><code><span class="rule">negate_expression</span> &lt;- '-' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
@@ -637,16 +664,16 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h3>4.7.3. Address of expressions</h3>
-                <pre><code>address_of_expression &lt;- '#' whitespace prefix_expression</code></pre>
+                <pre><code><span class="rule">address_of_expression</span> &lt;- '#' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">prefix_expression</span>.
                     The type of the <span class="rule">address_of_expression</span> is a pointer 
-                    type that points to 
+                    type that points to.
                 </p>
                 
                 <h3>4.7.4. Dereference expressions</h3>
-                <pre><code>dereference_expression &lt;- '@' whitespace prefix_expression</code></pre>
+                <pre><code><span class="rule">dereference_expression</span> &lt;- '@' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Deferences the <span class="rule">prefix_expression</span>.
@@ -656,11 +683,11 @@ semicolon &lt;- ';' whitespace</code></pre>
                 </p>
 
                 <h2>4.8. Postfix expressions</h2>
-                <pre><code>postfix_expression &lt;- primary_expression (field_access_expression / call_expression / array_access_expression)*</code></pre>
+                <pre><code><span class="rule">postfix_expression</span> &lt;- <span class="rule">primary_expression</span> (<span class="rule">field_access_expression</span> / <span class="rule">call_expression</span> / <span class="rule">array_access_expression</span>)*</code></pre>
 
                 <h3>4.8.1. Field access expressions</h3>
-                <pre><code>field_access_expression &lt;- dot lower_case_identifier
-dot &lt;- '.' whitespace</code></pre>
+                <pre><code><span class="rule">field_access_expression</span> &lt;- <span class="rule">dot</span> <span class="rule">lower_case_identifier</span>
+<span class="rule">dot</span> &lt;- '.' <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     The <span class="rule">lower_case_identifier</span> must be
@@ -669,32 +696,69 @@ dot &lt;- '.' whitespace</code></pre>
                 </p>
 
                 <h3>4.8.2. Call expressions</h3>
-                <pre><code>call_expression &lt;- left_parenthesis expressions? right_parenthesis</code></pre>
+                <pre><code><span class="rule">call_expression</span>   &lt;- <span class="rule">left_parenthesis</span> <span class="rule">actual_parameters</span> <span class="rule">right_parenthesis</span>
+<span class="rule">actual_parameters</span> &lt;- <span class="rule">expressions</span>?</code></pre>
 
                 <p>
-                    The <span class="rule">primary_expression</span> being
-                    called must have a <span class="keyword">function</span> type.
-                    The <i>n</i>th expression's type must match the <i>n</i>th 
-                    <span class="keyword">input</span> type.
+                    If the <span class="rule">expression</span> being called is not a <span class="rule">reference_expression</span> to a
+                    function but has a function type then the <i>n</i>th actual parameter's type must match the <i>n</i>th 
+                    <span class="rule">formal_parameter</span>'s type and the 
+                    type of the call is the <span class="rule">return_types</span>
+                    of the function type. Otherwise the <span class="rule">expression</span>
+                    is a <span class="rule">reference_expression</span> to a function and the 
+                    type of the call is the <span class="rule">return_types</span> of the resolved function overload.
+                    The specific overload is resolved as follows:
                 </p>
-                
+
                 <p>
-                    If the <span class="rule">primary_expression</span> is an 
-                    <span class="rule">reference_expression</span> to a 
-                    <span class="keyword">function</span> with generalized types 
-                    that are not used by an <span class="rule">argument</span>
-                    then all generalized types must be specified by the  
-                    <span class="rule">reference_expression</span>'s 
-                    <span class="rule">generalized_types</span>. 
-                    The <span class="rule">reference_expression</span> may 
-                    specify <span class="rule">generalized_types</span> anyway.
+                    With <span class="rule">actual_type_parameters</span> the overload resolves to the polymorphic
+                    function with the same name and amount of <span class="rule">formal_type_parameters</span>
+                    as there are <span class="rule">actual_type_parameters</span>. The <i>n</i>th 
+                    <span class="rule">formal_type_parameter</span> is substituted with the <i>n</i>th
+                    <span class="rule">actual_type_parameter</span> and then the <i>n</i>th actual parameter's
+                    type matches the <i>n</i>th <span class="rule">formal_parameter</span>'s type.
                 </p>
                 
+                <p>Without <span class="rule">actual_type_parameters</span> the overload resolves to:
+                <ol>
+                    <li>
+                        The monomorphic function with the same name and amount
+                        of <span class="rule">formal_parameters</span> where 
+                        the <i>n</i>th actual parameter's type matches the 
+                        <i>n</i>th <span class="rule">formal_parameter</span>'s
+                        type.
+                    </li>
+                    <li>
+                        The polymorphic function with the same name and amount of
+                        <span class="rule">formal_parameters</span> where the <i>n</i>th
+                        expression's type matches the <i>n</i>th <span class="rule">formal_parameter</span>'s type.
+                        The <span class="rule">formal_type_parameters</span> are infered from
+                        the <span class="rule">formal_parameters</span>
+                        and <span class="rule">actual_parameters</span> as follows:
+                        <ul>
+                            <li>
+                                If the actual parameter's type is a primitive, enumeration
+                                or a monomorphic compound and the formal_parameter's type is a 
+                                <span class="rule">formal_type_parameter</span> then that 
+                                <span class="rule">formal_type_parameter</span> is infered to be the actual parameter's 
+                                type.
+                            </li>
+                            <li>
+                                If the actual parameter's type and the <span class="rule">formal_parameter</span>'s
+                                type match the same polymorphic compound then these rules are applied to the <i>n</i>th <span class="rule">actual_type_parameter</span>
+                                and the <i>n</i>th <span class="rule">formal_type_parameter</span> recursively.  
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <p>The <span class="rule">actual_parameters</span> are passed to the called function by value.</p>
+
                 <h3>4.8.3. Array access expressions</h3>
-                <pre><code>array_access_expression &lt;- left_square_bracket expression right_square_bracket
+                <pre><code><span class="rule">array_access_expression</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">expression</span> <span class="rule">right_square_bracket</span>
 
-left_square_bracket &lt;- '[' whitespace
-right_square_bracket &lt;- ']' whitespace</code></pre>
+<span class="rule">left_square_bracket</span> &lt;- '[' <span class="rule">whitespace</span>
+<span class="rule">right_square_bracket</span> &lt;- ']' <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     The indexed expression must be an array type. The type of <span class="rule">array_access_expression</span>
@@ -705,23 +769,23 @@ right_square_bracket &lt;- ']' whitespace</code></pre>
                 </p>
 
                 <h2>4.9. Primary expressions</h2>
-                <pre><code>primary_expression &lt;- float_literal
-                    / integer_literal
-                    / boolean_literal
-                    / unicode_code_point_literal
-                    / utf8_string_literal
-                    / array_literal
-                    / compound_literal
-                    / null_literal
-                    / uninitialized_literal
-                    / size_of_expression
-                    / parenthesized_expression
-                    / reference_expression
-                    / enumeration_constant_access
-                    / cast_expression</code></pre>
+                <pre><code><span class="rule">primary_expression</span> &lt;- <span class="rule">float_literal</span>
+                    / <span class="rule">integer_literal</span>
+                    / <span class="rule">boolean_literal</span>
+                    / <span class="rule">unicode_code_point_literal</span>
+                    / <span class="rule">utf8_string_literal</span>
+                    / <span class="rule">array_literal</span>
+                    / <span class="rule">compound_literal</span>
+                    / <span class="rule">null_literal</span>
+                    / <span class="rule">uninitialized_literal</span>
+                    / <span class="rule">size_of_expression</span>
+                    / <span class="rule">parenthesized_expression</span>
+                    / <span class="rule">reference_expression</span>
+                    / <span class="rule">enumeration_constant_access</span>
+                    / <span class="rule">cast_expression</span></code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code>float_literal &lt;- '-'? [0-9]+ '.' [0-9]+</code></pre>
+                <pre><code><span class="rule">float_literal</span> &lt;- '-'? [0-9]+ '.' [0-9]+</code></pre>
                 
                 <p>
                     The <span class="type">F32</span> and <span class="type">F64</span>
@@ -731,12 +795,12 @@ right_square_bracket &lt;- ']' whitespace</code></pre>
                 </p>
 
                 <h3>4.9.2. Integer literals</h3>
-                <pre><code>integer_literal &lt;- '-'? (binary_integer / decimal_integer / hexadecimal_integer)
+                <pre><code><span class="rule">integer_literal</span>     &lt;- '-'? (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>)
 
-binary_integer &lt;- '0b' [01]+ ('_' [01]+)*
-decimal_integer &lt;- [0-9]+ ('_' [0-9]+)*
-hexadecimal_integer &lt;- '0x' hexadecimal_digit+ ('_' hexadecimal_digit+)*
-hexadecimal_digit &lt;- [0-9A-F]</code></pre>
+<span class="rule">binary_integer</span>      &lt;- '0b' [01]+ ('_' [01]+)*
+<span class="rule">decimal_integer</span>     &lt;- [0-9]+ ('_' [0-9]+)*
+<span class="rule">hexadecimal_integer</span> &lt;- '0x' <span class="rule">hexadecimal_digit</span>+ ('_' <span class="rule">hexadecimal_digit</span>+)*
+<span class="rule">hexadecimal_digit</span>   &lt;- [0-9A-F]</code></pre>
 
                 <p>
                     The type of a <span class="rule">integer_literal</span> is 
@@ -800,7 +864,7 @@ hexadecimal_digit &lt;- [0-9A-F]</code></pre>
                 </table>
 
                 <h3>4.9.3. Boolean literals</h3>
-                <pre><code>boolean_literal &lt;- true / false</code></pre>
+                <pre><code><span class="rule">boolean_literal</span> &lt;- <span class="rule">true</span> / <span class="rule">false</code></pre>
 
                 <p>
                     <span class="rule">boolean_literal</span>s are type of
@@ -809,11 +873,22 @@ hexadecimal_digit &lt;- [0-9A-F]</code></pre>
                 
                                 
                 <h3>4.9.4. Unicode code point literals</h3>
-                <pre><code>unicode_code_point_literal &lt;- "'" (unicode_escape_sequence / !"'" .) "'"
+                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !"'" .) "'"
                 
-unicode_escape_sequence &lt;- '\\u' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
-                         / '\\U' hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit
-                                 hexadecimal_digit hexadecimal_digit hexadecimal_digit hexadecimal_digit</code></pre>
+<span class="rule">unicode_escape_sequence</span>    &lt;- '\\u' <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                 
+                            / '\\U' <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                 
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span>
+                                    <span class="rule">hexadecimal_digit</span></code></pre>
 
                 <p>
                     The <span class="rule">hexadecimal_digit</span>s in <span class="rule">unicode_escape_sequence</span>
@@ -821,41 +896,27 @@ unicode_escape_sequence &lt;- '\\u' hexadecimal_digit hexadecimal_digit hexadeci
                 </p>
 
                 <h3>4.9.5. UTF-8 string literals</h3>
-                <pre><code>utf8_string_literal &lt;- '"' (unicode_escape_sequence / !'"' .)* '"' whitespace</code></pre>
+                <pre><code></span>utf8_string_literal</span> &lt;- '"' (</span>unicode_escape_sequence</span> / !'"' .)* '"' </span>whitespace</span></code></pre>
                 
                 <p>
-                    <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are 
+                    <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are
                     syntax sugar for <code>[]<span class="type">U8</span></code>.
                 </p>
 
                 <h3>4.9.6. Array literals</h3>
-                <pre><code>array_literal &lt;- type (left_square_bracket right_square_bracket)+
-               / dimension+ elements
+                <pre><code><span class="rule">array_literal</span>       &lt;- <span class="rule">left_curly_bracket</span> <span class="rule">expressions</span> <span class="rule">right_curly_bracket</span>
 
-dimension &lt;- left_square_bracket integer_literal? right_square_bracket
-elements &lt;- left_curly_bracket element (comma element)* right_curly_bracket
-element &lt;- elements / expressions
+<span class="rule">left_curly_bracket</span>  &lt;- '{' <span class="rule">whitespace</span>
+<span class="rule">right_curly_bracket</span> &lt;- '}' <span class="rule">whitespace</span></code></pre>
 
-left_curly_bracket &lt;- '{' whitespace
-right_curly_bracket &lt;- '}' whitespace</code></pre>
-
-                <p>
-                    Dynamic arrays are defined by <span class="rule">type</span>
-                    and dimensions. Static arrays are defined by 
-                    <span class="rule">dimension</span>s and 
-                    <span class="rule">elements</span>. Each 
-                    <span class="rule">dimension</span>'s 
-                    <span class="rule">expression</span> must fit within 
-                    <span class="type">U32</span>. Arrays have a length 
-                    and pointer field.
-                </p>
+                <p>Each <span class="rule">expression</span>'s type must match the base type of the array.</p>
 
                 <h3>4.9.7. Compound literals</h3>
-                <pre><code>compound_literal &lt;- left_curly_bracket
-                        field_initializer (comma field_initializer)*
-                    right_curly_bracket
+                <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
+                        <span class="rule">field_initializer</span> (<span class="rule">comma</span> <span class="rule">field_initializer</span>)*
+                    <span class="rule">right_curly_bracket</span>
 
-field_initializer &lt;- lower_case_identifier equal expression</code></pre>
+<span class="rule">field_initializer &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">equal</span> <span class="rule">expression</span></code></pre>
 
                 <p>
                     Initializes the specified fields of a compound type which is <a href="#type_inference">inferred</a>.
@@ -872,7 +933,7 @@ field_initializer &lt;- lower_case_identifier equal expression</code></pre>
                 </p>
 
                 <h3>4.9.8. Null literals</h3>
-                <pre><code>null_literal &lt;- null</code></pre>
+                <pre><code><span class="rule">null_literal</span> &lt;- <span class="rule">null</span></code></pre>
 
                 <p>
                     The value is what C dictates on the given platform.
@@ -880,16 +941,16 @@ field_initializer &lt;- lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.9. Uninitialized literals</h3>
-                <pre><code>uninitialized_literal &lt;- '---' whitespace type</code></pre>
+                <pre><code><span class="rule">uninitialized_literal</span> &lt;- '---' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    <span class="rule">uninitialized_literal</span> can only be used for declaring a variable 
-                    and it must be the whole <span class="rule">expression</span> assigned to the variable. 
+                    <span class="rule">uninitialized_literal</span> can only be used for declaring a <span class="rule">variable</span>
+                    and it must be the whole <span class="rule">expression</span> assigned to the <span class="rule">variable</span>. 
                     The actual value is undefined.
                 </p>
                 
                 <h3>4.9.10. Size of expressions</h3>
-                <pre><code>size_of_expression &lt;- sizeof left_parenthesis (type / expression) right_parenthesis</code></pre>
+                <pre><code><span class="rule">size_of_expression</span> &lt;- <span class="rule">sizeof</span> <span class="rule">left_parenthesis</span> (<span class="rule">type</span> / <span class="rule">expression</span>) <span class="rule">right_parenthesis</span></code></pre>
 
                 <p>
                     <span class="rule">size_of_expression</span> is substituted for an
@@ -898,26 +959,26 @@ field_initializer &lt;- lower_case_identifier equal expression</code></pre>
                 </p>
                 
                 <h3>4.9.11. Parenthesized expressions</h3>
-                <pre><code>parenthesized_expression &lt;- left_parenthesis expression right_parenthesis</code></pre>
+                <pre><code><span class="rule">parenthesized_expression</span> &lt;- <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span></code></pre>
                 <p>
                     The type and value of <span class="rule">parenthesized_expression</span>
                     is the same as the <span class="rule">expression</span>.
                 </p>
                 
                 <h3>4.9.12. Reference expressions</h3>
-                <pre><code>reference_expression &lt;- lower_case_identifier generalized_types?</code></pre>
+                <pre><code><span class="rule">reference_expression</span> &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">actual_type_parameters</span>?</code></pre>
                 
                 <p>
                     <span class="rule">reference_expression</span> refers to a
-                    variable, <span class="keyword">input</span> or 
-                    <span class="keyword">function</span> with the same name in scope.
-                    If the <span class="rule">reference_expression</span> refers to 
-                    a <span class="keyword">function</span> the <span class="rule">type</span> 
+                    <span class="rule">variable</span>, <span class="rule">formal_parameter</span> 
+                    or a <span class="keyword">function</span> with the same 
+                    name in scope. If the <span class="rule">reference_expression</span> 
+                    refers to a <span class="keyword">function</span> the <span class="rule">type</span> 
                     is <a href="#type_inference">inferred</a>.
                 </p>
                 
                 <h3>4.9.13. Enumeration constant access expression</h3>
-                <pre><code>enumeration_constant_access &lt;- upper_case_identifier dot lower_case_identifier</code></pre>
+                <pre><code><span class="rule">enumeration_constant_access</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">dot</span> <span class="rule">lower_case_identifier</span></code></pre>
                 <p>
                     <span class="rule">upper_case_identifier</span> is the <span class="keyword">enumeration</span> type and 
                     <span class="rule">lower_case_identifier</span> is the <span class="rule">enumeration_constant</span> on 
@@ -926,7 +987,7 @@ field_initializer &lt;- lower_case_identifier equal expression</code></pre>
                 </p>
 
                 <h3>4.9.14. Cast expressions</h3>
-                <pre><code>cast_expression &lt;- type left_parenthesis expression right_parenthesis</code></pre>
+                <pre><code><span class="rule">cast_expression</span> &lt;- <span class="rule">type</span> <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span></code></pre>
 
                 <p>
                     Converts the value of <span class="rule">expression</span> 
@@ -1006,33 +1067,50 @@ field_initializer &lt;- lower_case_identifier equal expression</code></pre>
                     When the <span class="rule">expression</span> is a 
                     <span class="rule">reference_expression</span> to a
                     <span class="keyword">function</span> then 
-                    <span class="rule">type</span> must a <span class="keyword">function</span> type
+                    <span class="rule">type</span> must be a <span class="type">Function</span> type
                     which matches an overload in scope. The <span class="rule">reference_expression</span>
-                    is not allowed to specify <span class="rule">generalized_types</span>.
+                    is not allowed to specify <span class="rule">actual_type_parameters</span>.
                     The result is a reference to that specific overload. 
                 </p>
                 
                 <h1>5. Types</h1>
-                <pre><code>types &lt;- type (comma type)*
-type &lt;- (array_type_of / pointer_type_of)* (upper_case_identifier generalized_types? / function_type)
+                <pre><code><span class="rule">types</span> &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
+<span class="rule">type</span>  &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
+         (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span>)
+       / <span class="rule">function_type</span>
 
-array_type_of &lt;- left_square_bracket right_square_bracket
+<span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span>
+<span class="rule">fixed_array_type</span>   &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span>
+<span class="rule">pointer_type</span>       &lt;- '#' <span class="rule">whitespace</span>
 
-pointer_type_of &lt;- '#' whitespace
+<span class="rule">polymorphic_compound_type</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">actual_type_parameters</span>
+<span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
 
-generalized_types &lt;- left_angle_bracket types right_angle_bracket
+<span class="rule">actual_type_parameters</span> &lt;- <span class="rule">left_angle_bracket</span> <span class="rule">types</span> <span class="rule">right_angle_bracket</span>
 
-function_type &lt;- function
-                     (input types)?
-                     (output types)?</code></pre>
-                    
+<span class="rule">function_type</span> &lt;- 'Function' <span class="rule">whitespace</span>
+                  <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
+                  <span class="rule">return_types?</code></pre>
+                
                 <p id="type_inference">
                     A <span class="rule">type</span> can be inferred from a 
                     <span class="rule">cast_expression</span>, <span class="rule">call_expression</span>,
-                    <span class="rule">field_initializer</span>, the <i>n</i>th <span class="keyword">output</span> <span class="rule">type</span>,
+                    <span class="rule">field_initializer</span>, the <i>n</i>th <span class="rule">type</span> in <span class="rule">return_types</span>,
                     the type of the <i>n</i>th <span class="rule">variable</span> in a <span class="rule">declaration_statement</span>,
                     the type of the <i>n</i>th <span class="rule">expression</span> in an <span class="rule">assignment_statement</span> or
                     the other operand of a binary expression.
+                </p>
+                
+                <ul>
+                    <li><span class="type">IXX</span>, <span class="type">UXX</span>, <span class="type">FXX</span> and <span class="type">Bool</span> are considered primitive types and they are always in scope.</li>
+                    <li><span class="rule">function_type</span>s where the <i>n</i>th <span class="rule">formal_parameters</span> and the <i>n</i>th <span class="rule">return_types</span> match matches.</li>
+                    <li><span class="rule">polymorphic_compound_type</span>s match if they have the same name and their actual type parameters match.</li>
+                </ul>
+
+                <p>
+                    The <span class="rule">upper_case_identifier</span> in a
+                    <span class="rule">polymorphic_compound_type</span> is not
+                    allowed to match an actual type parameter.
                 </p>
             </section>
         </main>

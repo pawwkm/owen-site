@@ -19,7 +19,7 @@ nav ul {
     margin-right: auto;
     padding-left: 15px;
     padding-right: 15px;
-    max-width: 750px;
+    max-width: 840px;
     list-style: none;
 }
 
@@ -37,12 +37,12 @@ nav a {
 
 body {
     background-color: #212b30;
-    font-family: Roboto, Arial, sans-serif;
+    font: 15px/1.2 Consolas,"Courier New",Courier,monospace;
     color: #fff;
 }
 
 main {
-    max-width: 780px;
+    max-width: 870px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 15px;
@@ -102,29 +102,20 @@ p, time, pre, footer {
     margin-top: 15px;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6
+{
     margin-top: 45px;
     font-weight: bold;
+    font-size: 20px;
+}
+
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6
+{
+    margin-top: 15px;
 }
 
 header h1 {
     font-size: 45px;
-    margin-top: 15px;
-}
-
-h1 {
-    font-size: 32px;
-}
-
-h2 {
-    font-size: 25px;
-}
-
-h3 {
-    font-size: 18px;
-}
-
-h1 + h2, h2 + h3 {
     margin-top: 15px;
 }
 
@@ -160,10 +151,6 @@ pre code {
     width: 100%;
 }
 
-code, span {
-    font-family: Consolas, "Lucida Console", monospace;
-}
-
 span.keyword {
     color: #1683b9;
 }
@@ -180,9 +167,24 @@ span.type {
     color: #0bb1b0;
 }
 
-ul {
-    margin-top: 15px;
-    margin-left: 15px;
+span.rule {
+    font-weight: bold;
+}
+
+ul, ul ul
+{
+    list-style-type: disc;
+}
+
+ol, ul
+{
+    padding-inline-start: 2em;
+    padding-inline-end: 2em;
+}
+
+ol
+{
+    padding-inline-start: 2.5em;
 }
 
 li {
