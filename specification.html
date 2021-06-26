@@ -394,7 +394,6 @@
 
                 <h2>3.2. Assignment statements</h2>
                 <pre><code><span class="rule">assignment_statement</span> &lt;- <span class="rule">expressions</span> <span class="rule">assignment_operator</span> <span class="rule">expressions</span>
-<span class="rule">expressions</span> &lt;- <span class="rule">expression</span> (<span class="rule">comma</span> <span class="rule">expression</span>)*
 <span class="rule">assignment_operator</span> &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' <span class="rule">whitespace</span></code></pre>
     
                 <p>
@@ -412,6 +411,11 @@
                         <code>x op= expression</code> is equivalent to 
                         <code>x = x op expression</code> where <code>x</code> 
                         evaluates once.
+                    </li>
+                    <li>
+                        The <i>n</i>th left hand side <span class="rule">expression</span>
+                        is evaluated then the <i>n</i>th right hand side 
+                        <span class="rule">expression</span> is evaluated going left to right.
                     </li>
                 </ul>
 
@@ -541,9 +545,11 @@
                 </p>
 
                 <h1>4. Expressions</h1>
-                <pre><code><span class="rule">expression</span> &lt;- <span class="rule">logical_or_expression</span></code></pre>
+                <pre><code><span class="rule">expressions</span> &lt;- <span class="rule">expression</span> (<span class="rule">comma</span> <span class="rule">expression</span>)*
+<span class="rule">expression</span>  &lt;- <span class="rule">logical_or_expression</span></code></pre>
 
                 <p>
+                    <span class="rule">expressions</span> are evalueated from left to right.
                     <span class="rule">logical_or_expression</span> has the 
                     lowest precedence and <span class="rule">postfix_expression</span> 
                     has the highest precedence. Operators are left associative 
