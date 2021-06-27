@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.23.2</title>
+        <title>Owen specification 0.23.3</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.23.2</h1>
+                    <h1>Owen specification 0.23.3</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -820,7 +820,9 @@
                     The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
                     <span class="type">IXX</span> is stored using Two's complement.
                     <span class="type">IXX</span> and <span class="type">UXX</span>
-                    wrap around.
+                    variables wrap around but <span class="rule">integer_literal</span>s is not allowed to
+                    overflow or underflow their type. The <span class="rule">integer_literal</span> <code>-0</code>
+                    is not allowed.
                 </p>
 
                 <table>
