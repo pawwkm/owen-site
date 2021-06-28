@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.23.4</title>
+        <title>Owen specification 0.23.5</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.23.4</h1>
+                    <h1>Owen specification 0.23.5</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -321,7 +321,7 @@
                 </p>
 
                 <h2>2.5. Versions</h2>
-                <pre><code><span class="rule">version_declaration &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
+                <pre><code><span class="rule">version_declaration</span> &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
                            <span class="rule">declaration</span>*
                        <span class="rule">end</span></code></pre>
 
@@ -391,9 +391,9 @@
                 </p>
 
                 <p>
-                    Both operand's types must match or the left hand side must 
-                    be a pointer type and the right must be
-                    <span class="keyword">null</span>.
+                    The <i>n</i>th <span class="rule">expression</span>'s
+                    type must match the <i>n</i>th <span class="rule">variable</span>'s <span class="rule">type</span>
+                    or be inferable as the  <i>n</i>th <span class="rule">variable</span>'s <span class="rule">type</span>.
                 </p>
 
                 <h2>3.2. Assignment statements</h2>
@@ -521,7 +521,8 @@
 
                 <p>
                     Exits the current function and returns the <span class="rule">expressions</span> to the caller.
-                    The <i>n</i>th expression's type must match the <i>n</i>th return type of the current function.
+                    The <i>n</i>th expression's type must either match the <i>n</i>th return type of the current function or be 
+                    inferable as the <i>n</i>th return type of the current function. 
                 </p>
             
                 <h2>3.10. Assert statements</h2>
@@ -541,7 +542,7 @@
                 <h2>3.11. Version statements</h2>
                 <pre><code><span class="rule">version_statement</span> &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
                          <span class="rule">statements</span>
-                     <span class="rule">end<span></code></pre>
+                     <span class="rule">end</span></code></pre>
                     
                 <p>
                     Works the same way as Version Declarations but for
@@ -632,6 +633,11 @@
                     applies to the underlying value resulting in the same type as the operands.
                 </p>
                 
+                <p>
+                    If one of the <span class="rule">multiplicative_expression</span>s are inferable as the other <span class="rule">multiplicative_expression</span>'s 
+                    <span class="rule">type</span> then it is infered as that type.
+                </p>
+
                 <h2>4.6. Multiplicative expressions</h2>
                 <pre><code><span class="rule">multiplicative_expression</span> &lt;- <span class="rule">prefix_expression</span> (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') <span class="rule">whitespace</span> <span class="rule">prefix_expression</span>)*</code></pre>
 
@@ -646,6 +652,12 @@
                     If both operands are the same enumeration type then <code>&amp;</code> applies to the 
                     underlying value resulting in the same type as the operands.
                 </p>
+
+                <p>
+                    If one of the <span class="rule">prefix_expression</span>s are inferable as the other <span class="rule">prefix_expression</span>'s 
+                    <span class="rule">type</span> then it is infered as that type.
+                </p>
+
 
                 <h2>4.7. Prefix expressions</h2>
                 <pre><code><span class="rule">prefix_expression</span> &lt;- <span class="rule">not_expression</span>
@@ -801,7 +813,7 @@
                     The <span class="type">F32</span> and <span class="type">F64</span>
                     types behaves as binary32 and binary64 respectivly as 
                     specified in IEEE 754. The type of a <span class="rule">float_literal</span>
-                    is <a href="#type_inference">inferred</a>.
+                    is inferred.
                 </p>
 
                 <h3>4.9.2. Integer literals</h3>
@@ -813,8 +825,7 @@
 <span class="rule">hexadecimal_digit</span>   &lt;- [0-9A-F]</code></pre>
 
                 <p>
-                    The type of a <span class="rule">integer_literal</span> is 
-                    <a href="#type_inference">inferred</a>.
+                    The type of a <span class="rule">integer_literal</span> is inferred.
                     The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
                     <span class="type">IXX</span> is stored using Two's complement.
                     <span class="type">IXX</span> and <span class="type">UXX</span>
@@ -876,7 +887,7 @@
                 </table>
 
                 <h3>4.9.3. Boolean literals</h3>
-                <pre><code><span class="rule">boolean_literal</span> &lt;- <span class="rule">true</span> / <span class="rule">false</code></pre>
+                <pre><code><span class="rule">boolean_literal</span> &lt;- <span class="rule">true</span> / <span class="rule">false</span></code></pre>
 
                 <p>
                     <span class="rule">boolean_literal</span>s are type of
@@ -908,7 +919,7 @@
                 </p>
 
                 <h3>4.9.5. UTF-8 string literals</h3>
-                <pre><code></span>utf8_string_literal</span> &lt;- '"' (</span>unicode_escape_sequence</span> / !'"' .)* '"' </span>whitespace</span></code></pre>
+                <pre><code><span class="rule">utf8_string_literal</span> &lt;- '"' (<span class="rule">unicode_escape_sequence</span> / !'"' .)* '"' <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are
@@ -928,15 +939,18 @@
                         <span class="rule">field_initializer</span> (<span class="rule">comma</span> <span class="rule">field_initializer</span>)*
                     <span class="rule">right_curly_bracket</span>
 
-<span class="rule">field_initializer &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">equal</span> <span class="rule">expression</span></code></pre>
+<span class="rule">field_initializer</span> &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">equal</span> <span class="rule">expression</span></code></pre>
 
                 <p>
-                    Initializes the specified fields of a compound type which is <a href="#type_inference">inferred</a>.
+                    Initializes the specified fields of a compound type which is inferred.
                     The <span class="rule">field_initializer</span>'s
                     <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
                     initialize. The <span class="rule">expression</span> is the
-                    value of the given <span class="rule">field</span>. The <span class="rule">type</span> of the <span class="rule">expression</span>
-                    must match <span class="rule">field</span>'s <span class="rule">type</span>.
+                    value of the given <span class="rule">field</span>. The 
+                    <span class="rule">type</span> of the <span class="rule">expression</span>
+                    must match <span class="rule">field</span>'s <span class="rule">type</span> or 
+                    the <span class="rule">expression</span> must be inferable as the 
+                    <span class="rule">field</span>'s <span class="rul">type</span>.
                 </p>
                 
                 <p>
@@ -1006,84 +1020,81 @@
                     to <span class="rule">type</span>.
                 </p>
                 
-                <p>
-                    When casting an integer (<span class="keyword">enumeration</span> 
-                    types act as their underlying type) type to another integer type:
-                </p>
-                
                 <ul>
-                    <li>
-                        If <span class="rule">type</span> is smaller than 
-                        <span class="rule">expression</span>'s type then the 
-                        most significant bits of the <span class="rule">expression</span>
-                        are truncated and the remaning bits are reinterpreted as
-                        the <span class="rule">type</span>.
+                    <li>When casting an integer (<span class="keyword">enumeration</span> types act as their underlying type) type to another integer type
+                        <ul>
+                            <li>
+                                If <span class="rule">type</span> is smaller than 
+                                <span class="rule">expression</span>'s type then the 
+                                most significant bits of the <span class="rule">expression</span>
+                                are truncated and the remaning bits are reinterpreted as
+                                the <span class="rule">type</span>.
+                            </li>
+                            <li>
+                                If <span class="rule">type</span> is larger than 
+                                <span class="rule">expression</span>'s type then 
+                                the value is either Sign extended or Zero extended
+                                to the same size as <span class="rule">type</span> then 
+                                the bits are reinterpreted as the <span class="rule">type</span>.
+                            </li>
+                            <li>
+                                If <span class="rule">type</span> is the same size as
+                                <span class="rule">expression</span>'s type then the 
+                                bits are reinterpreted as the <span class="rule">type</span>.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>When casting a <span class="type">FXX</span> to <span class="type">FXX</span>
+                        <ul>
+                            <li>
+                                If <span class="rule">type</span> is <span class="type">F64</span>
+                                and <span class="rule">expression</span>'s type is <span class="type">F32</span>
+                                the <span class="rule">expression</span> is rounded to 
+                                the nearest <span class="type">F32</span> value. If the
+                                <span class="rule">expression</span> is too low to 
+                                represent as <span class="type">F32</span> then the 
+                                result is ±0. If the <span class="rule">expression</span> 
+                                is too large to represent as <span class="type">F32</span>
+                                the result is ±infinity. If the <span class="rule">expression</span>
+                                is NaN then the result is NaN.
+                            </li>
+                            <li>
+                                If <span class="rule">type</span> is <span class="type">F32</span>
+                                and <span class="rule">expression</span>'s type is 
+                                <span class="type">F64</span> the result is a
+                                <span class="type">F64</span> representing the same 
+                                value as the <span class="rule">expression</span>.
+                            </li>
+                            <li>
+                                If <span class="rule">type</span> is the same as
+                                <span class="rule">expression</span>'s type then the
+                                result is <span class="rule">expression</span>.
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        If <span class="rule">type</span> is larger than 
-                        <span class="rule">expression</span>'s type then 
-                        the value is either Sign extended or Zero extended
-                        to the same size as <span class="rule">type</span> then 
-                        the bits are reinterpreted as the <span class="rule">type</span>.
+                        When casting from a <span class="type">FXX</span> to an integer type 
+                        the fraction is discarded (truncation towards zero). If
+                        the value of the <span class="rule">expression</span> is 
+                        NaN, infinite or value doesn't fit in <span class="rule">type</span>
+                        the result is undefined.
+                    </li>                
+                    <li>
+                        When casting from an integer type to a <span class="type">FXX</span> 
+                        the result is a <span class="type">FXX</span> representing 
+                        the same value as the <span class="rule">expression</span>.
                     </li>
                     <li>
-                        If <span class="rule">type</span> is the same size as
-                        <span class="rule">expression</span>'s type then the 
-                        bits are reinterpreted as the <span class="rule">type</span>.
+                        When the <span class="rule">expression</span> is a 
+                        <span class="rule">reference_expression</span> to a
+                        <span class="keyword">function</span> then 
+                        <span class="rule">type</span> must be a <span class="type">Function</span> type
+                        which matches an overload in scope. The <span class="rule">reference_expression</span>
+                        is not allowed to specify <span class="rule">actual_type_parameters</span>.
+                        The result is a reference to that specific overload. 
                     </li>
+                    <li>When the <span class="rule">expression</span>'s type must be infered it is infered as the <span class="rule">type</span>.</li>
                 </ul>
-                
-                <p>When casting a <span class="type">FXX</span> to <span class="type">FXX</span>:</p>
-                <ul>
-                    <li>
-                        If <span class="rule">type</span> is <span class="type">F64</span>
-                        and <span class="rule">expression</span>'s type is <span class="type">F32</span>
-                        the <span class="rule">expression</span> is rounded to 
-                        the nearest <span class="type">F32</span> value. If the
-                        <span class="rule">expression</span> is too low to 
-                        represent as <span class="type">F32</span> then the 
-                        result is ±0. If the <span class="rule">expression</span> 
-                        is too large to represent as <span class="type">F32</span>
-                        the result is ±infinity. If the <span class="rule">expression</span>
-                        is NaN then the result is NaN.
-                    </li>
-                    <li>
-                        If <span class="rule">type</span> is <span class="type">F32</span>
-                        and <span class="rule">expression</span>'s type is 
-                        <span class="type">F64</span> the result is a
-                        <span class="type">F64</span> representing the same 
-                        value as the <span class="rule">expression</span>.
-                    </li>
-                    <li>
-                        If <span class="rule">type</span> is the same as
-                        <span class="rule">expression</span>'s type then the
-                        result is <span class="rule">expression</span>.
-                    </li>
-                </ul>
-                
-                <p>
-                    When casting from a <span class="type">FXX</span> to an integer type 
-                    the fraction is discarded (truncation towards zero). If
-                    the value of the <span class="rule">expression</span> is 
-                    NaN, infinite or value doesn't fit in <span class="rule">type</span>
-                    the result is undefined.
-                </p>                
-                
-                <p>
-                    When casting from an integer type to a <span class="type">FXX</span> 
-                    the result is a <span class="type">FXX</span> representing 
-                    the same value as the <span class="rule">expression</span>.
-                </p>
-                
-                <p>
-                    When the <span class="rule">expression</span> is a 
-                    <span class="rule">reference_expression</span> to a
-                    <span class="keyword">function</span> then 
-                    <span class="rule">type</span> must be a <span class="type">Function</span> type
-                    which matches an overload in scope. The <span class="rule">reference_expression</span>
-                    is not allowed to specify <span class="rule">actual_type_parameters</span>.
-                    The result is a reference to that specific overload. 
-                </p>
                 
                 <h1>5. Types</h1>
                 <pre><code><span class="rule">types</span> &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
@@ -1102,16 +1113,7 @@
 
 <span class="rule">function_type</span> &lt;- 'Function' <span class="rule">whitespace</span>
                   <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
-                  <span class="rule">return_types?</code></pre>
-                
-                <p id="type_inference">
-                    A <span class="rule">type</span> can be inferred from a 
-                    <span class="rule">cast_expression</span>, <span class="rule">call_expression</span>,
-                    <span class="rule">field_initializer</span>, the <i>n</i>th <span class="rule">type</span> in <span class="rule">return_types</span>,
-                    the type of the <i>n</i>th <span class="rule">variable</span> in a <span class="rule">declaration_statement</span>,
-                    the type of the <i>n</i>th <span class="rule">expression</span> in an <span class="rule">assignment_statement</span> or
-                    the other operand of a binary expression.
-                </p>
+                  <span class="rule">return_types?</span></code></pre>
                 
                 <ul>
                     <li><span class="type">IXX</span>, <span class="type">UXX</span>, <span class="type">FXX</span> and <span class="type">Bool</span> are considered primitive types and they are always in scope.</li>
