@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.23.5</title>
+        <title>Owen specification 0.23.6</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.23.5</h1>
+                    <h1>Owen specification 0.23.6</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -806,7 +806,7 @@
                     / <span class="rule">cast_expression</span></code></pre>
 
                 <h3>4.9.1. Floating point literals</h3>
-                <pre><code><span class="rule">float_literal</span> &lt;- '-'? [0-9]+ '.' [0-9]+</code></pre>
+                <pre><code><span class="rule">float_literal</span> &lt;- '-'? [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     The <span class="type">F32</span> and <span class="type">F64</span>
@@ -816,7 +816,7 @@
                 </p>
 
                 <h3>4.9.2. Integer literals</h3>
-                <pre><code><span class="rule">integer_literal</span>     &lt;- '-'? (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>)
+                <pre><code><span class="rule">integer_literal</span>     &lt;- '-'? (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>) <span class="rule">whitespace</span>
 
 <span class="rule">binary_integer</span>      &lt;- '0b' [01]+ ('_' [01]+)*
 <span class="rule">decimal_integer</span>     &lt;- [0-9]+ ('_' [0-9]+)*
@@ -895,7 +895,7 @@
                 
                                 
                 <h3>4.9.4. Unicode code point literals</h3>
-                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !"'" .) "'"
+                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !"'" .) "'" <span class="rule">whitespace</span>
                 
 <span class="rule">unicode_escape_sequence</span>    &lt;- '\\u' <span class="rule">hexadecimal_digit</span>
                                     <span class="rule">hexadecimal_digit</span>
@@ -984,7 +984,10 @@
                 </p>
                 
                 <h3>4.9.11. Parenthesized expressions</h3>
-                <pre><code><span class="rule">parenthesized_expression</span> &lt;- <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span></code></pre>
+                <pre><code><span class="rule">parenthesized_expression</span> &lt;- <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span>
+
+<span class="rule">left_parenthesis</span>  &lt;- '(' <span class="rule">whitespace</span>
+<span class="rule">right_parenthesis</span> &lt;- ')' <span class="rule">whitespace</span></code></pre>
                 <p>
                     The type and value of <span class="rule">parenthesized_expression</span>
                     is the same as the <span class="rule">expression</span>.
@@ -1109,6 +1112,8 @@
 <span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
 
 <span class="rule">actual_type_parameters</span> &lt;- <span class="rule">left_angle_bracket</span> <span class="rule">types</span> <span class="rule">right_angle_bracket</span>
+<span class="rule">left_angle_bracket</span>     &lt;- '&lt;' <span class="rule">whitespace</span>
+<span class="rule">right_angle_bracket</span>    &lt;- '&gt;' <span class="rule">whitespace</span>
 
 <span class="rule">function_type</span> &lt;- 'Function' <span class="rule">whitespace</span>
                   <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
