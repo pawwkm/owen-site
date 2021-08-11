@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.23.6</title>
+        <title>Owen specification 0.26.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.23.6</h1>
+                    <h1>Owen specification 0.24.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -154,8 +154,8 @@
                 
                 <p>
                     <span class="rule">function_declaration</span>s with the
-                    same name and <i>n</i>th formal parameter's type.
-                    Formal type parameters differ from formal parameter types but 
+                    same name and <i>n</i>th <span class="rule">formal_parameter</span>'s <span class="rule">type</span>.
+                    <span class="rule">formal_type_parameter</span>s differ from <span class="rule">formal_parameter</span> types but 
                     for the purpose of overloading any <span class="rule">formal_type_parameter</span>
                     matches any other <span class="rule">formal_type_parameter</span>.
                 </p>
@@ -197,7 +197,7 @@
                     the same scope as the <span class="rule">statements</span>, they must have unique names
                     and they must be used in a <span class="rule">reference_expression</span>.
                     A <span class="rule">formal_parameter</span>'s <span class="rule">type</span>
-                    cannot be a non-public type if the function is declared 
+                    cannot be or contain a non-public type if the function is declared 
                     <span class="rule">public</span>.
                 </p> 
                 
@@ -280,8 +280,10 @@
                     <span class="rule">compound_declaration</span> and cannot have 
                     the same name as <span class="rule">compound_declaration</span>.
                     A <span class="rule">field</span>'s <span class="rule">type</span>
-                    cannot be a non-public type if the compound is declared 
-                    <span class="rule">public</span>.
+                    cannot be or contain a non-public type if the compound is declared 
+                    <span class="rule">public</span>. Any attribute besides the 
+                    <span class="rule">retained_attribute</span> is allowed for a 
+                    <span class="rule">field</span>'s type.
                 </p>
                 <p>
                     <span class="rule">structure</span> <span class="rule">field</span>s
@@ -392,9 +394,9 @@
                 <p>
                     The <i>n</i>th <span class="rule">expression</span>'s
                     type must match the <i>n</i>th <span class="rule">variable</span>'s <span class="rule">type</span>
-                    or be inferable as the  <i>n</i>th <span class="rule">variable</span>'s <span class="rule">type</span>.
+                    or be inferable as the <i>n</i>th <span class="rule">variable</span>'s <span class="rule">type</span>.
                 </p>
-
+                
                 <h2>3.2. Assignment statements</h2>
                 <pre><code><span class="rule">assignment_statement</span> &lt;- <span class="rule">expressions</span> <span class="rule">assignment_operator</span> <span class="rule">expressions</span>
 <span class="rule">assignment_operator</span> &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' <span class="rule">whitespace</span></code></pre>
@@ -567,8 +569,23 @@
                     <li><span class="rule">array_access_expression</span></li>
                     <li><span class="rule">dereference_expression</span></li>
                 </ul>
-                
-                <h2>4.2. Logical or expressions</h2>
+               
+                <p>
+                    If the <span class="rule">expression</span> is not an <span class="rule">address_of_expression</span> and its type is a <span class="rule">pointer_type</span> 
+                    that matches the expected type then the expected type must have the same
+                    <span class="rule">pointer_type_attributes</span> or less. But the 
+                    <span class="rule">no_alias_attribute</span> cannot be discarded and at least 1
+                    attribute must remain.
+                </p>
+
+                <p>
+                    Furthermore if the <span class="rule">expression</span> is an <span class="rule">address_of_expression</span>
+                    it has the same <span class="rule">pointer_type_attributes</span> as the expected type. But if the expected type has
+                    the <span class="rule">retained_attribute</span> and the address is of a <span class="rule">variable</span>
+                    or <span class="rule">formal_parameter</span> it is an error.
+                </p>
+
+                <h2>4.1. Logical or expressions</h2>
                 <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> ('||' <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
 
                 <p>
@@ -580,7 +597,7 @@
                     if either operand is <span class="keyword">true</span>.
                 </p>
 
-                <h2>4.3. Logical and expressions</h2>
+                <h2>4.2. Logical and expressions</h2>
                 <pre><code><span class="rule">logical_and_expression</span> &lt;- <span class="rule">relational_expression</span> ('&amp;&amp;' <span class="rule">whitespace</span> <span class="rule">relational_expression</span>)*</code></pre>
 
                 <p>
@@ -592,7 +609,7 @@
                     if both operands are <span class="keyword">true</span>.
                 </p>
 
-                <h2>4.4. Relational expressions</h2>
+                <h2>4.3. Relational expressions</h2>
                 <pre><code><span class="rule">relational_expression</span> &lt;- <span class="rule">additive_expression</span> (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') <span class="rule">whitespace</span> <span class="rule">additive_expression</span>)*</code></pre>
                 
                 <p>
@@ -611,7 +628,7 @@
                     both operands must be of the same number, pointer or enumeration type. 
                 </p>
 
-                <h2>4.5. Additive expressions</h2>
+                <h2>4.4. Additive expressions</h2>
                 <pre><code><span class="rule">additive_expression</span> &lt;- <span class="rule">multiplicative_expression</span> (('+' / '-' / '|' / '^') <span class="rule">whitespace</span> <span class="rule">multiplicative_expression</span>)*</code></pre>
 
                 <p>
@@ -637,7 +654,7 @@
                     <span class="rule">type</span> then it is infered as that type.
                 </p>
 
-                <h2>4.6. Multiplicative expressions</h2>
+                <h2>4.5. Multiplicative expressions</h2>
                 <pre><code><span class="rule">multiplicative_expression</span> &lt;- <span class="rule">prefix_expression</span> (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') <span class="rule">whitespace</span> <span class="rule">prefix_expression</span>)*</code></pre>
 
                 <p>
@@ -658,7 +675,7 @@
                 </p>
 
 
-                <h2>4.7. Prefix expressions</h2>
+                <h2>4.6. Prefix expressions</h2>
                 <pre><code><span class="rule">prefix_expression</span> &lt;- <span class="rule">not_expression</span>
                    / <span class="rule">negate_expression</span>
                    / <span class="rule">address_of_expression</span>
@@ -669,14 +686,14 @@
                     Prefix operators are right associative.
                 </p>
 
-                <h3>4.7.1. Not expressions</h3>
+                <h3>4.6.1. Not expressions</h3>
                 <pre><code><span class="rule">not_expression</span> &lt;- '!' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
-                <h3>4.7.2. Negate expressions</h3>
+                <h3>4.6.2. Negate expressions</h3>
                 <pre><code><span class="rule">negate_expression</span> &lt;- '-' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
@@ -684,16 +701,16 @@
                     The type of the expression is the same as the negated value.
                 </p>
 
-                <h3>4.7.3. Address of expressions</h3>
+                <h3>4.6.3. Address of expressions</h3>
                 <pre><code><span class="rule">address_of_expression</span> &lt;- '#' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
                     Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">prefix_expression</span>.
-                    The type of the <span class="rule">address_of_expression</span> is a pointer 
-                    type that points to.
+                    The type of the <span class="rule">address_of_expression</span> is a <span class="rule">pointer_type</span> where the 
+                    base type is the same type as the <span class="rule">prefix_expression</span>'s type. 
                 </p>
-                
-                <h3>4.7.4. Dereference expressions</h3>
+
+                <h3>4.6.4. Dereference expressions</h3>
                 <pre><code><span class="rule">dereference_expression</span> &lt;- '@' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
 
                 <p>
@@ -703,10 +720,10 @@
                     is pointing to.
                 </p>
 
-                <h2>4.8. Postfix expressions</h2>
+                <h2>4.7. Postfix expressions</h2>
                 <pre><code><span class="rule">postfix_expression</span> &lt;- <span class="rule">primary_expression</span> (<span class="rule">field_access_expression</span> / <span class="rule">call_expression</span> / <span class="rule">array_access_expression</span>)*</code></pre>
 
-                <h3>4.8.1. Field access expressions</h3>
+                <h3>4.7.1. Field access expressions</h3>
                 <pre><code><span class="rule">field_access_expression</span> &lt;- <span class="rule">dot</span> <span class="rule">lower_case_identifier</span>
 <span class="rule">dot</span> &lt;- '.' <span class="rule">whitespace</span></code></pre>
 
@@ -716,7 +733,7 @@
                     the expression is the same the <span class="rule">field</span>'s type.
                 </p>
 
-                <h3>4.8.2. Call expressions</h3>
+                <h3>4.7.2. Call expressions</h3>
                 <pre><code><span class="rule">call_expression</span>   &lt;- <span class="rule">left_parenthesis</span> <span class="rule">actual_parameters</span> <span class="rule">right_parenthesis</span>
 <span class="rule">actual_parameters</span> &lt;- <span class="rule">expressions</span>?</code></pre>
 
@@ -775,7 +792,7 @@
 
                 <p>The <span class="rule">actual_parameters</span> are passed to the called function by value.</p>
 
-                <h3>4.8.3. Array access expressions</h3>
+                <h3>4.7.3. Array access expressions</h3>
                 <pre><code><span class="rule">array_access_expression</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">expression</span> <span class="rule">right_square_bracket</span>
 
 <span class="rule">left_square_bracket</span> &lt;- '[' <span class="rule">whitespace</span>
@@ -789,7 +806,7 @@
                     dimension it is used to index into.
                 </p>
 
-                <h2>4.9. Primary expressions</h2>
+                <h2>4.8. Primary expressions</h2>
                 <pre><code><span class="rule">primary_expression</span> &lt;- <span class="rule">float_literal</span>
                     / <span class="rule">integer_literal</span>
                     / <span class="rule">boolean_literal</span>
@@ -805,17 +822,16 @@
                     / <span class="rule">enumeration_constant_access</span>
                     / <span class="rule">cast_expression</span></code></pre>
 
-                <h3>4.9.1. Floating point literals</h3>
+                <h3>4.8.1. Floating point literals</h3>
                 <pre><code><span class="rule">float_literal</span> &lt;- '-'? [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
                 
                 <p>
-                    The <span class="type">F32</span> and <span class="type">F64</span>
-                    types behaves as binary32 and binary64 respectivly as 
-                    specified in IEEE 754. The type of a <span class="rule">float_literal</span>
-                    is inferred.
+                    The type of a <span class="rule">float_literal</span>
+                    is inferred. <span class="rule">float_literal</span>s are not allowed to
+                    overflow or underflow their type.
                 </p>
 
-                <h3>4.9.2. Integer literals</h3>
+                <h3>4.8.2. Integer literals</h3>
                 <pre><code><span class="rule">integer_literal</span>     &lt;- '-'? (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>) <span class="rule">whitespace</span>
 
 <span class="rule">binary_integer</span>      &lt;- '0b' [01]+ ('_' [01]+)*
@@ -826,66 +842,13 @@
                 <p>
                     The type of a <span class="rule">integer_literal</span> is inferred.
                     The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
-                    <span class="type">IXX</span> is stored using Two's complement.
-                    <span class="type">IXX</span> and <span class="type">UXX</span>
-                    variables wrap around but <span class="rule">integer_literal</span>s is not allowed to
+                    <span class="rule">integer_literal</span>s are not allowed to
                     overflow or underflow their type. The <span class="rule">integer_literal</span> <code>-0</code>
                     is not allowed.
                 </p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Min</th>
-                            <th>Max</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="type">I8</span></td>
-                            <td>-2<sup>7</sup></td>
-                            <td>2<sup>7</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">I16</span></td>
-                            <td>-2<sup>15</sup></td>
-                            <td>2<sup>15</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">I32</span></td>
-                            <td>-2<sup>31</sup></td>
-                            <td>2<sup>31</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">I64</span></td>
-                            <td>-2<sup>63</sup></td>
-                            <td>2<sup>63</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">U8</span></td>
-                            <td>0</td>
-                            <td>2<sup>8</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">U16</span></td>
-                            <td>0</td>
-                            <td>2<sup>16</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">U32</span></td>
-                            <td>0</td>
-                            <td>2<sup>32</sup>-1</td>
-                        </tr>
-                        <tr>
-                            <td><span class="type">U64</span></td>
-                            <td>0</td>
-                            <td>2<sup>64</sup>-1</td>
-                        </tr>
-                    </tbody>
-                </table>
 
-                <h3>4.9.3. Boolean literals</h3>
+                <h3>4.8.3. Boolean literals</h3>
                 <pre><code><span class="rule">boolean_literal</span> &lt;- <span class="rule">true</span> / <span class="rule">false</span></code></pre>
 
                 <p>
@@ -894,7 +857,7 @@
                 </p>
                 
                                 
-                <h3>4.9.4. Unicode code point literals</h3>
+                <h3>4.8.4. Unicode code point literals</h3>
                 <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !"'" .) "'" <span class="rule">whitespace</span>
                 
 <span class="rule">unicode_escape_sequence</span>    &lt;- '\\u' <span class="rule">hexadecimal_digit</span>
@@ -917,7 +880,7 @@
                     represents a unicode code point in a <span class="type">U32</span>.
                 </p>
 
-                <h3>4.9.5. UTF-8 string literals</h3>
+                <h3>4.8.5. UTF-8 string literals</h3>
                 <pre><code><span class="rule">utf8_string_literal</span> &lt;- '"' (<span class="rule">unicode_escape_sequence</span> / !'"' .)* '"' <span class="rule">whitespace</span></code></pre>
                 
                 <p>
@@ -925,7 +888,7 @@
                     syntax sugar for <code>[]<span class="type">U8</span></code>.
                 </p>
 
-                <h3>4.9.6. Array literals</h3>
+                <h3>4.8.6. Array literals</h3>
                 <pre><code><span class="rule">array_literal</span>       &lt;- <span class="rule">left_curly_bracket</span> <span class="rule">expressions</span> <span class="rule">right_curly_bracket</span>
 
 <span class="rule">left_curly_bracket</span>  &lt;- '{' <span class="rule">whitespace</span>
@@ -933,7 +896,7 @@
 
                 <p>Each <span class="rule">expression</span>'s type must match the base type of the array.</p>
 
-                <h3>4.9.7. Compound literals</h3>
+                <h3>4.8.7. Compound literals</h3>
                 <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
                         <span class="rule">field_initializer</span> (<span class="rule">comma</span> <span class="rule">field_initializer</span>)*
                     <span class="rule">right_curly_bracket</span>
@@ -957,7 +920,7 @@
                     and uninitialized <span class="rule">field</span>s have undefined values.
                 </p>
 
-                <h3>4.9.8. Null literals</h3>
+                <h3>4.8.8. Null literals</h3>
                 <pre><code><span class="rule">null_literal</span> &lt;- <span class="rule">null</span></code></pre>
 
                 <p>
@@ -965,7 +928,7 @@
                     Only pointer typed variables can be <span class="keyword">null</span>.
                 </p>
                 
-                <h3>4.9.9. Uninitialized literals</h3>
+                <h3>4.8.9. Uninitialized literals</h3>
                 <pre><code><span class="rule">uninitialized_literal</span> &lt;- '---' <span class="rule">whitespace</span></code></pre>
 
                 <p>
@@ -974,7 +937,7 @@
                     The actual value is undefined.
                 </p>
                 
-                <h3>4.9.10. Size of expressions</h3>
+                <h3>4.8.10. Size of expressions</h3>
                 <pre><code><span class="rule">size_of_expression</span> &lt;- <span class="rule">sizeof</span> <span class="rule">left_parenthesis</span> (<span class="rule">type</span> / <span class="rule">expression</span>) <span class="rule">right_parenthesis</span></code></pre>
 
                 <p>
@@ -983,7 +946,7 @@
                     or an <span class="rule">expression</span>'s type in bytes.
                 </p>
                 
-                <h3>4.9.11. Parenthesized expressions</h3>
+                <h3>4.8.11. Parenthesized expressions</h3>
                 <pre><code><span class="rule">parenthesized_expression</span> &lt;- <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span>
 
 <span class="rule">left_parenthesis</span>  &lt;- '(' <span class="rule">whitespace</span>
@@ -993,7 +956,7 @@
                     is the same as the <span class="rule">expression</span>.
                 </p>
                 
-                <h3>4.9.12. Reference expressions</h3>
+                <h3>4.8.12. Reference expressions</h3>
                 <pre><code><span class="rule">reference_expression</span> &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">actual_type_parameters</span>?</code></pre>
                 
                 <p>
@@ -1002,10 +965,10 @@
                     or a <span class="keyword">function</span> with the same 
                     name in scope. If the <span class="rule">reference_expression</span> 
                     refers to a <span class="keyword">function</span> the <span class="rule">type</span> 
-                    is <a href="#type_inference">inferred</a>.
+                    is inferred.
                 </p>
                 
-                <h3>4.9.13. Enumeration constant access expression</h3>
+                <h3>4.8.13. Enumeration constant access expression</h3>
                 <pre><code><span class="rule">enumeration_constant_access</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">dot</span> <span class="rule">lower_case_identifier</span></code></pre>
                 <p>
                     <span class="rule">upper_case_identifier</span> is the <span class="keyword">enumeration</span> type and 
@@ -1014,7 +977,7 @@
                     and the value of the expression is the same as the <span class="rule">enumeration_constant</span>.
                 </p>
 
-                <h3>4.9.14. Cast expressions</h3>
+                <h3>4.8.14. Cast expressions</h3>
                 <pre><code><span class="rule">cast_expression</span> &lt;- <span class="rule">type</span> <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span></code></pre>
 
                 <p>
@@ -1101,12 +1064,10 @@
                 <h1>5. Types</h1>
                 <pre><code><span class="rule">types</span> &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
 <span class="rule">type</span>  &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
-         (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span>)
-       / <span class="rule">function_type</span>
+         (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span> / <span class="rule">function_type</span>)
 
 <span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span>
 <span class="rule">fixed_array_type</span>   &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span>
-<span class="rule">pointer_type</span>       &lt;- '#' <span class="rule">whitespace</span>
 
 <span class="rule">polymorphic_compound_type</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">actual_type_parameters</span>
 <span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
@@ -1118,18 +1079,112 @@
 <span class="rule">function_type</span> &lt;- 'Function' <span class="rule">whitespace</span>
                   <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
                   <span class="rule">return_types?</span></code></pre>
-                
+
+                <p><span class="type">IXX</span>, <span class="type">UXX</span>, <span class="type">FXX</span> and <span class="type">Bool</span> are considered primitive types and they are always in scope.</p>
+                <p>The type following a <span class="rule">dynamic_array_type</span>, <span class="rule">fixed_array_type</span> or <span class="rule">pointer_type</span> is called the base type.</p>
+
+                <h2>5.1. Matching types</h2>
                 <ul>
-                    <li><span class="type">IXX</span>, <span class="type">UXX</span>, <span class="type">FXX</span> and <span class="type">Bool</span> are considered primitive types and they are always in scope.</li>
+                    <li><span class="rule">named_type</span>s with the same names match.</li>
+                    <li><span class="rule">polymorphic_compound_type</span>s with the same name and their actual type parameters match.</li>
                     <li><span class="rule">function_type</span>s where the <i>n</i>th <span class="rule">formal_parameters</span> and the <i>n</i>th <span class="rule">return_types</span> match matches.</li>
-                    <li><span class="rule">polymorphic_compound_type</span>s match if they have the same name and their actual type parameters match.</li>
+                    <li><span class="rule">dynamic_array_type</span>s match when their base types match.</li>
+                    <li><span class="rule">fixed_array_type</span>s match when their size and base types match.</li>
+                    <li><span class="rule">pointer_type</span>s match when their base type match.</li>
                 </ul>
 
+                <h2>5.2. Integer types</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Min</th>
+                            <th>Max</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="type">I8</span></td>
+                            <td>-2<sup>7</sup></td>
+                            <td>2<sup>7</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">I16</span></td>
+                            <td>-2<sup>15</sup></td>
+                            <td>2<sup>15</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">I32</span></td>
+                            <td>-2<sup>31</sup></td>
+                            <td>2<sup>31</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">I64</span></td>
+                            <td>-2<sup>63</sup></td>
+                            <td>2<sup>63</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">U8</span></td>
+                            <td>0</td>
+                            <td>2<sup>8</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">U16</span></td>
+                            <td>0</td>
+                            <td>2<sup>16</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">U32</span></td>
+                            <td>0</td>
+                            <td>2<sup>32</sup>-1</td>
+                        </tr>
+                        <tr>
+                            <td><span class="type">U64</span></td>
+                            <td>0</td>
+                            <td>2<sup>64</sup>-1</td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <p>
-                    The <span class="rule">upper_case_identifier</span> in a
-                    <span class="rule">polymorphic_compound_type</span> is not
-                    allowed to match an actual type parameter.
+                    The number in each type is the number of bits used to store the its data.
+                    <span class="type">IXX</span> is stored using Two's complement.
+                    <span class="type">IXX</span> and <span class="type">UXX</span>
+                    expressions besides literals may wrap around.
                 </p>
+
+                <h2>5.3. Floating point types</h2>
+                <p>
+                    The <span class="type">F32</span> and <span class="type">F64</span>
+                    types behaves as binary32 and binary64 respectivly as 
+                    specified in IEEE 754.
+                </p>
+
+                <h2>5.4. Boolean types</h2>
+                <p>
+                    Booleans are stored as an <span class="type">U8</span> and have
+                    the <span class="type">Bool</span> type. Any non-zero value is
+                    <span class="keyword">true</span> and zero is
+                    <span class="keyword">false</span>.
+                </p>
+                
+                <h2>5.5. Pointer types</h2>
+                <pre><code><span class="rule">pointer_type</span>            &lt;- '#' <span class="rule">whitespace</span> <span class="rule">pointer_type_attributes</span>
+<span class="rule">pointer_type_attributes</span> &lt;- <span class="rule">retained_attribute</span>? 
+                           <span class="rule">no_alias_attribute</span>? 
+                           <span class="rule">readable_attribute</span>?
+                           <span class="rule">writable_attribute</span>?
+
+<span class="rule">retained_attribute</span> &lt;- '`' <span class="rule">whitespace</span>
+<span class="rule">no_alias_attribute</span> &lt;- '!' <span class="rule">whitespace</span>
+<span class="rule">readable_attribute</span> &lt;- '?' <span class="rule">whitespace</span>
+<span class="rule">writable_attribute</span> &lt;- '$' <span class="rule">whitespace</span></code></pre>
+
+                <p>A pointer with the <span class="rule">retained_attribute</span> may escape during the call.</p>
+                <p>A pointer with the <span class="rule">no_alias_attribute</span> is assumed to be the only pointer to its address.</p>
+                <p>A pointer with the <span class="rule">readable_attribute</span> allows data to be read through it.</p>
+                <p>A pointer with the <span class="rule">writeable_attribute</span> allows data to be written through it.</p>
+                <p>A pointer with no attributes assumes that the pointer is retained, aliased and that it is possibly read and/or written to.</p>
             </section>
         </main>
     </body>
