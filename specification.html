@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.24.0</title>
+        <title>Owen specification 0.24.1</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.24.0</h1>
+                    <h1>Owen specification 0.24.1</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -638,9 +638,9 @@
                 </p>
 
                 <p>
-                    If the left hand expression is a pointer type, the right hand expression is a 
-                    <span class="type">UXX</span> type and the operator is either <code>+</code> or <code>-</code>
-                    then <code>expression  * size of structure in bytes</code> is either added or subtracted.
+                    If one <span class="rule">multiplicative_expression</span> is a pointer type and the other <span class="rule">multiplicative_expression</span> 
+                    is a <span class="type">UXX</span> type and the operator is either <code>+</code> or <code>-</code>
+                    then <span class="type">UXX</span> value * size of the base type code is either added or subtracted.
                     The type of the additive expression is the same as the pointer type.
                 </p>
                 
