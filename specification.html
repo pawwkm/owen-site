@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.24.1</title>
+        <title>Owen specification 0.24.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.24.1</h1>
+                    <h1>Owen specification 0.24.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -799,13 +799,10 @@
 <span class="rule">right_square_bracket</span> &lt;- ']' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    The indexed expression must be an array type. The type of <span class="rule">array_access_expression</span>
-                    is a pointer to the element type.
-                    The <span class="rule">expression</span> must be
-                    an <span class="type">IXX</span>. The value must be within 0 and the size of the
-                    dimension it is used to index into.
+                    The indexed expression must be an array type. The result is the <i>n</i>th
+                    element which type is the same as the array's base type.
                 </p>
-
+                
                 <h2>4.8. Primary expressions</h2>
                 <pre><code><span class="rule">primary_expression</span> &lt;- <span class="rule">float_literal</span>
                     / <span class="rule">integer_literal</span>
@@ -1066,9 +1063,6 @@
 <span class="rule">type</span>  &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
          (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span> / <span class="rule">function_type</span>)
 
-<span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span>
-<span class="rule">fixed_array_type</span>   &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span>
-
 <span class="rule">polymorphic_compound_type</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">actual_type_parameters</span>
 <span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
 
@@ -1185,6 +1179,30 @@
                 <p>A pointer with the <span class="rule">readable_attribute</span> allows data to be read through it.</p>
                 <p>A pointer with the <span class="rule">writeable_attribute</span> allows data to be written through it.</p>
                 <p>A pointer with no attributes assumes that the pointer is retained, aliased and that it is possibly read and/or written to.</p>
+            
+                <h2>5.6. Dynamic array types</h2>
+                <pre><code><span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span></code></pre>
+                <p><code>[]<span class="type">T</span></code> behaves as:</p>
+                <pre><code><span class="keyword">structure</span> <span class="type">Dynamic_Array</span>&lt;<span class="type">Base_Type</span>&gt; 
+    #<span class="type">Base_Type</span> elements
+    <span class="type">U32</span> length
+    <span class="type">U32</span> capacity
+<span class="keyword">end</span></code></pre>
+
+                <p>
+                    but without putting 
+                    <code><span class="type">Dynamic_Array</span>&lt;<span class="type">Base_Type</span>&gt;</code> 
+                    in scope.
+                </p>
+                
+                <h2>5.7. Fixed array types</h2>
+                <pre><code><span class="rule">fixed_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span></code></pre>
+                <p>
+                    Is a fixed sized array of <span class="type">Base_Type</span> with 
+                    <span class="rule">integer_literal</span> &gt; 0 elements stored 
+                    contiguously without padding between elements. Its <span class="type">U32</span>
+                    length field is equal to the <span class="rule">integer_literal</span>.
+                </p>
             </section>
         </main>
     </body>
