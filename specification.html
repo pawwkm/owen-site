@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.24.2</title>
+        <title>Owen specification 0.25.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.24.2</h1>
+                    <h1>Owen specification 0.25.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -359,8 +359,9 @@
                 </p>
 
                 <h2>3.1. Declaration statements</h2>
-                <pre><code><span class="rule">declaration_statement</span> &lt;- <span class="rule">variables</span> '=' <span class="rule">expressions</span>
+                <pre><code><span class="rule">declaration_statement</span> &lt;- <span class="rule">variables</span> (<span class="rule">equal</span> <span class="rule">expressions)?</span>
 
+<span class="rule">equal</span>                 &lt;- '=' <span class="rule">whitespace</span>
 <span class="rule">variables</span>             &lt;- <span class="rule">variable</span> (<span class="rule">comma</span> <span class="rule">variable</span>)*
 <span class="rule">variable</span>              &lt;- <span class="rule">type</span> <span class="rule">lower_case_identifier</span></code></pre>
  
@@ -373,6 +374,9 @@
                     are evaluated from left to right and exists in scope only after it 
                     has been assigned an <span class="rule">expression</span>. 
                     Each variable must be used in a <span class="rule">reference_expression</span>.
+                    If the <span class="rule">equal</span> <span class="rule">expressions</span>
+                    part is omitted then all the <span class="rule">variables</span> are 
+                    <a href="#zero_values">zeroed</a> otherwise:
                 </p>
 
                 <p>
@@ -399,7 +403,7 @@
                 
                 <h2>3.2. Assignment statements</h2>
                 <pre><code><span class="rule">assignment_statement</span> &lt;- <span class="rule">expressions</span> <span class="rule">assignment_operator</span> <span class="rule">expressions</span>
-<span class="rule">assignment_operator</span> &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? '=' <span class="rule">whitespace</span></code></pre>
+<span class="rule">assignment_operator</span> &lt;- ([+-*/&amp;|^%] / '&lt;&lt;' / '&gt;&gt;')? <span class="rule">equal</span></code></pre>
     
                 <p>
                     <span class="rule">assignment_statement</span> works the same 
@@ -800,7 +804,7 @@
 
                 <p>
                     The indexed expression must be an array type. The result is the <i>n</i>th
-                    element which type is the same as the array's base type.
+                    element, starting from 0, which type is the same as the array's base type.
                 </p>
                 
                 <h2>4.8. Primary expressions</h2>
@@ -886,12 +890,34 @@
                 </p>
 
                 <h3>4.8.6. Array literals</h3>
-                <pre><code><span class="rule">array_literal</span>       &lt;- <span class="rule">left_curly_bracket</span> <span class="rule">expressions</span> <span class="rule">right_curly_bracket</span>
+                <pre><code><span class="rule">array_literal</span>       &lt;- <span class="rule">left_curly_bracket</span> 
+                           <span class="rule">element_initializer</span> (<span class="rule">comma</span> <span class="rule">element_initializer</span>)*
+                       <span class="rule">right_curly_bracket</span>
+                        
+<span class="rule">element_initializer</span> &lt;- (<span class="rule">expression</span> <span class="rule">equal</span>)? <span class="rule">expression</span> 
 
 <span class="rule">left_curly_bracket</span>  &lt;- '{' <span class="rule">whitespace</span>
 <span class="rule">right_curly_bracket</span> &lt;- '}' <span class="rule">whitespace</span></code></pre>
 
-                <p>Each <span class="rule">expression</span>'s type must match the base type of the array.</p>
+                <p>
+                    Initializes the specified elements of a fixed array which type is inferred. The first 
+                    <span class="rule">expression</span> is the index of the element, starting from 0, to initialize. It 
+                    must either be an <span class="rule">enumeration_constant_access</span> or 
+                    <span class="rule">integer_literal</span>. The value of first <span class="rule">expression</span> cannot 
+                    overflow or underflow <span class="type">U32</span>. The <span class="rule">integer_literal</span>
+                    is inferred as <span class="type">U32</span>.
+                </p>
+                
+                <p>
+                    The second <span class="rule">expression</span> is the value assigned to the  element
+                    specified by the first <span class="rule">expression</span>
+                    and is inferred as the array's base type. If the first <span class="rule">expression</span>
+                    is omitted then it is implicitly equal to the previous index + 1 or 0 if this is the first
+                    <span class="rule">element_initializer</span>. The implicit index cannot overflow 
+                    <span class="type">U32</span>.
+                </p>
+
+                <p>Elements can be initialized once. Elements without an initializer are zeroed.</p>
 
                 <h3>4.8.7. Compound literals</h3>
                 <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
@@ -1074,10 +1100,20 @@
                   <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
                   <span class="rule">return_types?</span></code></pre>
 
-                <p><span class="type">IXX</span>, <span class="type">UXX</span>, <span class="type">FXX</span> and <span class="type">Bool</span> are considered primitive types and they are always in scope.</p>
+                <p>Number types and <span class="type">Bool</span> are considered primitive types and they are always in scope.</p>
                 <p>The type following a <span class="rule">dynamic_array_type</span>, <span class="rule">fixed_array_type</span> or <span class="rule">pointer_type</span> is called the base type.</p>
 
-                <h2>5.1. Matching types</h2>
+                <h2 id="zero_values">5.1. Zero values</h2>
+                <p>The zero value for:</p>
+                <ul>
+                    <li>Number types is 0.</li>
+                    <li><span class="type">Bool</span> is <span class="keyword">false</span>.</li>
+                    <li>Pointer types is <span class="keyword">null</span>.</li>
+                    <li><span class="keyword">enumeration</span> types is its first <span class="rule">enumeration_constant</span> if any or the zero value of its underlying type.</li>
+                    <li>Fields and array elements are zeroed recursively.</li>
+                </ul>
+
+                <h2>5.2. Matching types</h2>
                 <ul>
                     <li><span class="rule">named_type</span>s with the same names match.</li>
                     <li><span class="rule">polymorphic_compound_type</span>s with the same name and their actual type parameters match.</li>
@@ -1087,7 +1123,7 @@
                     <li><span class="rule">pointer_type</span>s match when their base type match.</li>
                 </ul>
 
-                <h2>5.2. Integer types</h2>
+                <h2>5.3. Integer types</h2>
                 <table>
                     <thead>
                         <tr>
@@ -1147,14 +1183,14 @@
                     expressions besides literals may wrap around.
                 </p>
 
-                <h2>5.3. Floating point types</h2>
+                <h2>5.4. Floating point types</h2>
                 <p>
                     The <span class="type">F32</span> and <span class="type">F64</span>
                     types behaves as binary32 and binary64 respectivly as 
                     specified in IEEE 754.
                 </p>
 
-                <h2>5.4. Boolean types</h2>
+                <h2>5.5. Boolean types</h2>
                 <p>
                     Booleans are stored as an <span class="type">U8</span> and have
                     the <span class="type">Bool</span> type. Any non-zero value is
@@ -1162,7 +1198,7 @@
                     <span class="keyword">false</span>.
                 </p>
                 
-                <h2>5.5. Pointer types</h2>
+                <h2>5.6. Pointer types</h2>
                 <pre><code><span class="rule">pointer_type</span>            &lt;- '#' <span class="rule">whitespace</span> <span class="rule">pointer_type_attributes</span>
 <span class="rule">pointer_type_attributes</span> &lt;- <span class="rule">retained_attribute</span>? 
                            <span class="rule">no_alias_attribute</span>? 
@@ -1180,7 +1216,7 @@
                 <p>A pointer with the <span class="rule">writeable_attribute</span> allows data to be written through it.</p>
                 <p>A pointer with no attributes assumes that the pointer is retained, aliased and that it is possibly read and/or written to.</p>
             
-                <h2>5.6. Dynamic array types</h2>
+                <h2>5.7. Dynamic array types</h2>
                 <pre><code><span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span></code></pre>
                 <p><code>[]<span class="type">T</span></code> behaves as:</p>
                 <pre><code><span class="keyword">structure</span> <span class="type">Dynamic_Array</span>&lt;<span class="type">Base_Type</span>&gt; 
@@ -1195,7 +1231,7 @@
                     in scope.
                 </p>
                 
-                <h2>5.7. Fixed array types</h2>
+                <h2>5.8. Fixed array types</h2>
                 <pre><code><span class="rule">fixed_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span></code></pre>
                 <p>
                     Is a fixed sized array of <span class="type">Base_Type</span> with 
