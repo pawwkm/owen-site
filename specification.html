@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.25.0</title>
+        <title>Owen specification 0.26.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.25.0</h1>
+                    <h1>Owen specification 0.26.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -577,15 +577,13 @@
                 <p>
                     If the <span class="rule">expression</span> is not an <span class="rule">address_of_expression</span> and its type is a <span class="rule">pointer_type</span> 
                     that matches the expected type then the expected type must have the same
-                    <span class="rule">pointer_type_attributes</span> or less. But the 
-                    <span class="rule">no_alias_attribute</span> cannot be discarded and at least 1
-                    attribute must remain.
+                    <span class="rule">pointer_type_privileges</span> or less.
                 </p>
 
                 <p>
                     Furthermore if the <span class="rule">expression</span> is an <span class="rule">address_of_expression</span>
-                    it has the same <span class="rule">pointer_type_attributes</span> as the expected type. But if the expected type has
-                    the <span class="rule">retained_attribute</span> and the address is of a <span class="rule">variable</span>
+                    it has the same <span class="rule">pointer_type_privileges</span> as the expected type. But if the expected type has
+                    the <span class="rule">retained_privilege</span> and the address is of a <span class="rule">variable</span>
                     or <span class="rule">formal_parameter</span> it is an error.
                 </p>
 
@@ -894,30 +892,31 @@
                            <span class="rule">element_initializer</span> (<span class="rule">comma</span> <span class="rule">element_initializer</span>)*
                        <span class="rule">right_curly_bracket</span>
                         
-<span class="rule">element_initializer</span> &lt;- (<span class="rule">expression</span> <span class="rule">equal</span>)? <span class="rule">expression</span> 
+<span class="rule">element_initializer</span> &lt;- (<span class="rule">left_square_bracket</span> (<span class="rule">integer_literal</span> | <span class="rule">enumeration_constant_access</span>) <span class="rule">right_square_bracket</span> <span class="rule">equal</span>)? <span class="rule">expression</span> 
 
 <span class="rule">left_curly_bracket</span>  &lt;- '{' <span class="rule">whitespace</span>
 <span class="rule">right_curly_bracket</span> &lt;- '}' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    Initializes the specified elements of a fixed array which type is inferred. The first 
-                    <span class="rule">expression</span> is the index of the element, starting from 0, to initialize. It 
-                    must either be an <span class="rule">enumeration_constant_access</span> or 
-                    <span class="rule">integer_literal</span>. The value of first <span class="rule">expression</span> cannot 
-                    overflow or underflow <span class="type">U32</span>. The <span class="rule">integer_literal</span>
-                    is inferred as <span class="type">U32</span>.
+                    Initializes the specified elements of a fixed array which type is inferred. 
                 </p>
                 
                 <p>
-                    The second <span class="rule">expression</span> is the value assigned to the  element
-                    specified by the first <span class="rule">expression</span>
-                    and is inferred as the array's base type. If the first <span class="rule">expression</span>
-                    is omitted then it is implicitly equal to the previous index + 1 or 0 if this is the first
-                    <span class="rule">element_initializer</span>. The implicit index cannot overflow 
-                    <span class="type">U32</span>.
+                    The <span class="rule">integer_literal</span> or <span class="rule">enumeration_constant_access</span>
+                    is an explicit index of the element, starting from 0, to initialize. The explicit index cannot underflow 
+                    or overflow the size of the infered <span class="rule">fixed_array_type</span>. The <span class="rule">integer_literal</span>
+                    is inferred as <span class="type">U32</span>.
+                    If there is no explicit index then it is implicitly equal to the previous index + 1 or 0 if this is the first
+                    <span class="rule">element_initializer</span>.
+                    Elements can be initialized once. Elements without an initializer are <a href="#zero_values">zeroed</a>.
+                </p>
+                
+                <p>
+                    The <span class="rule">expression</span> is the value of the indexed element
+                    and its type is inferred as the array's base type. 
                 </p>
 
-                <p>Elements can be initialized once. Elements without an initializer are zeroed.</p>
+                <p></p>
 
                 <h3>4.8.7. Compound literals</h3>
                 <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
@@ -1199,22 +1198,21 @@
                 </p>
                 
                 <h2>5.6. Pointer types</h2>
-                <pre><code><span class="rule">pointer_type</span>            &lt;- '#' <span class="rule">whitespace</span> <span class="rule">pointer_type_attributes</span>
-<span class="rule">pointer_type_attributes</span> &lt;- <span class="rule">retained_attribute</span>? 
-                           <span class="rule">no_alias_attribute</span>? 
-                           <span class="rule">readable_attribute</span>?
-                           <span class="rule">writable_attribute</span>?
+                <pre><code><span class="rule">pointer_type</span>            &lt;- '#' <span class="rule">whitespace</span> <span class="rule">pointer_type_privileges</span>
+<span class="rule">pointer_type_privileges</span> &lt;- <span class="rule">retained_privilege</span>? 
+                           <span class="rule">alias_privilege</span>? 
+                           <span class="rule">readable_privilege</span>?
+                           <span class="rule">writable_privilege</span>?
 
-<span class="rule">retained_attribute</span> &lt;- '`' <span class="rule">whitespace</span>
-<span class="rule">no_alias_attribute</span> &lt;- '!' <span class="rule">whitespace</span>
-<span class="rule">readable_attribute</span> &lt;- '?' <span class="rule">whitespace</span>
-<span class="rule">writable_attribute</span> &lt;- '$' <span class="rule">whitespace</span></code></pre>
+<span class="rule">retained_privilege</span> &lt;- '`' <span class="rule">whitespace</span>
+<span class="rule">alias_privilege</span>    &lt;- '!' <span class="rule">whitespace</span>
+<span class="rule">readable_privilege</span> &lt;- '?' <span class="rule">whitespace</span>
+<span class="rule">writable_privilege</span> &lt;- '$' <span class="rule">whitespace</span></code></pre>
 
-                <p>A pointer with the <span class="rule">retained_attribute</span> may escape during the call.</p>
-                <p>A pointer with the <span class="rule">no_alias_attribute</span> is assumed to be the only pointer to its address.</p>
-                <p>A pointer with the <span class="rule">readable_attribute</span> allows data to be read through it.</p>
-                <p>A pointer with the <span class="rule">writeable_attribute</span> allows data to be written through it.</p>
-                <p>A pointer with no attributes assumes that the pointer is retained, aliased and that it is possibly read and/or written to.</p>
+                <p>A pointer with the <span class="rule">retained_privilege</span> may escape during the call.</p>
+                <p>A pointer with the <span class="rule">alias_privilege</span> is assumed to be one of many pointers to its address.</p>
+                <p>A pointer with the <span class="rule">readable_privilege</span> allows data to be read through it.</p>
+                <p>A pointer with the <span class="rule">writeable_privilege</span> allows data to be written through it.</p>
             
                 <h2>5.7. Dynamic array types</h2>
                 <pre><code><span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span></code></pre>
