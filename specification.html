@@ -653,7 +653,7 @@
                 
                 <p>
                     If one of the <span class="rule">multiplicative_expression</span>s are inferable as the other <span class="rule">multiplicative_expression</span>'s 
-                    <span class="rule">type</span> then it is infered as that type.
+                    <span class="rule">type</span> then it is inferred as that type.
                 </p>
 
                 <h2>4.5. Multiplicative expressions</h2>
@@ -673,7 +673,7 @@
 
                 <p>
                     If one of the <span class="rule">prefix_expression</span>s are inferable as the other <span class="rule">prefix_expression</span>'s 
-                    <span class="rule">type</span> then it is infered as that type.
+                    <span class="rule">type</span> then it is inferred as that type.
                 </p>
 
 
@@ -772,7 +772,7 @@
                         The polymorphic function with the same name and amount of
                         <span class="rule">formal_parameters</span> where the <i>n</i>th
                         expression's type matches the <i>n</i>th <span class="rule">formal_parameter</span>'s type.
-                        The <span class="rule">formal_type_parameters</span> are infered from
+                        The <span class="rule">formal_type_parameters</span> are inferred from
                         the <span class="rule">formal_parameters</span>
                         and <span class="rule">actual_parameters</span> as follows:
                         <ul>
@@ -780,7 +780,7 @@
                                 If the actual parameter's type is a primitive, enumeration
                                 or a monomorphic compound and the formal_parameter's type is a 
                                 <span class="rule">formal_type_parameter</span> then that 
-                                <span class="rule">formal_type_parameter</span> is infered to be the actual parameter's 
+                                <span class="rule">formal_type_parameter</span> is inferred to be the actual parameter's 
                                 type.
                             </li>
                             <li>
@@ -907,7 +907,7 @@
                 <p>
                     The <span class="rule">integer_literal</span> or <span class="rule">enumeration_constant_access</span>
                     is an explicit index of the element, starting from 0, to initialize. The explicit index cannot underflow 
-                    or overflow the size of the infered <span class="rule">fixed_array_type</span>. The <span class="rule">integer_literal</span>
+                    or overflow the size of the inferred <span class="rule">fixed_array_type</span>. The <span class="rule">integer_literal</span>
                     is inferred as <span class="type">U32</span>.
                     If there is no explicit index then it is implicitly equal to the previous index + 1 or 0 if this is the first
                     <span class="rule">element_initializer</span>.
@@ -1083,7 +1083,7 @@
                         is not allowed to specify <span class="rule">actual_type_parameters</span>.
                         The result is a reference to that specific overload. 
                     </li>
-                    <li>When the <span class="rule">expression</span>'s type must be infered it is infered as the <span class="rule">type</span>.</li>
+                    <li>When the <span class="rule">expression</span>'s type must be inferred it is inferred as the <span class="rule">type</span>.</li>
                 </ul>
                 
                 <h1>5. Types</h1>
