@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.26.0</title>
+        <title>Owen specification 0.26.1</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.26.0</h1>
+                    <h1>Owen specification 0.26.1</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -801,10 +801,13 @@
 <span class="rule">right_square_bracket</span> &lt;- ']' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    The indexed expression must be an array type. The result is the <i>n</i>th
-                    element, starting from 0, which type is the same as the array's base type.
+                    The indexed expression must be an array type. The <span class="rule">expression</span> is the
+                    index into the array. The <span class="rule">expression</span> must be integer typed, enumeration 
+                    typed or an <span class="rule">integer_literal</span> which type is inferred as <span class="type">U32</span>
                 </p>
                 
+                <p>The result is the <i>n</i>th element, starting from 0, which type is the same as the array's base type.</p>
+
                 <h2>4.8. Primary expressions</h2>
                 <pre><code><span class="rule">primary_expression</span> &lt;- <span class="rule">float_literal</span>
                     / <span class="rule">integer_literal</span>
