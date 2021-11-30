@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.26.1</title>
+        <title>Owen specification 0.26.2</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.26.1</h1>
+                    <h1>Owen specification 0.26.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -68,7 +68,6 @@
 
 <span class="rule">declaration</span> &lt;- <span class="rule">function_declaration</span>
              / <span class="rule">external_function_declaration</span>
-             / <span class="rule">proposition_declaration</span>
              / <span class="rule">compound_declaration</span>
              / <span class="rule">enumeration_declaration</span>
              / <span class="rule">version_declaration</span>
@@ -89,14 +88,12 @@
          / <span class="rule">break</span>
          / <span class="rule">continue</span>
          / <span class="rule">structure</span>
-         / <span class="rule">proposition</span>
          / <span class="rule">enumeration</span>
          / <span class="rule">sizeof</span>
          / <span class="rule">union</span>
          / <span class="rule">return</span>
          / <span class="rule">true</span>
          / <span class="rule">false</span>
-         / <span class="rule">assert</span>
          / <span class="rule">null</span>
          / <span class="rule">version</span>
         
@@ -114,14 +111,12 @@
 <span class="rule">break</span>       &lt;- 'break'       <span class="rule">whitespace</span>
 <span class="rule">continue</span>    &lt;- 'continue'    <span class="rule">whitespace</span>
 <span class="rule">structure</span>   &lt;- 'structure'   <span class="rule">whitespace</span>
-<span class="rule">proposition</span> &lt;- 'proposition' <span class="rule">whitespace</span>
 <span class="rule">enumeration</span> &lt;- 'enumeration' <span class="rule">whitespace</span>
 <span class="rule">sizeof</span>      &lt;- 'sizeof'      <span class="rule">whitespace</span>
 <span class="rule">union</span>       &lt;- 'union'       <span class="rule">whitespace</span>
 <span class="rule">return</span>      &lt;- 'return'      <span class="rule">whitespace</span>
 <span class="rule">true</span>        &lt;- 'true'        <span class="rule">whitespace</span>
 <span class="rule">false</span>       &lt;- 'false'       <span class="rule">whitespace</span>
-<span class="rule">assert</span>      &lt;- 'assert'      <span class="rule">whitespace</span>
 <span class="rule">null</span>        &lt;- 'null'        <span class="rule">whitespace</span>
 <span class="rule">version</span>     &lt;- 'version'     <span class="rule">whitespace</span>
 
@@ -250,16 +245,6 @@
                     in said library. Foreign functions cannot return multiple values.
                 </p>
 
-                <h2>2.2. Propositions</h2>
-                <pre><code><span class="rule">proposition_declaration</span> &lt;- <span class="rule">proposition</span>
-                               <span class="rule">statements</span>
-                           <span class="rule">end</span></code></pre>
-
-                <p>
-                    Propositions are nameless functions that returns no values. 
-                    They are run before the main function if they are included.
-                </p>
-
                 <h2>2.3. Compounds</h2>
                 <pre><code><span class="rule">compound_declaration</span> &lt;- <span class="rule">public</span>? (<span class="rule">structure</span> / <span class="rule">union</span>) <span class="rule">upper_case_identifier</span> <span class="rule">formal_type_parameters</span>?
                             <span class="rule">field</span>+
@@ -342,7 +327,6 @@
            / <span class="rule">if_statement</span>
            / <span class="rule">for_statement</span>
            / <span class="rule">while_statement</span>
-           / <span class="rule">assert_statement</span>
            / <span class="rule">version_statement</span>
              
 <span class="rule">terminating_statement</span> &lt;- <span class="rule">break_statement</span>
@@ -530,21 +514,7 @@
                     inferable as the <i>n</i>th return type of the current function. 
                 </p>
             
-                <h2>3.10. Assert statements</h2>
-                <pre><code><span class="rule">assert_statement</span> &lt;- <span class="rule">assert expression</span></code></pre>
-
-                <p>
-                    The <span class="rule">expression</span> must be type of
-                    <span class="type">Bool</span>. If the expression is
-                    <span class="keyword">true</span>, then nothing happens. If the
-                    <span class="rule">expression</span> is
-                    <span class="keyword">false</span>, a description of the failing
-                    assertion is given. If the assertion is in a function the
-                    program stops, but if the assertion is in a proposition the
-                    current proposition stops and the next starts executing.
-                </p>
-
-                <h2>3.11. Version statements</h2>
+                <h2>3.10. Version statements</h2>
                 <pre><code><span class="rule">version_statement</span> &lt;- <span class="rule">version</span> <span class="rule">upper_case_identifier</span>
                          <span class="rule">statements</span>
                      <span class="rule">end</span></code></pre>
