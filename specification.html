@@ -860,7 +860,31 @@
                     syntax sugar for <code>[]<span class="type">U8</span></code>.
                 </p>
 
-                <h3>4.8.6. Array literals</h3>
+                <h3>4.8.6. Compound literals</h3>
+                <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
+                        <span class="rule">field_initializer</span> (<span class="rule">comma</span> <span class="rule">field_initializer</span>)*
+                    <span class="rule">right_curly_bracket</span>
+
+<span class="rule">field_initializer</span> &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">equal</span> <span class="rule">expression</span></code></pre>
+
+                <p>
+                    Initializes the specified fields of a compound type which is inferred.
+                    The <span class="rule">field_initializer</span>'s
+                    <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
+                    initialize. The <span class="rule">expression</span> is the
+                    value of the given <span class="rule">field</span>. The 
+                    <span class="rule">type</span> of the <span class="rule">expression</span>
+                    must match <span class="rule">field</span>'s <span class="rule">type</span> or 
+                    the <span class="rule">expression</span> must be inferable as the 
+                    <span class="rule">field</span>'s <span class="rul">type</span>.
+                </p>
+                
+                <p>
+                    0 or 1 <span class="rule">field_initializer</span> per <span class="rule">field</span>
+                    and uninitialized <span class="rule">field</span>s have undefined values.
+                </p>
+
+                <h3>4.8.7. Array literals</h3>
                 <pre><code><span class="rule">array_literal</span>       &lt;- <span class="rule">left_curly_bracket</span> 
                            <span class="rule">element_initializer</span> (<span class="rule">comma</span> <span class="rule">element_initializer</span>)*
                        <span class="rule">right_curly_bracket</span>
@@ -890,31 +914,6 @@
                 </p>
 
                 <p></p>
-
-                <h3>4.8.7. Compound literals</h3>
-                <pre><code><span class="rule">compound_literal</span> &lt;- <span class="rule">left_curly_bracket</span>
-                        <span class="rule">field_initializer</span> (<span class="rule">comma</span> <span class="rule">field_initializer</span>)*
-                    <span class="rule">right_curly_bracket</span>
-
-<span class="rule">field_initializer</span> &lt;- <span class="rule">lower_case_identifier</span> <span class="rule">equal</span> <span class="rule">expression</span></code></pre>
-
-                <p>
-                    Initializes the specified fields of a compound type which is inferred.
-                    The <span class="rule">field_initializer</span>'s
-                    <span class="rule">lower_case_identifier</span> is the name of the <span class="rule">field</span> to
-                    initialize. The <span class="rule">expression</span> is the
-                    value of the given <span class="rule">field</span>. The 
-                    <span class="rule">type</span> of the <span class="rule">expression</span>
-                    must match <span class="rule">field</span>'s <span class="rule">type</span> or 
-                    the <span class="rule">expression</span> must be inferable as the 
-                    <span class="rule">field</span>'s <span class="rul">type</span>.
-                </p>
-                
-                <p>
-                    0 or 1 <span class="rule">field_initializer</span> per <span class="rule">field</span>
-                    and uninitialized <span class="rule">field</span>s have undefined values.
-                </p>
-
                 <h3>4.8.8. Null literals</h3>
                 <pre><code><span class="rule">null_literal</span> &lt;- <span class="rule">null</span></code></pre>
 
