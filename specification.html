@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.26.2</title>
+        <title>Owen specification 0.27.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.26.2</h1>
+                    <h1>Owen specification 0.27.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
@@ -166,10 +166,10 @@
                       <span class="rule">formal_parameters</span>
                       <span class="rule">return_types</span>?
 
-<span class="rule">formal_type_parameters</span> &lt;- <span class="rule">left_angle_bracket</span>
+<span class="rule">formal_type_parameters</span> &lt;- <span class="rule">left_square_bracket</span>
                           <span class="rule">formal_type_parameter</span>
                           (<span class="rule">comma</span> <span class="rule">formal_type_parameter</span>)*
-                          <span class="rule">right_angle_bracket</span>
+                          <span class="rule">right_square_bracket</span>
 
 <span class="rule">formal_type_parameter</span> &lt;- <span class="rule">upper_case_identifier</span>
                           
@@ -1064,9 +1064,7 @@
 <span class="rule">polymorphic_compound_type</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">actual_type_parameters</span>
 <span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
 
-<span class="rule">actual_type_parameters</span> &lt;- <span class="rule">left_angle_bracket</span> <span class="rule">types</span> <span class="rule">right_angle_bracket</span>
-<span class="rule">left_angle_bracket</span>     &lt;- '&lt;' <span class="rule">whitespace</span>
-<span class="rule">right_angle_bracket</span>    &lt;- '&gt;' <span class="rule">whitespace</span>
+<span class="rule">actual_type_parameters</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">types</span> <span class="rule">right_square_bracket</span>
 
 <span class="rule">function_type</span> &lt;- 'Function' <span class="rule">whitespace</span>
                   <span class="rule">left_parenthesis types</span>? <span class="rule">right_parenthesis</span>
