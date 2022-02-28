@@ -646,7 +646,6 @@
                     <span class="rule">type</span> then it is inferred as that type.
                 </p>
 
-
                 <h2>4.6. Prefix expressions</h2>
                 <pre><code><span class="rule">prefix_expression</span> &lt;- <span class="rule">not_expression</span>
                    / <span class="rule">negate_expression</span>
@@ -659,14 +658,14 @@
                 </p>
 
                 <h3>4.6.1. Not expressions</h3>
-                <pre><code><span class="rule">not_expression</span> &lt;- '!' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
+                <pre><code><span class="rule">not_expression</span> &lt;- '!' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
                 <h3>4.6.2. Negate expressions</h3>
-                <pre><code><span class="rule">negate_expression</span> &lt;- '-' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
+                <pre><code><span class="rule">negate_expression</span> &lt;- '-' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
@@ -674,21 +673,21 @@
                 </p>
 
                 <h3>4.6.3. Address of expressions</h3>
-                <pre><code><span class="rule">address_of_expression</span> &lt;- '#' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
+                <pre><code><span class="rule">address_of_expression</span> &lt;- '#' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
-                    Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">prefix_expression</span>.
+                    Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">postfix_expression</span>.
                     The type of the <span class="rule">address_of_expression</span> is a <span class="rule">pointer_type</span> where the 
-                    base type is the same type as the <span class="rule">prefix_expression</span>'s type. 
+                    base type is the same type as the <span class="rule">postfix_expression</span>'s type. 
                 </p>
 
                 <h3>4.6.4. Dereference expressions</h3>
-                <pre><code><span class="rule">dereference_expression</span> &lt;- '@' <span class="rule">whitespace</span> <span class="rule">prefix_expression</span></code></pre>
+                <pre><code><span class="rule">dereference_expression</span> &lt;- '@' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
-                    Deferences the <span class="rule">prefix_expression</span>.
+                    Deferences the <span class="rule">postfix_expression</span>.
                     The type of the <span class="rule">dereference_expression</span>
-                    is the same as what is the <span class="rule">prefix_expression</span>
+                    is the same as what is the <span class="rule">postfix_expression</span>
                     is pointing to.
                 </p>
 
