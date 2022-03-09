@@ -288,7 +288,7 @@
                                <span class="rule">enumeration_constant</span>*
                            <span class="rule">end</span>
 
-<span class="rule">enumeration_constant</span> &lt;- <span class="rule">lower_case_identifier</span> (<span class="rule">assign</span> <span class="rule">integer_literal</span>)?</code></pre>
+<span class="rule">enumeration_constant</span> &lt;- <span class="rule">lower_case_identifier</span> (<span class="rule">assign</span> <span class="rule">expression</span>)?</code></pre>
 
                 <p>
                     The first <span class="rule">upper_case_identifier</span> is the name of the 
@@ -301,9 +301,10 @@
                     Each <span class="rule">enumeration_constant</span> must have an unique 
                     <span class="rule">lower_case_identifier</span> within the declaration.
                     If an <span class="rule">enumeration_constant</span> omits the
-                    <span class="rule">integer_literal</span> then it is the value of
+                    <span class="rule">expression</span> then it is the value of
                     the last constant + 1. If the first constant omits the
-                    <span class="rule">integer_literal</span> then its value is 0.
+                    <span class="rule">expression</span> then its value is 0.
+                    The <span class="rule">expression</span> must be <a href="#constant_expressions">constant</a>.
                 </p>
 
                 <h2>2.5. Versions</h2>
@@ -557,6 +558,15 @@
                     or <span class="rule">formal_parameter</span>, including fields and elements, is an error.
                 </p>
 
+                <p id="constant_expressions">Expressions consiting of the following are considered constant expressions:</p>
+                <ul>
+                    <li><span class="rule">float_literal</span></li> 
+                    <li><span class="rule">integer_literal</span></li>
+                    <li>Binary expressions</li>
+                    <li><span class="rule">negate_expression</span></li>
+                </ul>
+
+
                 <h2>4.1. Logical or expressions</h2>
                 <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> ('||' <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
 
@@ -794,16 +804,16 @@
                     / <span class="rule">cast_expression</span></code></pre>
 
                 <h3>4.8.1. Floating point literals</h3>
-                <pre><code><span class="rule">float_literal</span> &lt;- '-'? [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">float_literal</span> &lt;- [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     The type of a <span class="rule">float_literal</span>
                     is inferred. <span class="rule">float_literal</span>s are not allowed to
-                    overflow or underflow their type.
+                    overflow their type.
                 </p>
 
                 <h3>4.8.2. Integer literals</h3>
-                <pre><code><span class="rule">integer_literal</span>     &lt;- '-'? (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>) <span class="rule">whitespace</span>
+                <pre><code><span class="rule">integer_literal</span>     &lt;- (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>) <span class="rule">whitespace</span>
 
 <span class="rule">binary_integer</span>      &lt;- '0b' [01]+ ('_' [01]+)*
 <span class="rule">decimal_integer</span>     &lt;- [0-9]+ ('_' [0-9]+)*
@@ -814,8 +824,7 @@
                     The type of a <span class="rule">integer_literal</span> is inferred.
                     The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
                     <span class="rule">integer_literal</span>s are not allowed to
-                    overflow or underflow their type. The <span class="rule">integer_literal</span> <code>-0</code>
-                    is not allowed.
+                    overflow their type.
                 </p>
 
 
