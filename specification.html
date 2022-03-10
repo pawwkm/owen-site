@@ -348,19 +348,24 @@
 
 <span class="rule">equal</span>                 &lt;- '=' <span class="rule">whitespace</span>
 <span class="rule">variables</span>             &lt;- <span class="rule">variable</span> (<span class="rule">comma</span> <span class="rule">variable</span>)*
-<span class="rule">variable</span>              &lt;- <span class="rule">type</span> <span class="rule">lower_case_identifier</span></code></pre>
+<span class="rule">variable</span>              &lt;- <span class="rule">type</span> (<span class="rule">lower_case_identifier</span> / <span class="rule">blank_identifier</span>)</code></pre>
  
                 <p>
                     Declares <span class="rule">variables</span> in the current 
                     scope with the given <span class="rule">lower_case_identifier</span> 
                     as the name and <span class="rule">type</span>. A 
                     <span class="rule">variable</span> cannot have the same name
-                    as anything else in scope. <span class="rule">variables</span> 
-                    are evaluated from left to right and exists in scope only after it 
-                    has been assigned an <span class="rule">expression</span>. 
+                    as anything else in scope. <span class="rule">blank_identifier</span>
+                    can only be on the left hand side of Tuple assignments and anything 
+                    assigned to them is thrown away.
+                </p>
+                    
+                <p>
+                    <span class="rule">variables</span> are evaluated from left to right and
+                    exists in scope only after it has been assigned an <span class="rule">expression</span>. 
                     Each variable must be used in a <span class="rule">reference_expression</span>.
                     If the <span class="rule">equal</span> <span class="rule">expressions</span>
-                    part is omitted then all the <span class="rule">variables</span> are 
+                    part is omitted then all the <span class="rule">variables</span> must be named are 
                     <a href="#zero_values">zeroed</a> otherwise:
                 </p>
 
@@ -406,6 +411,7 @@
                         <code>x = x op expression</code> where <code>x</code> 
                         evaluates once.
                     </li>
+                    <li>= is the only operator defined for <span class="rule">blank_identifier</span>.</li>
                     <li>
                         The <i>n</i>th left hand side <span class="rule">expression</span>
                         is evaluated then the <i>n</i>th right hand side 
@@ -543,6 +549,7 @@
                     <li><span class="rule">field_access_expression</span> unless the compound's type is a <span class="rule">fixed_array_type</span></li>
                     <li><span class="rule">array_access_expression</span></li>
                     <li><span class="rule">dereference_expression</span></li>
+                    <li><span class="rule">blank_identifier</span></li>
                 </ul>
                
                 <p>
@@ -801,7 +808,8 @@
                     / <span class="rule">parenthesized_expression</span>
                     / <span class="rule">reference_expression</span>
                     / <span class="rule">enumeration_constant_access</span>
-                    / <span class="rule">cast_expression</span></code></pre>
+                    / <span class="rule">cast_expression</span>
+                    / <span class="rule">blank_identifier</span></code></pre>
 
                 <h3>4.8.1. Floating point literals</h3>
                 <pre><code><span class="rule">float_literal</span> &lt;- [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
@@ -1063,6 +1071,13 @@
                     <li>When the <span class="rule">expression</span>'s type must be inferred it is inferred as the <span class="rule">type</span>.</li>
                 </ul>
                 
+                <h3>4.8.15. Blank identifiers</h3>
+                <pre><code><span class="rule">blank_identifier</span> &lt;- '_' <span class="rule">whitespace</span></code></pre>
+                <p>
+                    Used in place of <span class="rule">reference_expression</span> in <span class="rule">declaration_statement</span> 
+                    and <span class="rule">assignment_statement</span> and only on the left hand side of the operator.
+                </p>
+
                 <h1>5. Types</h1>
                 <pre><code><span class="rule">types</span> &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
 <span class="rule">type</span>  &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
