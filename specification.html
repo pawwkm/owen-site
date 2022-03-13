@@ -790,7 +790,9 @@
 <span class="rule">right_square_bracket</span> &lt;- ']' <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    The indexed expression must be an array type. The <span class="rule">expression</span> is the
+                    The indexed expression must be an array type or a pointer to an array type.
+                    If the indexed expression is an array type it is implicitly dereferenced.
+                    The <span class="rule">expression</span> is the
                     index into the array. The <span class="rule">expression</span> must be integer typed, enumeration 
                     typed or an <span class="rule">integer_literal</span> which type is inferred as <span class="type">U32</span>
                 </p>
