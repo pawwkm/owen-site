@@ -717,8 +717,11 @@
 
                 <p>
                     The <span class="rule">lower_case_identifier</span> must be
-                    the name of a <span class="rule">field</span>. The type of 
-                    the expression is the same the <span class="rule">field</span>'s type.
+                    the name of a <span class="rule">field</span>. 
+                    The accessed expression must be a compound type or a 
+                    pointer to a compound. The pointer is implicitly dereferenced.
+                    The type of the <span class="rule">field_access_expression</span> is
+                    the same as the <span class="rule">field</span>'s type.
                 </p>
 
                 <h3>4.7.2. Call expressions</h3>
