@@ -23,9 +23,9 @@
                     <h1>Owen specification 0.27.2</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
-                        <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>
-                        is used to define the syntax. Files are encoded
-                        using UTF-8 and uses the <b>.owen</b> extension.
+                        <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>, extended with Unicode 
+                        Code Points, is used to define the syntax. Files are encoded using UTF-8 and uses the <b>.owen</b>
+                        extension.
                     </p>
                 </header>
 
@@ -120,8 +120,15 @@
 <span class="rule">null</span>        &lt;- 'null'        <span class="rule">whitespace</span>
 <span class="rule">version</span>     &lt;- 'version'     <span class="rule">whitespace</span>
 
-<span class="rule">whitespace</span>  &lt;- (' ' / '\n' / <span class="rule">comment</span>)*
-<span class="rule">comment</span>     &lt;- '//' (!'\n' .)* '\n'?</code></pre>
+<span class="rule">whitespace</span>  &lt;- (' ' / U+000A / <span class="rule">comment</span>)*
+<span class="rule">comment</span>     &lt;- '//' (!(U+000A / <span class="rule">invalid_code_point</span>) .)* U+000A?
+
+<span class="rule">invalid_code_point</span> &lt;- [U+0000-U+0009]
+                    / [U+000B-U+001F]  
+                    /  U+007F
+                    /  U+0085
+                    /  U+2028
+                    /  U+2029</code></pre>
 
                 <p>
                     The <span class="rule">namespace_directive</span> specifies that
@@ -851,22 +858,22 @@
                 
                                 
                 <h3>4.8.4. Unicode code point literals</h3>
-                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !"'" .) "'" <span class="rule">whitespace</span>
+                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !("'" / <span class="rule">invalid_code_point</span>) .) "'" <span class="rule">whitespace</span>
                 
-<span class="rule">unicode_escape_sequence</span>    &lt;- '\\u' <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
+<span class="rule">unicode_escape_sequence</span>    &lt;- '\u' <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
                                  
-                            / '\\U' <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
+                            / '\U' <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
                                  
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span>
-                                    <span class="rule">hexadecimal_digit</span></code></pre>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span>
+                                   <span class="rule">hexadecimal_digit</span></code></pre>
 
                 <p>
                     The <span class="rule">hexadecimal_digit</span>s in <span class="rule">unicode_escape_sequence</span>
@@ -875,7 +882,7 @@
                 </p>
 
                 <h3>4.8.5. UTF-8 string literals</h3>
-                <pre><code><span class="rule">utf8_string_literal</span> &lt;- '"' (<span class="rule">unicode_escape_sequence</span> / !'"' .)* '"' <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">utf8_string_literal</span> &lt;- '"' (<span class="rule">unicode_escape_sequence</span> / !('"' / <span class="rule">invalid_code_point</span>) .)* '"' <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are
