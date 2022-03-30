@@ -227,7 +227,7 @@
                 
                 <p>
                     <span class="rule">statements</span> must have a
-                    <span class="rule">terminating_statement</span> if the function
+                    <a href="#terminating_statement">terminating statement</a> if the function
                     have <span class="rule">return_types</span>.
                 </p>    
 
@@ -327,27 +327,27 @@
                 </p>
 
                 <h1>3. Statements</h1>
-                <pre><code><span class="rule">statements</span> &lt;- <span class="rule">statement</span>* <span class="rule">terminating_statement</span>?
-                
-<span class="rule">statement</span> &lt;- <span class="rule">declaration_statement</span>
-           / <span class="rule">assignment_statement</span>
-           / <span class="rule">expression_statement</span>
-           / <span class="rule">if_statement</span>
-           / <span class="rule">for_statement</span>
-           / <span class="rule">while_statement</span>
-           / <span class="rule">version_statement</span>
-             
-<span class="rule">terminating_statement</span> &lt;- <span class="rule">break_statement</span>
-                       / <span class="rule">continue_statement</span>
-                       / <span class="rule">return_statement</span></code></pre>
+                <pre><code><span class="rule">statements</span> &lt;- ( <span class="rule">declaration_statement</span>
+              / <span class="rule">assignment_statement</span>
+              / <span class="rule">expression_statement</span>
+              / <span class="rule">if_statement</span>
+              / <span class="rule">for_statement</span>
+              / <span class="rule">while_statement</span>
+              / <span class="rule">version_statement</span>)*
+
+              ( <span class="rule">break_statement</span>
+              / <span class="rule">continue_statement</span>
+              / <span class="rule">return_statement</span>)?</code></pre>
 
                 <p>
                     Each <span class="rule">statement</span> are executed in 
-                    lexical order. A terminating statement is either a 
-                    <span class="rule">return_statement</span>
-                    or <span class="rule">if_statement</span> where the 
-                    <span class="keyword">else</span> branch is present and all
-                    branches ends with terminating statements.
+                    lexical order.
+                </p>
+                <p id="terminating_statement">
+                    A terminating statement the last statement in <span class="rule">statements</span> and it 
+                    is either a <span class="rule">return_statement</span> or 
+                    <span class="rule">if_statement</span> with an <span class="keyword">else</span>
+                    branch and all branches have terminating statements.
                 </p>
 
                 <h2>3.1. Declaration statements</h2>
