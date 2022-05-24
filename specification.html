@@ -97,31 +97,31 @@
          / <span class="rule">null</span>
          / <span class="rule">version</span>
         
-<span class="rule">namespace</span>   &lt;- 'namespace'   <span class="rule">whitespace</span>
-<span class="rule">use</span>         &lt;- 'use'         <span class="rule">whitespace</span>
-<span class="rule">public</span>      &lt;- 'public'      <span class="rule">whitespace</span>
-<span class="rule">external</span>    &lt;- 'external'    <span class="rule">whitespace</span>
-<span class="rule">function</span>    &lt;- 'function'    <span class="rule">whitespace</span>
-<span class="rule">end</span>         &lt;- 'end'         <span class="rule">whitespace</span>
-<span class="rule">if</span>          &lt;- 'if'          <span class="rule">whitespace</span>
-<span class="rule">elif</span>        &lt;- 'elif'        <span class="rule">whitespace</span>
-<span class="rule">else</span>        &lt;- 'else'        <span class="rule">whitespace</span>
-<span class="rule">for</span>         &lt;- 'for'         <span class="rule">whitespace</span>
-<span class="rule">while</span>       &lt;- 'while'       <span class="rule">whitespace</span>
-<span class="rule">break</span>       &lt;- 'break'       <span class="rule">whitespace</span>
-<span class="rule">continue</span>    &lt;- 'continue'    <span class="rule">whitespace</span>
-<span class="rule">structure</span>   &lt;- 'structure'   <span class="rule">whitespace</span>
-<span class="rule">enumeration</span> &lt;- 'enumeration' <span class="rule">whitespace</span>
-<span class="rule">sizeof</span>      &lt;- 'sizeof'      <span class="rule">whitespace</span>
-<span class="rule">union</span>       &lt;- 'union'       <span class="rule">whitespace</span>
-<span class="rule">return</span>      &lt;- 'return'      <span class="rule">whitespace</span>
-<span class="rule">true</span>        &lt;- 'true'        <span class="rule">whitespace</span>
-<span class="rule">false</span>       &lt;- 'false'       <span class="rule">whitespace</span>
-<span class="rule">null</span>        &lt;- 'null'        <span class="rule">whitespace</span>
-<span class="rule">version</span>     &lt;- 'version'     <span class="rule">whitespace</span>
+<span class="rule">namespace</span>   &lt;- <span class="string">'namespace'</span>   <span class="rule">whitespace</span>
+<span class="rule">use</span>         &lt;- <span class="string">'use'</span>         <span class="rule">whitespace</span>
+<span class="rule">public</span>      &lt;- <span class="string">'public'</span>      <span class="rule">whitespace</span>
+<span class="rule">external</span>    &lt;- <span class="string">'external'</span>    <span class="rule">whitespace</span>
+<span class="rule">function</span>    &lt;- <span class="string">'function'</span>    <span class="rule">whitespace</span>
+<span class="rule">end</span>         &lt;- <span class="string">'end'</span>         <span class="rule">whitespace</span>
+<span class="rule">if</span>          &lt;- <span class="string">'if'</span>          <span class="rule">whitespace</span>
+<span class="rule">elif</span>        &lt;- <span class="string">'elif'</span>        <span class="rule">whitespace</span>
+<span class="rule">else</span>        &lt;- <span class="string">'else'</span>        <span class="rule">whitespace</span>
+<span class="rule">for</span>         &lt;- <span class="string">'for'</span>         <span class="rule">whitespace</span>
+<span class="rule">while</span>       &lt;- <span class="string">'while'</span>       <span class="rule">whitespace</span>
+<span class="rule">break</span>       &lt;- <span class="string">'break'</span>       <span class="rule">whitespace</span>
+<span class="rule">continue</span>    &lt;- <span class="string">'continue'</span>    <span class="rule">whitespace</span>
+<span class="rule">structure</span>   &lt;- <span class="string">'structure'</span>   <span class="rule">whitespace</span>
+<span class="rule">enumeration</span> &lt;- <span class="string">'enumeration'</span> <span class="rule">whitespace</span>
+<span class="rule">sizeof</span>      &lt;- <span class="string">'sizeof'</span>      <span class="rule">whitespace</span>
+<span class="rule">union</span>       &lt;- <span class="string">'union'</span>       <span class="rule">whitespace</span>
+<span class="rule">return</span>      &lt;- <span class="string">'return'</span>      <span class="rule">whitespace</span>
+<span class="rule">true</span>        &lt;- <span class="string">'true'</span>        <span class="rule">whitespace</span>
+<span class="rule">false</span>       &lt;- <span class="string">'false'</span>       <span class="rule">whitespace</span>
+<span class="rule">null</span>        &lt;- <span class="string">'null'</span>        <span class="rule">whitespace</span>
+<span class="rule">version</span>     &lt;- <span class="string">'version'</span>     <span class="rule">whitespace</span>
 
-<span class="rule">whitespace</span>  &lt;- (' ' / U+000A / <span class="rule">comment</span>)*
-<span class="rule">comment</span>     &lt;- '//' (!(U+000A / <span class="rule">invalid_code_point</span>) .)* U+000A?
+<span class="rule">whitespace</span>  &lt;- (<span class="string">' '</span> / U+000A / <span class="rule">comment</span>)*
+<span class="rule">comment</span>     &lt;- <span class="string">'//'</span> (!(U+000A / <span class="rule">invalid_code_point</span>) .)* U+000A?
 
 <span class="rule">invalid_code_point</span> &lt;- [U+0000-U+0009]
                     / [U+000B-U+001F]  
@@ -189,7 +189,7 @@
                      
 <span class="rule">return_types</span> &lt;- <span class="rule">colon</span> <span class="rule">types</span>
 
-<span class="rule">colon</span> &lt;- ':' <span class="rule">whitespace</span></code></pre>
+<span class="rule">colon</span> &lt;- <span class="string">':'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     Declares a function with the <span class="rule">function_signature</span>'s 
@@ -353,7 +353,7 @@
                 <h2>3.1. Declaration statements</h2>
                 <pre><code><span class="rule">declaration_statement</span> &lt;- <span class="rule">variables</span> (<span class="rule">equal</span> <span class="rule">expressions)?</span>
 
-<span class="rule">equal</span>                 &lt;- '=' <span class="rule">whitespace</span>
+<span class="rule">equal</span>                 &lt;- <span class="string">'='</span> <span class="rule">whitespace</span>
 <span class="rule">variables</span>             &lt;- <span class="rule">variable</span> (<span class="rule">comma</span> <span class="rule">variable</span>)*
 <span class="rule">variable</span>              &lt;- <span class="rule">type</span> (<span class="rule">lower_case_identifier</span> / <span class="rule">blank_identifier</span>)</code></pre>
  
@@ -444,7 +444,7 @@
                     <span class="rule">statements</span>)?
                 <span class="rule">end</span>
 
-<span class="rule">semicolon</span> &lt;- ';' <span class="rule">whitespace</span></code></pre>
+<span class="rule">semicolon</span> &lt;- <span class="string">';'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     Each <span class="rule">expression</span> is evaluated in
@@ -582,7 +582,7 @@
 
 
                 <h2>4.1. Logical or expressions</h2>
-                <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> ('||' <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
+                <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> (<span class="string">'||'</span> <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
 
                 <p>
                     Both operands must be type of <span class="type">Bool</span>.
@@ -606,7 +606,7 @@
                 </p>
 
                 <h2>4.3. Relational expressions</h2>
-                <pre><code><span class="rule">relational_expression</span> &lt;- <span class="rule">additive_expression</span> (('==' / '!=' / '&lt;=' / '&gt;=' / '&lt;' / '&gt;') <span class="rule">whitespace</span> <span class="rule">additive_expression</span>)*</code></pre>
+                <pre><code><span class="rule">relational_expression</span> &lt;- <span class="rule">additive_expression</span> ((<span class="string">'=='</span> / <span class="string">'!='</span> / <span class="string">'&lt;='</span> / <span class="string">'&gt;='</span> / <span class="string">'&lt;'</span> / <span class="string">'&gt;'</span>) <span class="rule">whitespace</span> <span class="rule">additive_expression</span>)*</code></pre>
                 
                 <p>
                     The comparison results in a <span class="type">Bool</span>.
@@ -625,7 +625,7 @@
                 </p>
 
                 <h2>4.4. Additive expressions</h2>
-                <pre><code><span class="rule">additive_expression</span> &lt;- <span class="rule">multiplicative_expression</span> (('+' / '-' / '|' / '^') <span class="rule">whitespace</span> <span class="rule">multiplicative_expression</span>)*</code></pre>
+                <pre><code><span class="rule">additive_expression</span> &lt;- <span class="rule">multiplicative_expression</span> ((<span class="string">'+'</span> / <span class="string">'-'</span> / <span class="string">'|'</span> / <span class="string">'^'</span>) <span class="rule">whitespace</span> <span class="rule">multiplicative_expression</span>)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -651,7 +651,7 @@
                 </p>
 
                 <h2>4.5. Multiplicative expressions</h2>
-                <pre><code><span class="rule">multiplicative_expression</span> &lt;- <span class="rule">prefix_expression</span> (('*' / '/' / '%' / '&amp;' / '&lt;&lt;' / '&gt;&gt;') <span class="rule">whitespace</span> <span class="rule">prefix_expression</span>)*</code></pre>
+                <pre><code><span class="rule">multiplicative_expression</span> &lt;- <span class="rule">prefix_expression</span> ((<span class="string">'*'</span> / <span class="string">'/'</span> / <span class="string">'%'</span> / <span class="string">'&amp;'</span> / <span class="string">'&lt;&lt;'</span> / <span class="string">'&gt;&gt;'</span>) <span class="rule">whitespace</span> <span class="rule">prefix_expression</span>)*</code></pre>
 
                 <p>
                     If both operands are the same number type the type of the expression is the same as the operands.
@@ -682,14 +682,14 @@
                 </p>
 
                 <h3>4.6.1. Not expressions</h3>
-                <pre><code><span class="rule">not_expression</span> &lt;- '!' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
+                <pre><code><span class="rule">not_expression</span> &lt;- <span class="string">'!'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Inverts a <span class="type">Bool</span>.
                 </p>
 
                 <h3>4.6.2. Negate expressions</h3>
-                <pre><code><span class="rule">negate_expression</span> &lt;- '-' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
+                <pre><code><span class="rule">negate_expression</span> &lt;- <span class="string">'-'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Negates the value of <span class="type">IXX</span> or <span class="type">FXX</span>.
@@ -697,7 +697,7 @@
                 </p>
 
                 <h3>4.6.3. Address of expressions</h3>
-                <pre><code><span class="rule">address_of_expression</span> &lt;- '#' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
+                <pre><code><span class="rule">address_of_expression</span> &lt;- <span class="string">'#'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">postfix_expression</span>.
@@ -706,7 +706,7 @@
                 </p>
 
                 <h3>4.6.4. Dereference expressions</h3>
-                <pre><code><span class="rule">dereference_expression</span> &lt;- '@' <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
+                <pre><code><span class="rule">dereference_expression</span> &lt;- <span class="string">'@'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
                     Deferences the <span class="rule">postfix_expression</span>.
@@ -720,7 +720,7 @@
 
                 <h3>4.7.1. Field access expressions</h3>
                 <pre><code><span class="rule">field_access_expression</span> &lt;- <span class="rule">dot</span> <span class="rule">lower_case_identifier</span>
-<span class="rule">dot</span> &lt;- '.' <span class="rule">whitespace</span></code></pre>
+<span class="rule">dot</span> &lt;- <span class="string">'.'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     The <span class="rule">lower_case_identifier</span> must be
@@ -793,8 +793,8 @@
                 <h3>4.7.3. Array access expressions</h3>
                 <pre><code><span class="rule">array_access_expression</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">expression</span> <span class="rule">right_square_bracket</span>
 
-<span class="rule">left_square_bracket</span> &lt;- '[' <span class="rule">whitespace</span>
-<span class="rule">right_square_bracket</span> &lt;- ']' <span class="rule">whitespace</span></code></pre>
+<span class="rule">left_square_bracket</span>  &lt;- <span class="string">'['</span> <span class="rule">whitespace</span>
+<span class="rule">right_square_bracket</span> &lt;- <span class="string">']'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     The indexed expression must be an array type or a pointer to an array type.
@@ -824,7 +824,7 @@
                     / <span class="rule">blank_identifier</span></code></pre>
 
                 <h3>4.8.1. Floating point literals</h3>
-                <pre><code><span class="rule">float_literal</span> &lt;- [0-9]+ '.' [0-9]+ <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">float_literal</span> &lt;- [0-9]+ <span class="string">'.'</span> [0-9]+ <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     The type of a <span class="rule">float_literal</span>
@@ -835,9 +835,9 @@
                 <h3>4.8.2. Integer literals</h3>
                 <pre><code><span class="rule">integer_literal</span>     &lt;- (<span class="rule">binary_integer</span> / <span class="rule">decimal_integer</span> / <span class="rule">hexadecimal_integer</span>) <span class="rule">whitespace</span>
 
-<span class="rule">binary_integer</span>      &lt;- '0b' [01]+ ('_' [01]+)*
-<span class="rule">decimal_integer</span>     &lt;- [0-9]+ ('_' [0-9]+)*
-<span class="rule">hexadecimal_integer</span> &lt;- '0x' <span class="rule">hexadecimal_digit</span>+ ('_' <span class="rule">hexadecimal_digit</span>+)*
+<span class="rule">binary_integer</span>      &lt;- <span class="string">'0b'</span> [01]+ (<span class="string">'_'</span> [01]+)*
+<span class="rule">decimal_integer</span>     &lt;- [0-9]+ (<span class="string">'_'</span> [0-9]+)*
+<span class="rule">hexadecimal_integer</span> &lt;- <span class="string">'0x'</span> <span class="rule">hexadecimal_digit</span>+ (<span class="string">'_'</span> <span class="rule">hexadecimal_digit</span>+)*
 <span class="rule">hexadecimal_digit</span>   &lt;- [0-9A-F]</code></pre>
 
                 <p>
@@ -858,14 +858,14 @@
                 
                                 
                 <h3>4.8.4. Unicode code point literals</h3>
-                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- "'" (<span class="rule">unicode_escape_sequence</span> / !("'" / <span class="rule">invalid_code_point</span>) .) "'" <span class="rule">whitespace</span>
+                <pre><code><span class="rule">unicode_code_point_literal</span> &lt;- <span class="string">"'"</span> (<span class="rule">unicode_escape_sequence</span> / !(<span class="string">"'"</span> / <span class="rule">invalid_code_point</span>) .) <span class="string">"'"</span> <span class="rule">whitespace</span>
                 
-<span class="rule">unicode_escape_sequence</span>    &lt;- '\u' <span class="rule">hexadecimal_digit</span>
+<span class="rule">unicode_escape_sequence</span>    &lt;- <span class="string">'\u'</span> <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
                                  
-                            / '\U' <span class="rule">hexadecimal_digit</span>
+                            / <span class="string">'\U'</span> <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
                                    <span class="rule">hexadecimal_digit</span>
@@ -882,7 +882,7 @@
                 </p>
 
                 <h3>4.8.5. UTF-8 string literals</h3>
-                <pre><code><span class="rule">utf8_string_literal</span> &lt;- '"' (<span class="rule">unicode_escape_sequence</span> / !('"' / <span class="rule">invalid_code_point</span>) .)* '"' <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">utf8_string_literal</span> &lt;- <span class="string">'"'</span> (<span class="rule">unicode_escape_sequence</span> / !(<span class="string">'"'</span> / <span class="rule">invalid_code_point</span>) .)* <span class="string">'"'</span> <span class="rule">whitespace</span></code></pre>
                 
                 <p>
                     <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are
@@ -920,8 +920,8 @@
                         
 <span class="rule">element_initializer</span> &lt;- (<span class="rule">left_square_bracket</span> (<span class="rule">integer_literal</span> | <span class="rule">enumeration_constant_access</span>) <span class="rule">right_square_bracket</span> <span class="rule">equal</span>)? <span class="rule">expression</span> 
 
-<span class="rule">left_curly_bracket</span>  &lt;- '{' <span class="rule">whitespace</span>
-<span class="rule">right_curly_bracket</span> &lt;- '}' <span class="rule">whitespace</span></code></pre>
+<span class="rule">left_curly_bracket</span>  &lt;- <span class="string">'{'</span> <span class="rule">whitespace</span>
+<span class="rule">right_curly_bracket</span> &lt;- <span class="string">'}'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     Initializes the specified elements of a fixed array which type is inferred. 
@@ -953,7 +953,7 @@
                 </p>
                 
                 <h3>4.8.9. Uninitialized literals</h3>
-                <pre><code><span class="rule">uninitialized_literal</span> &lt;- '---' <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">uninitialized_literal</span> &lt;- <span class="string">'---'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
                     <span class="rule">uninitialized_literal</span> can only be used for declaring a <span class="rule">variable</span>
@@ -973,8 +973,8 @@
                 <h3>4.8.11. Parenthesized expressions</h3>
                 <pre><code><span class="rule">parenthesized_expression</span> &lt;- <span class="rule">left_parenthesis</span> <span class="rule">expression</span> <span class="rule">right_parenthesis</span>
 
-<span class="rule">left_parenthesis</span>  &lt;- '(' <span class="rule">whitespace</span>
-<span class="rule">right_parenthesis</span> &lt;- ')' <span class="rule">whitespace</span></code></pre>
+<span class="rule">left_parenthesis</span>  &lt;- <span class="string">'('</span> <span class="rule">whitespace</span>
+<span class="rule">right_parenthesis</span> &lt;- <span class="string">')'</span> <span class="rule">whitespace</span></code></pre>
                 <p>
                     The type and value of <span class="rule">parenthesized_expression</span>
                     is the same as the <span class="rule">expression</span>.
@@ -1086,7 +1086,7 @@
                 </ul>
                 
                 <h3>4.8.15. Blank identifiers</h3>
-                <pre><code><span class="rule">blank_identifier</span> &lt;- '_' <span class="rule">whitespace</span></code></pre>
+                <pre><code><span class="rule">blank_identifier</span> &lt;- <span class="string">'_'</span> <span class="rule">whitespace</span></code></pre>
                 <p>
                     Used in place of <span class="rule">reference_expression</span> in <span class="rule">declaration_statement</span> 
                     and <span class="rule">assignment_statement</span> and only on the left hand side of the operator.
@@ -1205,16 +1205,16 @@
                 </p>
                 
                 <h2>5.6. Pointer types</h2>
-                <pre><code><span class="rule">pointer_type</span>            &lt;- '#' <span class="rule">whitespace</span> <span class="rule">pointer_type_privileges</span>
+                <pre><code><span class="rule">pointer_type</span>            &lt;- <span class="string">'#'</span> <span class="rule">whitespace</span> <span class="rule">pointer_type_privileges</span>
 <span class="rule">pointer_type_privileges</span> &lt;- <span class="rule">retained_privilege</span>? 
                            <span class="rule">alias_privilege</span>? 
                            <span class="rule">readable_privilege</span>?
                            <span class="rule">writable_privilege</span>?
 
-<span class="rule">retained_privilege</span> &lt;- '`' <span class="rule">whitespace</span>
-<span class="rule">alias_privilege</span>    &lt;- '!' <span class="rule">whitespace</span>
-<span class="rule">readable_privilege</span> &lt;- '?' <span class="rule">whitespace</span>
-<span class="rule">writable_privilege</span> &lt;- '$' <span class="rule">whitespace</span></code></pre>
+<span class="rule">retained_privilege</span> &lt;- <span class="string">'`'</span> <span class="rule">whitespace</span>
+<span class="rule">alias_privilege</span>    &lt;- <span class="string">'!'</span> <span class="rule">whitespace</span>
+<span class="rule">readable_privilege</span> &lt;- <span class="string">'?'</span> <span class="rule">whitespace</span>
+<span class="rule">writable_privilege</span> &lt;- <span class="string">'$'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>A pointer with the <span class="rule">retained_privilege</span> may escape during the call.</p>
                 <p>A pointer with the <span class="rule">alias_privilege</span> is assumed to be one of many pointers to its address.</p>
