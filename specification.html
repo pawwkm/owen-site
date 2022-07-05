@@ -543,14 +543,14 @@
 <span class="rule">expression</span>  &lt;- <span class="rule">logical_or_expression</span></code></pre>
 
                 <p>
-                    <span class="rule">expressions</span> are evalueated from left to right.
+                    <span class="rule">expressions</span> are evaluated from left to right.
                     <span class="rule">logical_or_expression</span> has the 
                     lowest precedence and <span class="rule">postfix_expression</span> 
                     has the highest precedence. Operators are left associative 
                     unless noted otherwise.
                 </p>
 
-                <p id="addressable_expressions">These expressions are adressable:</p>
+                <p id="addressable_expressions">These expressions are addressable:</p>
                 <ul>
                     <li><span class="rule">reference_expression</span></li> 
                     <li><span class="rule">field_access_expression</span> unless the compound's type is a <span class="rule">fixed_array_type</span></li>
@@ -572,7 +572,7 @@
                     or <span class="rule">formal_parameter</span>, including fields and elements, is an error.
                 </p>
 
-                <p id="constant_expressions">Expressions consiting of the following are considered constant expressions:</p>
+                <p id="constant_expressions">Expressions consisting of the following are considered constant expressions:</p>
                 <ul>
                     <li><span class="rule">float_literal</span></li> 
                     <li><span class="rule">integer_literal</span></li>
@@ -877,7 +877,7 @@
 
                 <p>
                     The <span class="rule">hexadecimal_digit</span>s in <span class="rule">unicode_escape_sequence</span>
-                    represents a valid unicode code point. The <span class="rule">unicode_code_point_literal</span> is replaced
+                    represents a valid Unicode Code Point. The <span class="rule">unicode_code_point_literal</span> is replaced
                     by with an <span class="rule">integer_literal</span> of the same value.
                 </p>
 
@@ -1016,7 +1016,7 @@
                                 If <span class="rule">type</span> is smaller than 
                                 <span class="rule">expression</span>'s type then the 
                                 most significant bits of the <span class="rule">expression</span>
-                                are truncated and the remaning bits are reinterpreted as
+                                are truncated and the remaining bits are reinterpreted as
                                 the <span class="rule">type</span>.
                             </li>
                             <li>
@@ -1192,7 +1192,7 @@
                 <h2>5.4. Floating point types</h2>
                 <p>
                     The <span class="type">F32</span> and <span class="type">F64</span>
-                    types behaves as binary32 and binary64 respectivly as 
+                    types behaves as binary32 and binary64 respectively as 
                     specified in IEEE 754.
                 </p>
 
