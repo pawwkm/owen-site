@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+o!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -1224,7 +1224,7 @@
                 <h2>5.7. Dynamic array types</h2>
                 <pre><code><span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span></code></pre>
                 <p><code>[]<span class="type">T</span></code> behaves as:</p>
-                <pre><code><span class="keyword">structure</span> <span class="type">Dynamic_Array</span>&lt;<span class="type">Base_Type</span>&gt; 
+                <pre><code><span class="keyword">structure</span> <span class="type">Dynamic_Array</span>[<span class="type">Base_Type</span>] 
     #<span class="type">Base_Type</span> elements
     <span class="type">U32</span> length
     <span class="type">U32</span> capacity
@@ -1232,7 +1232,7 @@
 
                 <p>
                     but without putting 
-                    <code><span class="type">Dynamic_Array</span>&lt;<span class="type">Base_Type</span>&gt;</code> 
+                    <code><span class="type">Dynamic_Array</span>[<span class="type">Base_Type</span>]</code> 
                     in scope.
                 </p>
                 
