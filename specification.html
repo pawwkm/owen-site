@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="This is the Owen programming language specification.">
         <meta name="keywords" content="Owen, programming language, specification, reference">
-        <title>Owen specification 0.27.2</title>
+        <title>Owen specification 0.28.0</title>
         <link rel="icon" type="image/x-icon" href="images/owen.png" />
         <link rel="stylesheet" type="text/css" href="css/global.css">
     </head>
@@ -20,7 +20,7 @@
         <main>
             <section>
                 <header>
-                    <h1>Owen specification 0.27.2</h1>
+                    <h1>Owen specification 0.28.0</h1>
                     <p>
                         The specification is versioned using <a href="https://semver.org/spec/v2.0.0.html">Semver 2.0</a>.
                         <a href="http://bford.info/pub/lang/peg.pdf">Parser Expression Grammar</a>, extended with Unicode 
@@ -64,7 +64,7 @@
         !.
 
 <span class="rule">namespace_directive</span> &lt;- <span class="rule">namespace</span> <span class="rule">upper_case_identifier</span>
-<span class="rule">use_directive</span> &lt;- <span class="rule">use</span> <span class="rule">upper_case_identifier</span>
+<span class="rule">use_directive</span>       &lt;- <span class="rule">use</span>       <span class="rule">upper_case_identifier</span>
 
 <span class="rule">declaration</span> &lt;- <span class="rule">function_declaration</span>
              / <span class="rule">external_function_declaration</span>
@@ -72,7 +72,7 @@
              / <span class="rule">enumeration_declaration</span>
              / <span class="rule">version_declaration</span>
 
-<span class="rule">upper_case_identifier</span> &lt;- [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* <span class="rule">whitespace</span>
+<span class="rule">upper_case_identifier</span> &lt;-          [A-Z][a-z0-9]* (_[A-Z][a-z0-9]*)* <span class="rule">whitespace</span>
 <span class="rule">lower_case_identifier</span> &lt;- !<span class="rule">keyword</span> [a-z][a-z0-9]* (_[a-z][a-z0-9]*)* <span class="rule">whitespace</span>
 <span class="rule">keyword</span> &lt;- <span class="rule">namespace</span>
          / <span class="rule">use</span>
@@ -96,6 +96,8 @@
          / <span class="rule">false</span>
          / <span class="rule">null</span>
          / <span class="rule">version</span>
+         / <span class="rule">readonly</span>
+         / <span class="rule">noalias</span>
         
 <span class="rule">namespace</span>   &lt;- <span class="string">'namespace'</span>   <span class="rule">whitespace</span>
 <span class="rule">use</span>         &lt;- <span class="string">'use'</span>         <span class="rule">whitespace</span>
@@ -119,6 +121,8 @@
 <span class="rule">false</span>       &lt;- <span class="string">'false'</span>       <span class="rule">whitespace</span>
 <span class="rule">null</span>        &lt;- <span class="string">'null'</span>        <span class="rule">whitespace</span>
 <span class="rule">version</span>     &lt;- <span class="string">'version'</span>     <span class="rule">whitespace</span>
+<span class="rule">readonly</span>    &lt;- <span class="string">'readonly'</span>    <span class="rule">whitespace</span>
+<span class="rule">noalias</span>     &lt;- <span class="string">'noalias'</span>     <span class="rule">whitespace</span>
 
 <span class="rule">whitespace</span>  &lt;- (<span class="string">' '</span> / U+000A / <span class="rule">comment</span>)*
 <span class="rule">comment</span>     &lt;- <span class="string">'//'</span> (!(U+000A / <span class="rule">invalid_code_point</span>) .)* U+000A?
@@ -156,10 +160,11 @@
                 
                 <p>
                     <span class="rule">function_declaration</span>s with the
-                    same name and <i>n</i>th <span class="rule">formal_parameter</span>'s <span class="rule">type</span>.
+                    same name and <i>n</i>th <span class="rule">formal_parameter</span>'s <span class="rule">type</span> match.
                     <span class="rule">formal_type_parameter</span>s differ from <span class="rule">formal_parameter</span> types but 
                     for the purpose of overloading any <span class="rule">formal_type_parameter</span>
-                    matches any other <span class="rule">formal_type_parameter</span>.
+                    matches any other <span class="rule">formal_type_parameter</span>. <a href="#qualifiers">Qualifiers</a> are
+                    ignored here.
                 </p>
 
                 <h2>2.1. Functions</h2>
@@ -234,11 +239,11 @@
                 <h3>2.1.1. The main function</h3>
                 <p>
                     The main function is the entry point of the program
-                    and it has one of the function signatures:
+                    and it has one of the <span class="rule">function_signature</span>s:
                 </p>
                 
                 <pre><code><span class="keyword">function</span> main() : <span class="type">I32</span>
-<span class="keyword">function</span> main(#?[][]<span class="type">U8</span> arguments) : <span class="type">I32</span></code></pre>
+<span class="keyword">function</span> main(<span class="keyword">readonly</span> #[][]<span class="type">U8</span> arguments) : <span class="type">I32</span></code></pre>
 
                 <h3>2.1.2. Foreign function interface</h3>
                 <pre><code><span class="rule">external_function_declaration</span> &lt;- <span class="rule">public</span>? <span class="rule">external</span> <span class="rule">function_signature</span>
@@ -264,26 +269,23 @@
                     A compound with <span class="rule">formal_type_parameters</span> is called a Polymorphic Compound
                     otherwise it is a Monomorphic Compound.
                     The <i>n</i>th <span class="rule">formal_type_parameter</span>
-                    in is replaced by the <i>n</i>th <span class="rule">type</span> in 
+                    is replaced by the <i>n</i>th <span class="rule">type</span> in 
                     <span class="rule">actual_type_parameters</span> when the polymorphic compound is referenced.
+                    <span class="rule">actual_type_parameters</span> cannot be <a href="#qualifiers">qualified</a> in this context.
                 </p>
                 <p>
                     <span class="rule">field</span> names must be unique within the 
-                    <span class="rule">compound_declaration</span> and cannot have 
-                    the same name as <span class="rule">compound_declaration</span>.
+                    <span class="rule">compound_declaration</span>.
                     A <span class="rule">field</span>'s <span class="rule">type</span>
                     cannot be or contain a non-public type if the compound is declared 
-                    <span class="rule">public</span>. Any attribute besides the 
-                    <span class="rule">retained_attribute</span> is allowed for a 
-                    <span class="rule">field</span>'s type.
+                    <span class="rule">public</span> and cannot be <a href="#qualifiers">qualified</a>.
                 </p>
                 <p>
                     <span class="rule">structure</span> <span class="rule">field</span>s
                     are laid out in memory as they are lexically declared. Padding may be 
-                    inserted between fields. The size of the structure is the sum of its
-                    <span class="rule">field</span>s and padding.
+                    inserted after a <span class="rule">field</span>. The size of the 
+                    structure is the sum of its <span class="rule">field</span>s and padding.
                 </p>
-
                 <p>
                     <span class="rule">union</span> <span class="rule">field</span>s
                     starts at the same address. The size of the union is the size
@@ -549,6 +551,11 @@
                     has the highest precedence. Operators are left associative 
                     unless noted otherwise.
                 </p>
+                
+                <p>
+                    Reading an <span class="rule">expression</span> with a <a href="#pointerless">Pointerless type</a>
+                    turns its <span class="rule">type</span> into an <span class="rule">unqualified_type</span>.
+                </p>
 
                 <p id="addressable_expressions">These expressions are addressable:</p>
                 <ul>
@@ -558,19 +565,6 @@
                     <li><span class="rule">dereference_expression</span></li>
                     <li><span class="rule">blank_identifier</span></li>
                 </ul>
-               
-                <p>
-                    If the <span class="rule">expression</span> is not an <span class="rule">address_of_expression</span> and its type is a <span class="rule">pointer_type</span> 
-                    that matches the expected type then the expected type must have the same
-                    <span class="rule">pointer_type_privileges</span> or less.
-                </p>
-
-                <p>
-                    Furthermore if the <span class="rule">expression</span> is an <span class="rule">address_of_expression</span>
-                    it has the same <span class="rule">pointer_type_privileges</span> as the expected type. But if the expected type has
-                    the <span class="rule">retained_privilege</span> and the address is of a <span class="rule">variable</span>
-                    or <span class="rule">formal_parameter</span>, including fields and elements, is an error.
-                </p>
 
                 <p id="constant_expressions">Expressions consisting of the following are considered constant expressions:</p>
                 <ul>
@@ -579,7 +573,6 @@
                     <li>Binary expressions</li>
                     <li><span class="rule">negate_expression</span></li>
                 </ul>
-
 
                 <h2>4.1. Logical or expressions</h2>
                 <pre><code><span class="rule">logical_or_expression</span> &lt;- <span class="rule">logical_and_expression</span> (<span class="string">'||'</span> <span class="rule">whitespace</span> <span class="rule">logical_and_expression</span>)*</code></pre>
@@ -700,19 +693,21 @@
                 <pre><code><span class="rule">address_of_expression</span> &lt;- <span class="string">'#'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
-                    Takes the address of an <a href="#addressable_expressions">addressable</a> <span class="rule">postfix_expression</span>.
-                    The type of the <span class="rule">address_of_expression</span> is a <span class="rule">pointer_type</span> where the 
-                    base type is the same type as the <span class="rule">postfix_expression</span>'s type. 
+                    Takes the address of an <a href="#addressable_expressions">addressable</a>
+                    <span class="rule">postfix_expression</span>. The type of the <span class="rule">address_of_expression</span>
+                    is a <span class="rule">pointer_type</span>, with the <span class="rule">postfix_expression</span>'s
+                    <a href="#qualifiers">qualifiers</a>, where the base type is the same type as the <span class="rule">postfix_expression</span>'s
+                    type, with said qualifiers.
                 </p>
 
                 <h3>4.6.4. Dereference expressions</h3>
                 <pre><code><span class="rule">dereference_expression</span> &lt;- <span class="string">'@'</span> <span class="rule">whitespace</span> <span class="rule">postfix_expression</span></code></pre>
 
                 <p>
-                    Deferences the <span class="rule">postfix_expression</span>.
-                    The type of the <span class="rule">dereference_expression</span>
-                    is the same as what is the <span class="rule">postfix_expression</span>
-                    is pointing to.
+                    Deferences a possibly <a href="#qualifiers">qualified</a> <span class="rule">pointer_type</span>d
+                    <span class="rule">postfix_expression</span>. The type of the
+                    <span class="rule">dereference_expression</span> is the same as the 
+                    <span class="rule">pointer_type</span>'s base type with said qualifiers.
                 </p>
 
                 <h2>4.7. Postfix expressions</h2>
@@ -723,11 +718,11 @@
 <span class="rule">dot</span> &lt;- <span class="string">'.'</span> <span class="rule">whitespace</span></code></pre>
 
                 <p>
-                    The <span class="rule">lower_case_identifier</span> must be
-                    the name of a <span class="rule">field</span>. 
-                    The accessed expression must be a compound type or a 
-                    pointer to a compound. The pointer is implicitly dereferenced.
-                    The type of the <span class="rule">field_access_expression</span> is
+                    The accessed expression must be a compound or array type or a 
+                    pointer to one. The <span class="rule">lower_case_identifier</span> must
+                    be the name of a <span class="rule">field</span> defined by the
+                    accessed expression's type. If the accessed type is a pointer then
+                    it is dereferenced. The type of the <span class="rule">field_access_expression</span> is
                     the same as the <span class="rule">field</span>'s type.
                 </p>
 
@@ -885,8 +880,8 @@
                 <pre><code><span class="rule">utf8_string_literal</span> &lt;- <span class="string">'"'</span> (<span class="rule">unicode_escape_sequence</span> / !(<span class="string">'"'</span> / <span class="rule">invalid_code_point</span>) .)* <span class="string">'"'</span> <span class="rule">whitespace</span></code></pre>
                 
                 <p>
-                    <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 which are
-                    syntax sugar for <code>#[]<span class="type">U8</span></code> with inferred privileges.
+                    <span class="rule">utf8_string_literal</span>s are encoded as UTF-8 stored in a 
+                    <span class="keyword">readonly</span> #[]<span class="type">U8</span>.
                 </p>
 
                 <h3>4.8.6. Compound literals</h3>
@@ -1093,9 +1088,10 @@
                 </p>
 
                 <h1>5. Types</h1>
-                <pre><code><span class="rule">types</span> &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
-<span class="rule">type</span>  &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
-         (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span> / <span class="rule">function_type</span>)
+                <pre><code><span class="rule">types</span>            &lt;- <span class="rule">type</span> (<span class="rule">comma</span> <span class="rule">type</span>)*
+<span class="rule">type</span>             &lt;- <span class="rule">type_qualifiers</span> <span class="rule">unqualified_type</span>
+<span class="rule">unqualified_type</span> &lt;- (<span class="rule">dynamic_array_type</span> / <span class="rule">fixed_array_type</span> / <span class="rule">pointer_type</span>)*
+                    (<span class="rule">polymorphic_compound_type</span> / <span class="rule">named_type</span> / <span class="rule">function_type</span>)
 
 <span class="rule">polymorphic_compound_type</span> &lt;- <span class="rule">upper_case_identifier</span> <span class="rule">actual_type_parameters</span>
 <span class="rule">named_type</span>                &lt;- <span class="rule">upper_case_identifier</span>
@@ -1120,9 +1116,14 @@
                 </ul>
 
                 <h2>5.2. Matching types</h2>
+                <p>
+                    2 <span class="rule">type</span>s match if their <span class="rule">type_qualifiers</span> are the same and
+                    their <span class="rule">unqualified_type</span>s match which they
+                    do in the following cases:
+                </p>
                 <ul>
                     <li><span class="rule">named_type</span>s with the same names match.</li>
-                    <li><span class="rule">polymorphic_compound_type</span>s with the same name and their actual type parameters match.</li>
+                    <li><span class="rule">polymorphic_compound_type</span>s with the same name and their <span class="rule">actual_type_parameters</span> match.</li>
                     <li><span class="rule">function_type</span>s where the <i>n</i>th <span class="rule">formal_parameters</span> and the <i>n</i>th <span class="rule">return_types</span> match matches.</li>
                     <li><span class="rule">dynamic_array_type</span>s match when their base types match.</li>
                     <li><span class="rule">fixed_array_type</span>s match when their size and base types match.</li>
@@ -1205,23 +1206,28 @@
                 </p>
                 
                 <h2>5.6. Pointer types</h2>
-                <pre><code><span class="rule">pointer_type</span>            &lt;- <span class="string">'#'</span> <span class="rule">whitespace</span> <span class="rule">pointer_type_privileges</span>
-<span class="rule">pointer_type_privileges</span> &lt;- <span class="rule">retained_privilege</span>? 
-                           <span class="rule">alias_privilege</span>? 
-                           <span class="rule">readable_privilege</span>?
-                           <span class="rule">writable_privilege</span>?
-
-<span class="rule">retained_privilege</span> &lt;- <span class="string">'`'</span> <span class="rule">whitespace</span>
-<span class="rule">alias_privilege</span>    &lt;- <span class="string">'!'</span> <span class="rule">whitespace</span>
-<span class="rule">readable_privilege</span> &lt;- <span class="string">'?'</span> <span class="rule">whitespace</span>
-<span class="rule">writable_privilege</span> &lt;- <span class="string">'$'</span> <span class="rule">whitespace</span></code></pre>
-
-                <p>A pointer with the <span class="rule">retained_privilege</span> may escape during the call.</p>
-                <p>A pointer with the <span class="rule">alias_privilege</span> is assumed to be one of many pointers to its address.</p>
-                <p>A pointer with the <span class="rule">readable_privilege</span> allows data to be read through it.</p>
-                <p>A pointer with the <span class="rule">writeable_privilege</span> allows data to be written through it.</p>
+                <pre><code><span class="rule">pointer_type</span> &lt;- <span class="string">'#'</span> <span class="rule">whitespace</span></code></pre>
             
-                <h2>5.7. Dynamic array types</h2>
+                <h2 id="qualifiers">5.7. Qualifiers</h2>
+                <pre><code><span class="rule">type_qualifiers</span> &lt;- <span class="rule">readonly</span>? <span class="rule">noalias</span>?</code></pre>
+                
+                <p id="pointerless">
+                    A type is Pointerless if it doesn't have a <span class="rule">pointer_type</span>, <span class="rule">dynamic_array_type</span> and 
+                    if pressent, <span class="rule">polymorphic_compound_type</span> and <span class="rule">named_type</span> doesn't refer to a compound
+                    with a <span class="rule">field</span> that is not Pointerless.
+                </p>
+                
+                <h3>5.7.1. <span class="keyword">readonly</span></h3>
+                <p><span class="keyword">readonly</span> qualified <span class="rule">expression</span>s cannot appear on the left hand side of <span class="rule">assignment_operator</span>s.</p>
+
+                <h3>5.7.2. <span class="keyword">noalias</span></h3>
+                <p>
+                    <span class="rule">formal_parameter</span>'s <span class="rule">type</span>s that are not <a href="#pointerless">Pointerless</a> 
+                    can be <span class="keyword">noalias</span> qualified. It is assumed that data accessed in a <span class="keyword">noalias</span> qualified 
+                    <span class="rule">formal_parameter</span> is exclusively accessed through that <span class="rule">formal_parameter</span>.
+                </p>
+
+                <h2>5.8. Dynamic array types</h2>
                 <pre><code><span class="rule">dynamic_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">right_square_bracket</span></code></pre>
                 <p><code>[]<span class="type">T</span></code> behaves as:</p>
                 <pre><code><span class="keyword">structure</span> <span class="type">Dynamic_Array</span>[<span class="type">Base_Type</span>] 
@@ -1236,7 +1242,7 @@
                     in scope.
                 </p>
                 
-                <h2>5.8. Fixed array types</h2>
+                <h2>5.9. Fixed array types</h2>
                 <pre><code><span class="rule">fixed_array_type</span> &lt;- <span class="rule">left_square_bracket</span> <span class="rule">integer_literal</span> <span class="rule">right_square_bracket</span></code></pre>
                 <p>
                     Is a fixed sized array of <span class="type">Base_Type</span> with 
