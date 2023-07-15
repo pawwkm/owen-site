@@ -823,8 +823,8 @@
                 
                 <p>
                     The type of a <span class="rule">float_literal</span>
-                    is inferred. <span class="rule">float_literal</span>s are not allowed to
-                    overflow their type.
+                    is inferred as <span class="type">FXX</span>. <span class="rule">float_literal</span>s 
+                    are not allowed to overflow their type.
                 </p>
 
                 <h3>4.8.2. Integer literals</h3>
@@ -836,12 +836,11 @@
 <span class="rule">hexadecimal_digit</span>   &lt;- [0-9A-F]</code></pre>
 
                 <p>
-                    The type of a <span class="rule">integer_literal</span> is inferred.
+                    The type of a <span class="rule">integer_literal</span> is inferred as an <span class="type">IXX</span> or <span class="type">UXX</span>.
                     The underscore doesn't change the value of the <span class="rule">integer_literal</span>.
                     <span class="rule">integer_literal</span>s are not allowed to
                     overflow their type.
                 </p>
-
 
                 <h3>4.8.3. Boolean literals</h3>
                 <pre><code><span class="rule">boolean_literal</span> &lt;- <span class="rule">true</span> / <span class="rule">false</span></code></pre>
