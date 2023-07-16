@@ -941,9 +941,8 @@
                 <pre><code><span class="rule">null_literal</span> &lt;- <span class="rule">null</span></code></pre>
 
                 <p>
-                    The value of <span class="keyword">null</span> is 0.
-                    Only pointer typed variables can be <span class="keyword">null</span> and the 
-                    type of the <span class="rule">null_literal</span> is inferred.
+                    The value of <span class="keyword">null</span> is address 0.
+                    The type of <span class="rule">null_literal</span> is inferred as a pointer or function type.
                 </p>
                 
                 <h3>4.8.9. Uninitialized literals</h3>
@@ -1109,7 +1108,7 @@
                 <ul>
                     <li>Number types is 0.</li>
                     <li><span class="type">Bool</span> is <span class="keyword">false</span>.</li>
-                    <li>Pointer types is <span class="keyword">null</span>.</li>
+                    <li>Pointer and function types are <span class="keyword">null</span>.</li>
                     <li><span class="keyword">enumeration</span> types is its first <span class="rule">enumeration_constant</span> if any or the zero value of its underlying type.</li>
                     <li>Fields and array elements are zeroed recursively.</li>
                 </ul>
